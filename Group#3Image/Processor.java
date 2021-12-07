@@ -124,6 +124,25 @@ public class Processor
             }
         }
     }
+    
+    public static void flipVertical(BufferedImage bi){
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                newBi.setRGB(j, ySize - 1 - i, bi.getRGB(j, i));
+            }
+        }
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
+            }
+        }
+    }
 
     /**
      * Takes in a BufferedImage and returns a GreenfootImage.
