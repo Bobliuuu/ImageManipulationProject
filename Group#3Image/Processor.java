@@ -32,12 +32,16 @@ import greenfoot.*;
 public class Processor  
 {
     /**
-     * Example colour altering method by Mr. Cohen. This method will
-     * increase the blue value while reducing the red and green values.
+     * General colorify method that will turn the RGB pixels of an image into a certain colour
+     * Works for any color (R, G, B) and increment/decrement values
      * 
-     * Demonstrates use of packagePixel() and unpackPixel() methods.
-     * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi        The BufferedImage (passed by reference) to change.
+     * @param colorR    The red value of the desired color 
+     * @param colorG    The green value of the desired color 
+     * @param colorB    The blue value of the desired color 
+     * @param changeR   The change in the red value after one iteration of the method
+     * @param changeG   The change in the green value after one iteration of the method
+     * @param changeB   The change in the blue value after one iteration of the method
      */
     public static void colorify (BufferedImage bi, int colorR, int colorG, int colorB, int changeR, int changeG, int changeB)
     {
@@ -139,6 +143,7 @@ public class Processor
 
     /**
      * Convert's each pixel's RGB value of the image to the average of the RGB values
+     * Uses the greyscale algorithm
      * 
      * @param bi    The BufferedImage (passed by reference) to change.
      */ 
@@ -168,43 +173,46 @@ public class Processor
                 int red = rgbValues[1];
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
-
+                
+                // Calculates they greyscale value
                 int grey = (blue + red + green)/3;
-
+                
+                // Turns the image closer to the greyscale image
                 if(red > grey){
                     red -= 2;
                     if (red < grey){
                         red = grey;
                     }
                 }
-                if(red < grey)
-                {
+                if(red < grey){
                     red += 2;
                     if (red > grey){
                         red = grey;
                     }
                 }
-                if(green > grey)
-                {
+                if(green > grey){
                     green -= 2;
                     if (green < grey){
                         green = grey;
                     }
                 }
-                if(green < grey)
-                {
+                if(green < grey){
                     green += 2;
                     if (green > grey){
                         green = grey;
                     }
                 }
-                if(blue > grey)
-                {
+                if(blue > grey){
                     blue -= 2;
+                    if (blue < grey){
+                        blue = grey;
+                    }
                 }
-                if(blue < grey)
-                {
+                if(blue < grey){
                     blue += 2;
+                    if (blue > grey){
+                        blue = grey;
+                    }
                 }
 
                 int newColour = packagePixel (red, green, blue, alpha);
@@ -212,6 +220,170 @@ public class Processor
             }
         }
         
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
+            }
+        }
+    }
+    
+    /**
+     * Sets each pixel's RGB value to it's negative value (255 - value)
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     * 
+     * @return BufferedImage The new image that has been altered 
+     */ 
+    public static void negative(BufferedImage bi)
+    {
+
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                // Find the negative (inverse) of each pixel's RGB values
+                red = 255 - red;
+                green = 255 - green;
+                blue = 255 - blue;
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
+            }
+        }
+    }
+    
+    /**
+     * Increases the RGB values of each pixel to make the image brighter
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     * 
+     * @return BufferedImage The new image that has been altered 
+     */ 
+    public static void brighten(BufferedImage bi)
+    {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                // Increases the RGB values of the pixel
+                if (green < 180){
+                    green += 2;
+                }
+                if (blue < 180){
+                    blue += 2;
+                }
+                if (red < 180){
+                    red += 2;
+                }
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
+            }
+        }
+    }
+    
+    /**
+     * Decreases the red, green and blue values of each pixel to make
+     * image darker
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     * 
+     * @return BufferedImage The new image that has been altered 
+     */ 
+    public static void darken(BufferedImage bi)
+    {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                // Increases the RGB values of the pixel
+                if (green > 50){
+                    green -= 2;
+                }
+                if (blue > 50){
+                    blue -= 2;
+                }
+                if (red > 500){
+                    red -= 2;
+                }
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+
         for(int i = 0; i < ySize; i++){
             for(int j = 0; j < xSize; j++){
                 bi.setRGB(j, i, newBi.getRGB(j, i));
@@ -252,7 +424,18 @@ public class Processor
          *       you, above) and then copy it, pixel by pixel, back to the original image.
          *       Changes to bi in this method will affect the GreenfootImage automatically.
          */ 
-
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                newBi.setRGB((xSize-1)-j, i, bi.getRGB(j, i));
+            }
+        }
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
+            }
+        }
     }
     
     public static void flipVertical(BufferedImage bi){
