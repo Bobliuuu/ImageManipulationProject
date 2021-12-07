@@ -30,7 +30,7 @@ public class Background extends World
     // Objects and Variables:
     private ImageHolder image;
 
-    private TextButton blueButton, hRevButton, openButton, rotateButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton;
 
     private SuperTextBox openFile;
 
@@ -53,7 +53,8 @@ public class Background extends World
     
        // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
         hRevButton = new TextButton("Flip Horizontal", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-  
+        vRevButton = new TextButton("Flip Vertical", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        
         openButton = new TextButton ("Open", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
@@ -65,6 +66,7 @@ public class Background extends World
         addObject (blueButton, 940, 24);
         addObject (hRevButton, 940, 66);
         addObject (rotateButton, 940, 108);
+        addObject (vRevButton, 940, 150);
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
@@ -96,6 +98,13 @@ public class Background extends World
             }
             else if (Greenfoot.mouseClicked(hRevButton)){
                 Processor.flipHorizontal(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
+                //image.setImage(createGreenfootImageFromBI (temp));
+            }
+            else if (Greenfoot.mouseClicked(vRevButton)){
+                Processor.flipVertical(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
