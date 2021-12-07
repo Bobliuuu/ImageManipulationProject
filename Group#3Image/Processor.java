@@ -82,6 +82,11 @@ public class Processor
     public static BufferedImage rotate90Clockwise (BufferedImage bi){
         BufferedImage newBi = new BufferedImage (bi.getHeight(), bi.getWidth(), 3);
 
+        for (int i = 0; i < bi.getHeight(); i++) {
+            for (int j = 0; j < bi.getWidth(); j++) {
+        	newBi.setRGB(i, bi.getWidth() - 1 - j, bi.getRGB(j, i));
+            }
+	}
         
         return newBi;
     }
@@ -107,7 +112,17 @@ public class Processor
          *       you, above) and then copy it, pixel by pixel, back to the original image.
          *       Changes to bi in this method will affect the GreenfootImage automatically.
          */ 
-
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                newBi.setRGB((xSize-1)-j, i, bi.getRGB(j, i));
+            }
+        }
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
+            }
+        }
     }
 
     /**
