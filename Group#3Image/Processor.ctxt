@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Processor
+comment1.params=bi
+comment1.target=void\ blueify(java.awt.image.BufferedImage)
+comment1.text=\r\n\ Example\ colour\ altering\ method\ by\ Mr.\ Cohen.\ This\ method\ will\r\n\ increase\ the\ blue\ value\ while\ reducing\ the\ red\ and\ green\ values.\r\n\ \r\n\ Demonstrates\ use\ of\ packagePixel()\ and\ unpackPixel()\ methods.\r\n\ \r\n\ @param\ bi\ \ \ \ The\ BufferedImage\ (passed\ by\ reference)\ to\ change.\r\n
+comment2.params=bi
+comment2.target=java.awt.image.BufferedImage\ rotate90Clockwise(java.awt.image.BufferedImage)
+comment3.params=bi
+comment3.target=void\ flipHorizontal(java.awt.image.BufferedImage)
+comment4.params=newBi
+comment4.target=greenfoot.GreenfootImage\ createGreenfootImageFromBI(java.awt.image.BufferedImage)
+comment4.text=\r\n\ Takes\ in\ a\ BufferedImage\ and\ returns\ a\ GreenfootImage.\r\n\ \r\n\ @param\ newBi\ The\ BufferedImage\ to\ convert.\r\n\ \r\n\ @return\ GreenfootImage\ \ \ A\ GreenfootImage\ built\ from\ the\ BufferedImage\ provided.\r\n
+comment5.params=rgbaValue
+comment5.target=int[]\ unpackPixel(int)
+comment5.text=\r\n\ Takes\ in\ an\ rgb\ value\ -\ the\ kind\ that\ is\ returned\ from\ BufferedImage's\r\n\ getRGB()\ method\ -\ and\ returns\ 4\ integers\ for\ easy\ manipulation.\r\n\ \r\n\ By\ Jordan\ Cohen\r\n\ Version\ 0.2\r\n\ \r\n\ @param\ rgbaValue\ The\ value\ of\ a\ single\ pixel\ as\ an\ integer,\ representing<br>\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 8\ bits\ for\ red,\ green\ and\ blue\ and\ 8\ bits\ for\ alpha\:<br>\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <pre>alpha\ \ \ red\ \ \ \ \ green\ \ \ blue</pre>\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <pre>00000000000000000000000000000000</pre>\r\n\ @return\ int[4]\ \ \ Array\ containing\ 4\ shorter\ ints<br>\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <pre>0\ \ \ \ \ \ \ 1\ \ \ \ \ \ \ 2\ \ \ \ \ \ \ 3</pre>\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <pre>alpha\ \ \ red\ \ \ \ \ green\ \ \ blue</pre>\r\n
+comment6.params=r\ g\ b\ a
+comment6.target=int\ packagePixel(int,\ int,\ int,\ int)
+comment6.text=\r\n\ Takes\ in\ a\ red,\ green,\ blue\ and\ alpha\ integer\ and\ uses\ bit-shifting\r\n\ to\ package\ all\ of\ the\ data\ into\ a\ single\ integer.\r\n\ \r\n\ @param\ \ \ int\ red\ value\ (0-255)\r\n\ @param\ \ \ int\ green\ value\ (0-255)\r\n\ @param\ \ \ int\ blue\ value\ (0-255)\r\n\ @param\ \ \ int\ alpha\ value\ (0-255)\r\n\ \r\n\ @return\ int\ \ Integer\ representing\ 32\ bit\ integer\ pixel\ ready\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ for\ BufferedImage\r\n
+numComments=7
