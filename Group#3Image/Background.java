@@ -30,7 +30,9 @@ public class Background extends World
     // Objects and Variables:
     private ImageHolder image;
 
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, blue, red, green, yellow;
+    
+    private TextButtonPicture bluePicture, redPicture, greenPicture, yellowPicture;
 
     private SuperTextBox openFile;
 
@@ -59,6 +61,16 @@ public class Background extends World
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         
+        blue = new TextButton (" ");
+        red = new TextButton (" ");
+        green = new TextButton (" ");
+        yellow = new TextButton (" ");
+        
+        bluePicture = new TextButtonPicture(Color.BLUE);
+        redPicture = new TextButtonPicture(Color.RED);
+        greenPicture = new TextButtonPicture(Color.GREEN);
+        yellowPicture = new TextButtonPicture(Color.YELLOW);
+        
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
 
         // Add objects to the screen
@@ -67,6 +79,15 @@ public class Background extends World
         addObject (hRevButton, 940, 66);
         addObject (rotateButton, 940, 108);
         addObject (vRevButton, 940, 150);
+        addObject (blue, 940, 198);
+        addObject (red, 940, 246);
+        addObject (green, 940, 294);
+        addObject (yellow, 940, 342);
+        addObject (bluePicture, blue.getX(), blue.getY());
+        addObject (redPicture, red.getX(), red.getY());
+        addObject (greenPicture, green.getX(), green.getY());
+        addObject (yellowPicture, yellow.getX(), yellow.getY());
+        
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
