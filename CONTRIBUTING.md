@@ -14,14 +14,15 @@ Part 4: Request review from another group member
 - Check pending issues and pull requests from the web browser
 
 ### Git Bash Command Line Interface
-Basic commit -> directly to the main branch
+Commit code from branch
 ```
+git checkout branch
 git add .
 git commit -m "Name of commit"
 git push origin main
 ```
 
-Commit from branch 
+Fetch upstream from branch
 ```
 git checkout branch
 git merge main
@@ -34,3 +35,10 @@ OR
 git reset --hard main
 git push
 ``` 
+
+## Merge Commits
+If able to fix using Github web browser, open file and resolve manually. 
+If unable to fix, use the command line to force a `git merge --no-ff` and then a rebase operation. 
+Alternatively, close the pull request and use the Git Bash CLI to `--force` reroute the commit HEAD to another pull request/branch, and link that pull request to the previous commit(s). 
+Open an issue if required, with the `bugs` label. 
+
