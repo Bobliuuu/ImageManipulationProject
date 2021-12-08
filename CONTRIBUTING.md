@@ -14,7 +14,7 @@ Part 4: Request review from another group member
 - Check pending issues and pull requests from the web browser
 
 ### Git Bash Command Line Interface
-Basic commit --> directly to 
+Basic commit -> directly to the main branch
 ```
 git add .
 git commit -m "Name of commit"
