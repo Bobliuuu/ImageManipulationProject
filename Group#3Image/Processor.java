@@ -629,6 +629,106 @@ public class Processor
     }
     
     /**
+     * Blur the image by putting the pixel values closer together
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */ 
+    public static void blur(BufferedImage bi)
+    {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                
+                int rgb = bi.getRGB(x, y);
+                int[] rgbValues = unpackPixel(rgb);
+                int alpha = rgbValues[0];
+                
+                int sumBlue = 0;
+                int sumGreen = 0;
+                int sumRed = 0;
+                int total = 0;
+    
+                for (int r = -1; r < 2; r++)
+                {
+                    for (int c = -1; c < 2; c++)
+                    {
+                        if (x + r < 0 || x + r > xSize - 1 || y + c < 0 || y + c > ySize - 1){
+                            continue;
+                        }
+    
+                        // Calls method in BufferedImage that returns R G B and alpha values
+                        // encoded together in an integer
+                        rgb = bi.getRGB(x + r, y + c);
+        
+                        // Call the unpackPixel method to retrieve the four integers for
+                        // R, G, B and alpha and assign them each to their own integer
+                        rgbValues = unpackPixel (rgb);
+        
+                        sumRed += rgbValues[1];
+                        sumGreen += rgbValues[2];
+                        sumBlue += rgbValues[3];
+
+                        total++;
+                    }
+                }
+
+                sumRed /= total;
+                sumGreen /= total;
+                sumBlue /= total;
+
+                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                bi.setRGB (x, y, newColour);
+            }
+        }
+    }
+    
+    /**
+     * Pixelate method to make an image less defined
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */ 
+    public static void pixelate(BufferedImage bi, int pixelSize)
+    {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x += pixelSize)
+        {
+            for (int y = 0; y < ySize; y += pixelSize)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                int newColour = packagePixel (red, green, blue, alpha);
+                
+                for(int yd = y; (yd < y + pixelSize) && (yd < ySize); yd++) {
+                    for(int xd = x; (xd < x + pixelSize) && (xd < xSize); xd++) {
+                        bi.setRGB(xd, yd, newColour);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
      * Rotates an image 90 degrees clockwise
      * 
      * @param bi    The BufferedImage (passed by reference) to change.
