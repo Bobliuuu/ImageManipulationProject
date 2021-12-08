@@ -41,7 +41,7 @@ public class Background extends World
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture;
 
@@ -71,6 +71,7 @@ public class Background extends World
         openButton = new TextButton ("Open", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        rotateOtherButton = new TextButton("Rotate Counterclockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));        
         negativeButton = new TextButton("Negative", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         brightButton = new TextButton("Brighten", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         darkButton = new TextButton("Darken", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
@@ -98,6 +99,7 @@ public class Background extends World
         addObject (redPicture, 940, 246);
         addObject (greenPicture, 940, 342);
         addObject (yellowPicture, 940, 390);
+        //addObject (rotateOtherButton, 940, 432);
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -147,10 +149,22 @@ public class Background extends World
             }
             else if (Greenfoot.mouseClicked(rotateButton)){
                 // unfinished
+                image.setFullImage(createGreenfootImageFromBI(Processor.rotate90Clockwise(image.getBufferedImage())));
+                image.redraw();
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(rotateOtherButton)){
+                // unfinished
+                image.setFullImage(createGreenfootImageFromBI(Processor.rotate90CounterClockwise(image.getBufferedImage())));
+                image.redraw();
+                openFile.update (image.getDetails ());
             }
             else if (Greenfoot.mouseClicked(resetButton)){
-                image.setImage(createGreenfootImageFromBI(original));
-                openFile.update (image.getDetails ());
+                //image.setImage(createGreenfootImageFromBI(original));
+                //openFile.update (image.getDetails ());
+                image.setFullImage(createGreenfootImageFromBI(original));
+                image.redraw();
+                openFile.update (image.getDetails ());                
             }
             else if (Greenfoot.mouseClicked(negativeButton)){
                 Processor.negative(image.getBufferedImage());
