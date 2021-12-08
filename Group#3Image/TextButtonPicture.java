@@ -13,9 +13,14 @@ public class TextButtonPicture extends Actor
     public TextButtonPicture(Color colour) {
         image = new GreenfootImage(10, 10);
         image.setColor(colour);
-        image.fillRect(0, 0, 9, 9);
+        image.fill();
         setImage(image);
-        
     }    
     
+    public TextButtonPicture(Color colour, int width, int height) {
+        image = new GreenfootImage(width, height);
+        image.setColor(colour);
+        image.fill();
+        setImage(image);
+    } 
 }

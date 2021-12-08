@@ -39,7 +39,7 @@ public class Background extends World
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, blue, red, green, yellow, resetButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, blue, red, green, yellow, resetButton;
     
     private TextButtonPicture bluePicture, redPicture, greenPicture, yellowPicture;
 
@@ -62,13 +62,16 @@ public class Background extends World
         // Set up UI elements
         blueButton = new TextButton("Blueify", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
     
-       // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
+        // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
         hRevButton = new TextButton("Flip Horizontal", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         vRevButton = new TextButton("Flip Vertical", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         resetButton = new TextButton("Reset", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         openButton = new TextButton ("Open", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        negativeButton = new TextButton("Negative", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        brightButton = new TextButton("Brighten", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        darkButton = new TextButton("Darken", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         
         blue = new TextButton (" ");
         red = new TextButton (" ");
@@ -89,6 +92,9 @@ public class Background extends World
         addObject (rotateButton, 940, 108);
         addObject (vRevButton, 940, 150);
         addObject (resetButton, 940, 192);
+        addObject (negativeButton, 780, 24);
+        addObject (brightButton, 780, 66);
+        addObject (darkButton, 780, 108);
         addObject (blue, 940, 390);
         addObject (red, 940, 246);
         addObject (green, 940, 294);
@@ -127,7 +133,6 @@ public class Background extends World
                 Processor.blueify(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
-                // here
             }
             else if (Greenfoot.mouseClicked(hRevButton)){
                 Processor.flipHorizontal(image.getBufferedImage());
@@ -148,6 +153,21 @@ public class Background extends World
             }
             else if (Greenfoot.mouseClicked(resetButton)){
                 image.setImage(createGreenfootImageFromBI(original));
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(negativeButton)){
+                Processor.negative(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(brightButton)){
+                Processor.brighten(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(darkButton)){
+                Processor.darken(image.getBufferedImage());
+                image.redraw();
                 openFile.update (image.getDetails ());
             }
             else if (Greenfoot.mouseClicked(openButton))

@@ -375,7 +375,7 @@ public class Processor
                 if (blue > 50){
                     blue -= 2;
                 }
-                if (red > 500){
+                if (red > 50){
                     red -= 2;
                 }
 
