@@ -99,7 +99,7 @@ public class Background extends World
         addObject (redPicture, 940, 246);
         addObject (greenPicture, 940, 342);
         addObject (yellowPicture, 940, 390);
-        //addObject (rotateOtherButton, 940, 432);
+        addObject (rotateOtherButton, 940, 432);
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
