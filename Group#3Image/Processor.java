@@ -154,8 +154,6 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
 
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
-
         // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
@@ -216,13 +214,7 @@ public class Processor
                 }
 
                 int newColour = packagePixel (red, green, blue, alpha);
-                newBi.setRGB (x, y, newColour);
-            }
-        }
-        
-        for(int i = 0; i < ySize; i++){
-            for(int j = 0; j < xSize; j++){
-                bi.setRGB(j, i, newBi.getRGB(j, i));
+                bi.setRGB (x, y, newColour);
             }
         }
     }
@@ -240,8 +232,6 @@ public class Processor
         // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
 
         // Using array size as limit
         for (int x = 0; x < xSize; x++)
@@ -267,13 +257,7 @@ public class Processor
                 blue = 255 - blue;
 
                 int newColour = packagePixel (red, green, blue, alpha);
-                newBi.setRGB (x, y, newColour);
-            }
-        }
-        
-        for(int i = 0; i < ySize; i++){
-            for(int j = 0; j < xSize; j++){
-                bi.setRGB(j, i, newBi.getRGB(j, i));
+                bi.setRGB (x, y, newColour);
             }
         }
     }
@@ -290,9 +274,6 @@ public class Processor
         // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
-
         // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
@@ -323,13 +304,7 @@ public class Processor
                 }
 
                 int newColour = packagePixel (red, green, blue, alpha);
-                newBi.setRGB (x, y, newColour);
-            }
-        }
-
-        for(int i = 0; i < ySize; i++){
-            for(int j = 0; j < xSize; j++){
-                bi.setRGB(j, i, newBi.getRGB(j, i));
+                bi.setRGB (x, y, newColour);
             }
         }
     }
@@ -347,8 +322,6 @@ public class Processor
         // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
 
         // Using array size as limit
         for (int x = 0; x < xSize; x++)
@@ -380,17 +353,16 @@ public class Processor
                 }
 
                 int newColour = packagePixel (red, green, blue, alpha);
-                newBi.setRGB (x, y, newColour);
-            }
-        }
-
-        for(int i = 0; i < ySize; i++){
-            for(int j = 0; j < xSize; j++){
-                bi.setRGB(j, i, newBi.getRGB(j, i));
+                bi.setRGB (x, y, newColour);
             }
         }
     }
     
+    /**
+     * Rotates an image 90 degrees clockwise
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
     public static BufferedImage rotate90Clockwise (BufferedImage bi){
         BufferedImage newBi = new BufferedImage (bi.getHeight(), bi.getWidth(), 3);
 
@@ -402,7 +374,21 @@ public class Processor
         
         return newBi;
     }
-
+    
+    /**
+     * Rotates an image 90 degrees counterclockwise
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static BufferedImage rotate90CounterClockwise (BufferedImage bi){
+        return null;
+    }
+    
+    /**
+     * Flips an image horizontally
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
     public static void flipHorizontal (BufferedImage bi)
     {
 
@@ -438,6 +424,9 @@ public class Processor
         }
     }
     
+    /**
+     * Flips and image vertically
+     */
     public static void flipVertical(BufferedImage bi){
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
@@ -460,16 +449,16 @@ public class Processor
     /**
      * Takes in a BufferedImage and returns a GreenfootImage.
      * 
-     * @param newBi The BufferedImage to convert.
+     * @param bi The BufferedImage to convert.
      * 
      * @return GreenfootImage   A GreenfootImage built from the BufferedImage provided.
      */
-    public static GreenfootImage createGreenfootImageFromBI (BufferedImage newBi)
+    public static GreenfootImage createGreenfootImageFromBI (BufferedImage bi)
     {
-        GreenfootImage returnImage = new GreenfootImage (newBi.getWidth(), newBi.getHeight());
+        GreenfootImage returnImage = new GreenfootImage (bi.getWidth(), bi.getHeight());
         BufferedImage backingImage = returnImage.getAwtImage();
         Graphics2D backingGraphics = (Graphics2D)backingImage.getGraphics();
-        backingGraphics.drawImage(newBi, null, 0, 0);
+        backingGraphics.drawImage(bi, null, 0, 0);
 
         return returnImage;
     }
