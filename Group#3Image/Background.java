@@ -190,28 +190,54 @@ public class Background extends World
 
     // Code provided, but not yet implemented - This will save image as a png.
     private void saveFile () {
-        try{
-            // This will pop up a text input box - You should improve this with a JFileChooser like for the open function
-            String fileName = JOptionPane.showInputDialog("Input file name (no extension)");
+        try {
+            // https://www.codejava.net/java-se/swing/show-save-file-dialog-using-jfilechooser
+            // parent component of the dialog
+            JFrame parentFrame = new JFrame();
+            
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg"}));
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.setDialogTitle("Specify a file to save");   
+            
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // TODO: Not working
+            int userSelection = fileChooser.showSaveDialog(parentFrame);
+            
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                
+                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                fileName = fileToSave.getAbsolutePath();
 
-            // fileName += ".png";
-            // File f = new File (fileName);  
-            // ImageIO.write(image.getBufferedImage(), "png", f); 
+                // https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+                // https://www.tabnine.com/code/java/methods/javax.swing.JFileChooser/getFileFilter
+                if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("JPEG file")) {
 
-            fileName += ".jpg";
-            BufferedImage bi = image.getBufferedImage();
+                    fileName += ".jpg";
+                    BufferedImage bi = image.getBufferedImage();
+        
+                    // https://stackoverflow.com/questions/16002167/using-imageio-write-to-create-a-jpeg-creates-a-0-byte-file
+                    BufferedImage newBufferedImage = new BufferedImage(bi.getWidth(),
+                    bi.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    newBufferedImage.getGraphics().drawImage(bi, 0, 0, null);
+        
+                    File outputfile = new File(fileName);
+                    // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
+                    ImageIO.write(newBufferedImage, "jpg", outputfile);
+                }
+                else if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("PNG file")) {
+                    fileName += ".png";
+                    File f = new File (fileName);  
+                    ImageIO.write(image.getBufferedImage(), "png", f); 
+                }
+                else {
+                    System.out.println("Invalid file extension");
+                }
 
-            // https://stackoverflow.com/questions/16002167/using-imageio-write-to-create-a-jpeg-creates-a-0-byte-file
-            BufferedImage newBufferedImage = new BufferedImage(bi.getWidth(),
-            bi.getHeight(), BufferedImage.TYPE_INT_RGB);
-            newBufferedImage.getGraphics().drawImage(bi, 0, 0, null);
+            }
 
-            File outputfile = new File(fileName);
-            // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
-            ImageIO.write(newBufferedImage, "jpg", outputfile);
-
-
-        }
+        } 
         catch (IOException e){
             // this code instead
             System.out.println("Unable to save file: " + e);
