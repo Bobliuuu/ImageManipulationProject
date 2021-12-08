@@ -7,10 +7,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
-
 /**
  * Starter code for Image Manipulation Array Assignment.
  * 
@@ -33,14 +29,8 @@ public class Background extends World
 
     // Objects and Variables:
     private ImageHolder image;
-    
-    private BufferedImage original;
-    
-    private ArrayList<BufferedImage> edits;
-    
-    private int editPos;
 
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, resetButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton;
 
     private SuperTextBox openFile;
 
@@ -65,8 +55,6 @@ public class Background extends World
         hRevButton = new TextButton("Flip Horizontal", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         vRevButton = new TextButton("Flip Vertical", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         
-        resetButton = new TextButton("Reset", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        
         openButton = new TextButton ("Open", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
@@ -79,13 +67,11 @@ public class Background extends World
         addObject (hRevButton, 940, 66);
         addObject (rotateButton, 940, 108);
         addObject (vRevButton, 940, 150);
-        addObject (resetButton, 940, 192);
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
         addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2);
-        editPos = -1;
-        original = deepCopy(image.getBufferedImage());
+        
     }
 
     /**
@@ -125,13 +111,7 @@ public class Background extends World
                 //image.setImage(createGreenfootImageFromBI (temp));
             }
             else if (Greenfoot.mouseClicked(rotateButton)){
-                /*BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
-                image.setImage(createGreenfootImageFromBI (temp));
-                openFile.update (image.getDetails ());*/
-            }
-            else if (Greenfoot.mouseClicked(resetButton)){
-                image.setImage(createGreenfootImageFromBI(original));
-                openFile.update (image.getDetails ());
+                // unfinished
             }
             else if (Greenfoot.mouseClicked(openButton))
             {
@@ -201,13 +181,6 @@ public class Background extends World
         backingGraphics.drawImage(newBi, null, 0, 0);
 
         return returnImage;
-    }
-    
-    public static BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultip = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultip, null);
     }
 }
 
