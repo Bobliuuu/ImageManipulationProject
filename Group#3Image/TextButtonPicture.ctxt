@@ -1,8 +1,0 @@
-#BlueJ class context
-comment0.target=TextButtonPicture
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ TextButtonPicture\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=colour
-comment1.target=TextButtonPicture(greenfoot.Color)
-comment2.params=colour\ width\ height
-comment2.target=TextButtonPicture(greenfoot.Color,\ int,\ int)
-numComments=3

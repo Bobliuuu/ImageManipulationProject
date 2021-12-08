@@ -41,9 +41,9 @@ public class Background extends World
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, blue, red, green, yellow, resetButton, saveButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton;
     
-    private TextButtonPicture bluePicture, redPicture, greenPicture, yellowPicture;
+    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture;
 
     private SuperTextBox openFile, saveFile;
 
@@ -76,15 +76,10 @@ public class Background extends World
         darkButton = new TextButton("Darken", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         saveButton = new TextButton ("Save", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         
-        blue = new TextButton (" ");
-        red = new TextButton (" ");
-        green = new TextButton (" ");
-        yellow = new TextButton (" ");
-        
-        bluePicture = new TextButtonPicture(Color.BLUE);
-        redPicture = new TextButtonPicture(Color.RED);
-        greenPicture = new TextButtonPicture(Color.GREEN);
-        yellowPicture = new TextButtonPicture(Color.YELLOW);
+        bluePicture = new ColorButton(Color.BLUE);
+        redPicture = new ColorButton(Color.RED);
+        greenPicture = new ColorButton(Color.GREEN);
+        yellowPicture = new ColorButton(Color.YELLOW);
         
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
         saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
@@ -99,14 +94,10 @@ public class Background extends World
         addObject (negativeButton, 780, 24);
         addObject (brightButton, 780, 66);
         addObject (darkButton, 780, 108);
-        addObject (blue, 940, 390);
-        addObject (red, 940, 246);
-        addObject (green, 940, 294);
-        addObject (yellow, 940, 342);
-        addObject (bluePicture, blue.getX(), blue.getY());
-        addObject (redPicture, red.getX(), red.getY());
-        addObject (greenPicture, green.getX(), green.getY());
-        addObject (yellowPicture, yellow.getX(), yellow.getY());
+        addObject (bluePicture, 940, 295);
+        addObject (redPicture, 940, 246);
+        addObject (greenPicture, 940, 342);
+        addObject (yellowPicture, 940, 390);
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
