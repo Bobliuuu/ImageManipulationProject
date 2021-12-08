@@ -178,4 +178,8 @@ public class ImageHolder extends Actor
     public GreenfootImage getDisplayImage (){
         return displayImage;
     }
+    
+    public void setFullImage(GreenfootImage gi){
+        fullImage = new GreenfootImage(gi);
+    }
 }

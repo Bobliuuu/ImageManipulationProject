@@ -3,6 +3,8 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.Graphics2D;
@@ -26,7 +28,7 @@ import java.awt.image.WritableRaster;
 public class Background extends World
 {
     // Constants:
-    private final String STARTING_FILE = "colourful.jpg";
+    private final String STARTING_FILE = "mountain.jpg";
     public static final int MAX_WIDTH = 800;
     public static final int MAX_HEIGHT = 720;
 
@@ -39,11 +41,11 @@ public class Background extends World
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, blue, red, green, yellow, resetButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton;
     
-    private TextButtonPicture bluePicture, redPicture, greenPicture, yellowPicture;
+    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, topBar;
 
-    private SuperTextBox openFile;
+    private SuperTextBox openFile, saveFile;
 
     private String fileName;
 
@@ -54,7 +56,7 @@ public class Background extends World
     public Background()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(1024, 800, 1); 
+        super(1280, 900, 1); 
 
         // Initialize buttons and the image
         image = new ImageHolder(STARTING_FILE); // The image holder constructor does the actual image loading
@@ -62,46 +64,54 @@ public class Background extends World
         // Set up UI elements
         blueButton = new TextButton("Blueify", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
     
-       // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
+        // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
         hRevButton = new TextButton("Flip Horizontal", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         vRevButton = new TextButton("Flip Vertical", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         resetButton = new TextButton("Reset", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         openButton = new TextButton ("Open", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        rotateOtherButton = new TextButton("Rotate Counterclockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));        
+        negativeButton = new TextButton("Negative", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        brightButton = new TextButton("Brighten", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        darkButton = new TextButton("Darken", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        saveButton = new TextButton ("Save", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         
-        blue = new TextButton (" ");
-        red = new TextButton (" ");
-        green = new TextButton (" ");
-        yellow = new TextButton (" ");
+        bluePicture = new ColorButton(Color.BLUE);
+        redPicture = new ColorButton(Color.RED);
+        greenPicture = new ColorButton(Color.GREEN);
+        yellowPicture = new ColorButton(Color.YELLOW);
         
-        bluePicture = new TextButtonPicture(Color.BLUE);
-        redPicture = new TextButtonPicture(Color.RED);
-        greenPicture = new TextButtonPicture(Color.GREEN);
-        yellowPicture = new TextButtonPicture(Color.YELLOW);
+        topBar = new ColorButton(Color.BLACK, 1280, 150);
         
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
+        saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
 
         // Add objects to the screen
-        addObject (image, 430, 430);
-        addObject (blueButton, 940, 24);
-        addObject (hRevButton, 940, 66);
-        addObject (rotateButton, 940, 108);
-        addObject (vRevButton, 940, 150);
-        addObject (resetButton, 940, 192);
-        addObject (blue, 940, 390);
-        addObject (red, 940, 246);
-        addObject (green, 940, 294);
-        addObject (yellow, 940, 342);
-        addObject (bluePicture, blue.getX(), blue.getY());
-        addObject (redPicture, red.getX(), red.getY());
-        addObject (greenPicture, green.getX(), green.getY());
-        addObject (yellowPicture, yellow.getX(), yellow.getY());
+        addObject (topBar, 640, 75);
+        addObject (image, 600, 500);
+        addObject (blueButton, 244, 120);
+        addObject (hRevButton, 406, 79);
+        addObject (rotateButton, 568, 79);
+        addObject (vRevButton, 406, 120);
+        addObject (resetButton, 730, 79);
+        addObject (negativeButton, 82, 79);
+        addObject (brightButton, 82, 120);
+        addObject (darkButton, 244, 79);
+        addObject (bluePicture, 940, 295);
+        addObject (redPicture, 940, 246);
+        addObject (greenPicture, 940, 342);
+        addObject (yellowPicture, 940, 390);
+        addObject (rotateOtherButton, 568, 120);
+        
+        
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
-        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2);
+        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2 - 7);
+        // place the save file button 
+        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 84, openFile.getImage().getHeight() / 2 - 7);
         
         editPos = -1;
         original = deepCopy(image.getBufferedImage());
@@ -127,7 +137,6 @@ public class Background extends World
                 Processor.blueify(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
-                // here
             }
             else if (Greenfoot.mouseClicked(hRevButton)){
                 Processor.flipHorizontal(image.getBufferedImage());
@@ -145,29 +154,100 @@ public class Background extends World
             }
             else if (Greenfoot.mouseClicked(rotateButton)){
                 // unfinished
+                image.setFullImage(createGreenfootImageFromBI(Processor.rotate90Clockwise(image.getBufferedImage())));
+                image.redraw();
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(rotateOtherButton)){
+                // unfinished
+                image.setFullImage(createGreenfootImageFromBI(Processor.rotate90CounterClockwise(image.getBufferedImage())));
+                image.redraw();
+                openFile.update (image.getDetails ());
             }
             else if (Greenfoot.mouseClicked(resetButton)){
-                image.setImage(createGreenfootImageFromBI(original));
+                //image.setImage(createGreenfootImageFromBI(original));
+                //openFile.update (image.getDetails ());
+                image.setFullImage(createGreenfootImageFromBI(original));
+                image.redraw();
+                openFile.update (image.getDetails ());                
+            }
+            else if (Greenfoot.mouseClicked(negativeButton)){
+                Processor.negative(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(brightButton)){
+                Processor.brighten(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+            }
+            else if (Greenfoot.mouseClicked(darkButton)){
+                Processor.darken(image.getBufferedImage());
+                image.redraw();
                 openFile.update (image.getDetails ());
             }
             else if (Greenfoot.mouseClicked(openButton))
             {
                 openFile ();
             }
+
+            else if (Greenfoot.mouseClicked(saveButton))
+            {
+                saveFile ();
+            }
         }
     }
 
     // Code provided, but not yet implemented - This will save image as a png.
     private void saveFile () {
-        try{
-            // This will pop up a text input box - You should improve this with a JFileChooser like for the open function
-            String fileName = JOptionPane.showInputDialog("Input file name (no extension)");
+        try {
+            // https://www.codejava.net/java-se/swing/show-save-file-dialog-using-jfilechooser
+            // parent component of the dialog
+            JFrame parentFrame = new JFrame();
+            
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg"}));
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.setDialogTitle("Specify a file to save");   
+            
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // TODO: Not working
+            int userSelection = fileChooser.showSaveDialog(parentFrame);
+            
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                
+                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                fileName = fileToSave.getAbsolutePath();
 
-            fileName += ".png";
-            File f = new File (fileName);  
-            ImageIO.write(image.getBufferedImage(), "png", f); 
+                // https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+                // https://www.tabnine.com/code/java/methods/javax.swing.JFileChooser/getFileFilter
+                if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("JPEG file")) {
 
-        }
+                    fileName += ".jpg";
+                    BufferedImage bi = image.getBufferedImage();
+        
+                    // https://stackoverflow.com/questions/16002167/using-imageio-write-to-create-a-jpeg-creates-a-0-byte-file
+                    BufferedImage newBufferedImage = new BufferedImage(bi.getWidth(),
+                    bi.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    newBufferedImage.getGraphics().drawImage(bi, 0, 0, null);
+        
+                    File outputfile = new File(fileName);
+                    // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
+                    ImageIO.write(newBufferedImage, "jpg", outputfile);
+                }
+                else if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("PNG file")) {
+                    fileName += ".png";
+                    File f = new File (fileName);  
+                    ImageIO.write(image.getBufferedImage(), "png", f); 
+                }
+                else {
+                    System.out.println("Invalid file extension");
+                }
+
+            }
+
+        } 
         catch (IOException e){
             // this code instead
             System.out.println("Unable to save file: " + e);
@@ -183,6 +263,12 @@ public class Background extends World
         JFrame frame = new JFrame();
         // Create a JFileChooser, a file chooser box included with Java 
         JFileChooser fileChooser = new JFileChooser();
+
+        // Add File filter for PNG and JPEG.
+        // https://stackoverflow.com/questions/19302029/filter-file-types-with-jfilechooser
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg", "jpeg"}));
+
         //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION){
