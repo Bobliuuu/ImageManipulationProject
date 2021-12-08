@@ -18,4 +18,6 @@ comment5.text=\r\n\ Allows\ the\ user\ to\ open\ a\ new\ image\ file.\r\n
 comment6.params=newBi
 comment6.target=greenfoot.GreenfootImage\ createGreenfootImageFromBI(java.awt.image.BufferedImage)
 comment6.text=\r\n\ Takes\ in\ a\ BufferedImage\ and\ returns\ a\ GreenfootImage.\r\n\ \r\n\ @param\ newBi\ The\ BufferedImage\ to\ convert.\r\n\ \r\n\ @return\ GreenfootImage\ \ \ A\ GreenfootImage\ built\ from\ the\ BufferedImage\ provided.\r\n
-numComments=7
+comment7.params=bi
+comment7.target=java.awt.image.BufferedImage\ deepCopy(java.awt.image.BufferedImage)
+numComments=8
