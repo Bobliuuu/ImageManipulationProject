@@ -3,6 +3,8 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.Graphics2D;
@@ -39,11 +41,11 @@ public class Background extends World
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, blue, red, green, yellow, resetButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, blue, red, green, yellow, resetButton, saveButton;
     
     private TextButtonPicture bluePicture, redPicture, greenPicture, yellowPicture;
 
-    private SuperTextBox openFile;
+    private SuperTextBox openFile, saveFile;
 
     private String fileName;
 
@@ -72,6 +74,7 @@ public class Background extends World
         negativeButton = new TextButton("Negative", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         brightButton = new TextButton("Brighten", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         darkButton = new TextButton("Darken", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        saveButton = new TextButton ("Save", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
         
         blue = new TextButton (" ");
         red = new TextButton (" ");
@@ -84,6 +87,7 @@ public class Background extends World
         yellowPicture = new TextButtonPicture(Color.YELLOW);
         
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
+        saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
 
         // Add objects to the screen
         addObject (image, 430, 430);
@@ -108,6 +112,8 @@ public class Background extends World
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
         addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2);
+        // place the save file button 
+        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 2, (saveFile.getImage().getHeight() / 2) + 42);
         
         editPos = -1;
         original = deepCopy(image.getBufferedImage());
@@ -174,6 +180,11 @@ public class Background extends World
             {
                 openFile ();
             }
+
+            else if (Greenfoot.mouseClicked(saveButton))
+            {
+                saveFile ();
+            }
         }
     }
 
@@ -183,9 +194,22 @@ public class Background extends World
             // This will pop up a text input box - You should improve this with a JFileChooser like for the open function
             String fileName = JOptionPane.showInputDialog("Input file name (no extension)");
 
-            fileName += ".png";
-            File f = new File (fileName);  
-            ImageIO.write(image.getBufferedImage(), "png", f); 
+            // fileName += ".png";
+            // File f = new File (fileName);  
+            // ImageIO.write(image.getBufferedImage(), "png", f); 
+
+            fileName += ".jpg";
+            BufferedImage bi = image.getBufferedImage();
+
+            // https://stackoverflow.com/questions/16002167/using-imageio-write-to-create-a-jpeg-creates-a-0-byte-file
+            BufferedImage newBufferedImage = new BufferedImage(bi.getWidth(),
+            bi.getHeight(), BufferedImage.TYPE_INT_RGB);
+            newBufferedImage.getGraphics().drawImage(bi, 0, 0, null);
+
+            File outputfile = new File(fileName);
+            // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
+            ImageIO.write(newBufferedImage, "jpg", outputfile);
+
 
         }
         catch (IOException e){
@@ -203,6 +227,12 @@ public class Background extends World
         JFrame frame = new JFrame();
         // Create a JFileChooser, a file chooser box included with Java 
         JFileChooser fileChooser = new JFileChooser();
+
+        // Add File filter for PNG and JPEG.
+        // https://stackoverflow.com/questions/19302029/filter-file-types-with-jfilechooser
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg", "jpeg"}));
+
         //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION){
