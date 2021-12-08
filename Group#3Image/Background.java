@@ -28,7 +28,7 @@ import java.awt.image.WritableRaster;
 public class Background extends World
 {
     // Constants:
-    private final String STARTING_FILE = "colourful.jpg";
+    private final String STARTING_FILE = "mountain.jpg";
     public static final int MAX_WIDTH = 800;
     public static final int MAX_HEIGHT = 720;
 
@@ -43,7 +43,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton;
     
-    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture;
+    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, topBar;
 
     private SuperTextBox openFile, saveFile;
 
@@ -56,7 +56,7 @@ public class Background extends World
     public Background()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(1024, 800, 1); 
+        super(1280, 900, 1); 
 
         // Initialize buttons and the image
         image = new ImageHolder(STARTING_FILE); // The image holder constructor does the actual image loading
@@ -82,31 +82,36 @@ public class Background extends World
         greenPicture = new ColorButton(Color.GREEN);
         yellowPicture = new ColorButton(Color.YELLOW);
         
+        topBar = new ColorButton(Color.BLACK, 1280, 150);
+        
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
         saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
 
         // Add objects to the screen
-        addObject (image, 430, 430);
-        addObject (blueButton, 940, 24);
-        addObject (hRevButton, 940, 66);
-        addObject (rotateButton, 940, 108);
-        addObject (vRevButton, 940, 150);
-        addObject (resetButton, 940, 192);
-        addObject (negativeButton, 780, 24);
-        addObject (brightButton, 780, 66);
-        addObject (darkButton, 780, 108);
+        addObject (topBar, 640, 75);
+        addObject (image, 600, 500);
+        addObject (blueButton, 244, 120);
+        addObject (hRevButton, 406, 79);
+        addObject (rotateButton, 568, 79);
+        addObject (vRevButton, 406, 120);
+        addObject (resetButton, 730, 79);
+        addObject (negativeButton, 82, 79);
+        addObject (brightButton, 82, 120);
+        addObject (darkButton, 244, 79);
         addObject (bluePicture, 940, 295);
         addObject (redPicture, 940, 246);
         addObject (greenPicture, 940, 342);
         addObject (yellowPicture, 940, 390);
-        addObject (rotateOtherButton, 940, 432);
+        addObject (rotateOtherButton, 568, 120);
+        
+        
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
-        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2);
+        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2 - 7);
         // place the save file button 
-        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 2, (saveFile.getImage().getHeight() / 2) + 42);
+        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 84, openFile.getImage().getHeight() / 2 - 7);
         
         editPos = -1;
         original = deepCopy(image.getBufferedImage());
