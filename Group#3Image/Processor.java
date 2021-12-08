@@ -383,11 +383,9 @@ public class Processor
     public static BufferedImage rotate90CounterClockwise (BufferedImage bi){
         BufferedImage newBi = new BufferedImage (bi.getHeight(), bi.getWidth(), 3);
 
-        for (int i = 0; i < bi.getHeight(); i++) {
-            for (int j = 0; j < bi.getWidth(); j++) {
-                newBi.setRGB(bi.getHeight() - 1 - i, bi.getWidth() - 1 - j, bi.getRGB(j, i));
-            }
-        }
+        newBi = rotate90Clockwise(bi);
+        newBi = rotate90Clockwise(newBi);
+        newBi = rotate90Clockwise(newBi);
         
         return newBi;
     }
