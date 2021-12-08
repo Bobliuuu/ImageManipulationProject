@@ -42,3 +42,9 @@ If unable to fix, use the command line to force a `git merge --no-ff` and then a
 Alternatively, close the pull request and use the Git Bash CLI to `--force` reroute the commit HEAD to another pull request/branch, and link that pull request to the previous commit(s). 
 Open an issue if required, with the `bugs` label. 
 
+## Troubleshooting
+If an error occurs with a commit: <br>
+1. Make a local copy of the current version of the repository (make sure nothing from this is corrupted by merge conflicts)
+2. Delete the repository from your local computer
+3. Reimport the respoitory `git clone https://github.com/Bobliuuu/ImageManipulationProject.git`
+4. Reset the HEAD commit and make the required changes
