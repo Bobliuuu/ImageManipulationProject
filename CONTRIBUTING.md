@@ -1,9 +1,9 @@
 # Contributing Guidelines 
 ## General Workflow
-Part 1: Pull the current code to your fork of the repository by fetching upstream
-Part 2: Make a commit to your fork of the repository
-Part 3: Create a pull request contribution
-Part 4: Request review from another group member
+Part 1: Pull the current code to your fork of the repository by fetching upstream <br>
+Part 2: Make a commit to your fork of the repository <br>
+Part 3: Create a pull request contribution <br>
+Part 4: Request review from another group member 
 
 ## Specifics
 ### Github Desktop
