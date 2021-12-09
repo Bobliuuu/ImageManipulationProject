@@ -27,6 +27,8 @@
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
+import java.util.Map;
+import java.util.HashMap;
 import greenfoot.*;
 
 public class Processor  
@@ -547,7 +549,7 @@ public class Processor
      * 
      * @param bi    The BufferedImage (passed by reference) to change.
      */ 
-    public static void moretransparent(BufferedImage bi)
+    public static void moreTransparent(BufferedImage bi)
     {
         // Get image size to use in for loops
         int xSize = bi.getWidth();
@@ -590,7 +592,7 @@ public class Processor
      * 
      * @param bi    The BufferedImage (passed by reference) to change.
      */ 
-    public static void lesstransparent(BufferedImage bi)
+    public static void lessTransparent(BufferedImage bi)
     {
         // Get image size to use in for loops
         int xSize = bi.getWidth();
@@ -717,11 +719,12 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
-                int newColour = packagePixel (red, green, blue, alpha);
+                BufferedImage croppedImage = getCroppedImage(bi, x, y, pixelSize, pixelSize);
+                int dominantColor = getDominantColor(croppedImage);
                 
                 for(int yd = y; (yd < y + pixelSize) && (yd < ySize); yd++) {
                     for(int xd = x; (xd < x + pixelSize) && (xd < xSize); xd++) {
-                        bi.setRGB(xd, yd, newColour);
+                        bi.setRGB(xd, yd, dominantColor);
                     }
                 }
             }
@@ -822,6 +825,62 @@ public class Processor
         }
     }
     
+    public static int getDominantColor(BufferedImage bi) {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        Map<Integer, Integer> colorCount = new HashMap<>(100);
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                int rgb = bi.getRGB(x, y);
+                if (colorCount.containsKey(rgb)){
+                    colorCount.replace(rgb, colorCount.get(rgb) + 1);
+                }
+                else {
+                    colorCount.put(rgb, 1);
+                }
+            }
+        }
+        
+        int maxColor = 0;
+        int maxCount = 0;
+        
+        for (Map.Entry<Integer, Integer> entry : colorCount.entrySet()){
+            int color = entry.getKey();
+            int count = entry.getValue();
+            if (count > maxCount){
+                maxCount = count;
+                maxColor = color;
+            }
+        }
+        return maxColor;
+    }
+    
+    public static BufferedImage getCroppedImage(BufferedImage bi, int startX, int startY, int width, int height) {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        if (startX < 0){
+            startX = 0;
+        }
+        if (startY < 0){
+            startY = 0;
+        }
+        if (startX > xSize){
+            startX = xSize;
+        }
+        if (startX > ySize){
+            startX = ySize;
+        }
+        if (startX + width > xSize){
+            width = xSize - startX;
+        }
+        if (startY + height > ySize){
+            height = ySize - startY;
+        }
+        return bi.getSubimage(startX, startY, width, height);
+    }
+    
     /**
      * Takes in a BufferedImage and returns a GreenfootImage.
      * 
@@ -839,7 +898,6 @@ public class Processor
         return returnImage;
     }
 
-    
     /**
      * Takes in an rgb value - the kind that is returned from BufferedImage's
      * getRGB() method - and returns 4 integers for easy manipulation.
@@ -869,7 +927,7 @@ public class Processor
 
         return unpackedValues;
     }
-
+    
     /**
      * Takes in a red, green, blue and alpha integer and uses bit-shifting
      * to package all of the data into a single integer.
