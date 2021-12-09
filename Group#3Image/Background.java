@@ -37,11 +37,11 @@ public class Background extends World
 
     private BufferedImage original;
 
-    private ArrayList<BufferedImage> edits;
+    private ArrayList<BufferedImage> edits = new ArrayList<BufferedImage>();
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, topBar;
 
@@ -76,6 +76,8 @@ public class Background extends World
         brightButton = new TextButton("Brighten", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         darkButton = new TextButton("Darken", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         saveButton = new TextButton ("Save", 7, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        undoButton = new TextButton("Undo", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        redoButton = new TextButton("Redo", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         
         bluePicture = new ColorButton(Color.BLUE);
         redPicture = new ColorButton(Color.RED);
@@ -109,7 +111,8 @@ public class Background extends World
         addObject (orangePicture, 1240, 70);
         addObject (pinkPicture, 1215, 70);
         addObject (colorifyLabel, 1240, 16);
-        
+        addObject (undoButton, 730, 120);
+        addObject (redoButton, 892, 120);
         
         
         // place the open file text box in the top left corner
@@ -119,8 +122,9 @@ public class Background extends World
         // place the save file button 
         addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 85, openFile.getImage().getHeight() / 2 - 8);
         
-        editPos = -1;
+        editPos = 0;
         original = deepCopy(image.getBufferedImage());
+        edits.add(deepCopy(original));
     }
 
     /**
@@ -143,11 +147,13 @@ public class Background extends World
                 Processor.blueify(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(hRevButton)){
                 Processor.flipHorizontal(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
                 //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
                 //image.setImage(createGreenfootImageFromBI (temp));
             }
@@ -155,6 +161,7 @@ public class Background extends World
                 Processor.flipVertical(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
                 //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
                 //image.setImage(createGreenfootImageFromBI (temp));
             }
@@ -163,34 +170,56 @@ public class Background extends World
                 image.setFullImage(createGreenfootImageFromBI(Processor.rotate90Clockwise(image.getBufferedImage())));
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(rotateOtherButton)){
                 // unfinished
                 image.setFullImage(createGreenfootImageFromBI(Processor.rotate90CounterClockwise(image.getBufferedImage())));
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(resetButton)){
                 //image.setImage(createGreenfootImageFromBI(original));
                 //openFile.update (image.getDetails ());
                 image.setFullImage(createGreenfootImageFromBI(original));
                 image.redraw();
-                openFile.update (image.getDetails ());                
+                openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(negativeButton)){
                 Processor.negative(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(brightButton)){
                 Processor.brighten(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(darkButton)){
                 Processor.darken(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(undoButton)){
+                if(editPos - 1 >= 0){
+                    editPos--;
+                    image.setFullImage(createGreenfootImageFromBI(edits.get(editPos)));
+                    image.redraw();
+                    openFile.update (image.getDetails ());
+                }
+            }
+            else if (Greenfoot.mouseClicked(redoButton)){
+                if(editPos + 1 < edits.size()){
+                    editPos++;
+                    image.setFullImage(createGreenfootImageFromBI(edits.get(editPos)));
+                    image.redraw();
+                    openFile.update (image.getDetails ());
+                }
             }
             else if (Greenfoot.mouseClicked(openButton))
             {
@@ -317,6 +346,14 @@ public class Background extends World
         boolean isAlphaPremultip = cm.isAlphaPremultiplied();
         WritableRaster raster = bi.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultip, null);
+    }
+    
+    private void checkForEdit(){
+        if(editPos < edits.size()){
+            edits.subList(editPos+1, edits.size()).clear();
+        }
+        edits.add(deepCopy(image.getBufferedImage()));
+        editPos++;
     }
 }
 
