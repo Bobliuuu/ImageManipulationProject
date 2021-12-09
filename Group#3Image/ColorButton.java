@@ -9,21 +9,28 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class ColorButton extends Control
 {
     private GreenfootImage image;
+    private int width;
+    private int height;
+    private int borderThickness;
     private Color color;
+    private Color borderColor;
     
     /**
      * Basic constructor to create a color button
+     * @param color           Base color of the color button
      */
-    public ColorButton(Color colour) {
-        color = colour;
+    public ColorButton(Color color) {
+        this.color = color;
+        width = 20;
+        height = 20;
         image = new GreenfootImage(20, 20);
-        int borderThickness = 2;
-        Color borderColor = Color.BLACK;
+        borderThickness = 2;
+        borderColor = Color.WHITE;
         image.setColor (borderColor);
         for (int i = 0; i < borderThickness; i++){
             image.drawRect (0 + i, 0 + i, 20 - 1 - (i * 2), 20 - 1 - (i*2));
         }
-        image.setColor(colour);
+        image.setColor(color);
         image.fillRect(2, 2, 16, 16);
         mouseOver = false;
         clickable = true;
@@ -32,18 +39,48 @@ public class ColorButton extends Control
     
     /**
      * Similar to above, but with the ability to adjust width and height
+     * @param color           Base color of the color button
+     * @param width           The width of the image
+     * @param height          The height of the image
      */
-    public ColorButton(Color colour, int width, int height, boolean isClickable) {
-        color = colour;
+    public ColorButton(Color color, int width, int height) {
+        this.color = color;
+        this.width = width;
+        this.height = height;
         image = new GreenfootImage(width, height);
-        int borderThickness = 2;
-        Color borderColor = Color.BLACK;
+        borderThickness = 2;
+        borderColor = Color.WHITE;
         image.setColor (borderColor);
         for (int i = 0; i < borderThickness; i++){
             image.drawRect (0 + i, 0 + i, width - 1 - (i * 2), height - 1 - (i*2));
         }
-        image.setColor(colour);
-        image.fillRect(borderThickness, borderThickness, width - borderThickness, height - borderThickness);
+        image.setColor(color);
+        image.fillRect(borderThickness, borderThickness, width - borderThickness * 2, height - borderThickness * 2);
+        mouseOver = false;
+        clickable = true;
+        setImage(image);
+    } 
+    
+    /**
+     * Similar to above, but with the ability to set the button to animate on hover
+     * @param color           Base color of the color button
+     * @param width           The width of the image
+     * @param height          The height of the image
+     * @param isClickable     Whether the button supports UI animations or not
+     */
+    public ColorButton(Color color, int width, int height, boolean isClickable) {
+        this.color = color;
+        this.width = width;
+        this.height = height;
+        image = new GreenfootImage(width, height);
+        borderThickness = 2;
+        borderColor = Color.WHITE;
+        image.setColor (borderColor);
+        for (int i = 0; i < borderThickness; i++){
+            image.drawRect (0 + i, 0 + i, width - 1 - (i * 2), height - 1 - (i*2));
+        }
+        image.setColor(color);
+        image.fillRect(borderThickness, borderThickness, width - borderThickness * 2, height - borderThickness * 2);
         mouseOver = false;
         clickable = isClickable;
         setImage(image);
@@ -51,70 +88,76 @@ public class ColorButton extends Control
     
     /**
      * Similar to above, but with the ability to adjust border thickness
+     * @param color           Base color of the color button
+     * @param width           The width of the image
+     * @param height          The height of the image
+     * @param borderThickness The thickness of the border around the button
+     * @param isClickable     Whether the button supports UI animations or not
      */
-    public ColorButton(Color colour, int width, int height, int borderThickness, boolean isClickable) {
-        color = colour;
+    public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable) {
+        this.color = color;
+        this.width = width;
+        this.height = height;
         image = new GreenfootImage(width, height);
-        Color borderColor = Color.BLACK;
+        borderColor = Color.WHITE;
         image.setColor (borderColor);
         for (int i = 0; i < borderThickness; i++){
             image.drawRect (0 + i, 0 + i, width - 1 - (i * 2), height - 1 - (i*2));
         }
-        image.setColor(colour);
-        image.fillRect(borderThickness, borderThickness, width - borderThickness, height - borderThickness);
+        image.setColor(color);
+        image.fillRect(borderThickness, borderThickness, width - borderThickness * 2, height - borderThickness * 2);
         mouseOver = false;
         clickable = isClickable;
         setImage(image);
     } 
     
     /**
-     * Similar to above, but with the ability to adjust border color
+     * Most sophisticated constructor, adding the ability to adjust border color
+     * @param color           Base color of the color button
+     * @param width           The width of the image
+     * @param height          The height of the image
+     * @param borderThickness The thickness of the border around the button
+     * @param borderColor     The color of the button's border
+     * @param isClickable     Whether the button supports UI animations or not
      */
-    public ColorButton(Color colour, int width, int height, int borderThickness, Color borderColor, boolean isClickable) {
-        color = colour;
+    public ColorButton(Color color, int width, int height, int borderThickness, Color borderColor, boolean isClickable) {
+        this.color = color;
+        this.width = width;
+        this.height = height;
         image = new GreenfootImage(width, height);
         image.setColor (borderColor);
         for (int i = 0; i < borderThickness; i++){
             image.drawRect (0 + i, 0 + i, 20 - 1 - (i * 2), 20 - 1 - (i*2));
         }
-        image.setColor(colour);
-        image.fillRect(borderThickness, borderThickness, width - borderThickness, height - borderThickness);
+        image.setColor(color);
+        image.fillRect(borderThickness, borderThickness, width - borderThickness * 2, height - borderThickness * 2);
         mouseOver = false;
         clickable = isClickable;
         setImage(image);
     } 
     
+    /**
+     * Update the image when the mouse is hovering over it by redrawing it and giving it a highlighted and enlarged effect
+     */
     public void update() {
-        highlightedImage = drawTextBox (color, color, Color.WHITE, 2);
+        highlightedImage = reDraw (color, color, Color.WHITE, 2);
         myImage = image;
     }
     
     /**
-     * 
-     * Draw a text box.
-     * 
+     * Redraw the highlighted and enlarged color button
      */
-    public GreenfootImage drawTextBox (Color color, Color back, Color border, int pad){
-        int height = image.getHeight() + (2 * pad);
-        int width = image.getWidth() + (2 * pad);
-        
-        // Ensure an even width to keep text properly centered
-        if (width % 2 == 1){
-            width++;
+    public GreenfootImage reDraw (Color color, Color back, Color border, int pixelsLarger){
+        // Get new width and hei
+        int newWidth = width + pixelsLarger * 2;
+        int newHeight = height + pixelsLarger * 2;
+        GreenfootImage resultImage = new GreenfootImage(newWidth, newHeight);
+        resultImage.setColor (borderColor);
+        for (int i = 0; i < borderThickness; i++){
+            resultImage.drawRect (0 + i, 0 + i, newWidth - 1 - (i * 2), newHeight - 1 - (i * 2));
         }
-
-        // generate an image of the appropriate size
-        GreenfootImage resultImage = new GreenfootImage(width, height);
-
-        // fill in the background colour
-        resultImage.setColor (back);
-        resultImage.fill();
-
-        // Draw the border
-        resultImage.setColor (border); 
-        resultImage.drawRect (0, 0, width-1, height-1);
-
-        
+        resultImage.setColor(color);
+        resultImage.fillRect(borderThickness, borderThickness, newWidth - borderThickness * 2, newHeight - borderThickness * 2);
         
         // Done!
         return resultImage;
