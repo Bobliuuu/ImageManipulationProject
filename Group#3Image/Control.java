@@ -20,6 +20,8 @@ public abstract class Control extends Actor
     protected GreenfootImage highlightedImage;
     
     public abstract void update ();
+    public abstract void createDescription();
+    public abstract void deleteDescription();
     
     public Control (){
         mouseOver = false;
@@ -44,11 +46,13 @@ public abstract class Control extends Actor
             {
                 setImage(highlightedImage);
                 mouseOver = true;
+                createDescription();
             }
             if (mouseOver && Greenfoot.mouseMoved(null) && ! Greenfoot.mouseMoved(this))
             {
                 setImage(myImage);
                 mouseOver = false;
+                deleteDescription();
             }
         }
     }
