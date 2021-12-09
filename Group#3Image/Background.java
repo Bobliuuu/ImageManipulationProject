@@ -86,7 +86,7 @@ public class Background extends World
         orangePicture = new ColorButton(Color.ORANGE);
         pinkPicture = new ColorButton(Color.PINK);
         
-        topBar = new ColorButton(Color.BLACK, 1280, 144);
+        topBar = new ColorButton(Color.BLACK, 1280, 144, false);
         
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
         saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");

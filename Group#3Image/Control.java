@@ -42,17 +42,19 @@ public abstract class Control extends Actor
     
     private void highlight (){
         if (highlightedImage != null){
-            if (!mouseOver && Greenfoot.mouseMoved(this))
-            {
-                setImage(highlightedImage);
-                mouseOver = true;
-                createDescription();
-            }
-            if (mouseOver && Greenfoot.mouseMoved(null) && ! Greenfoot.mouseMoved(this))
-            {
-                setImage(myImage);
-                mouseOver = false;
-                deleteDescription();
+            if (clickable) {
+                if (!mouseOver && Greenfoot.mouseMoved(this))
+                {
+                    setImage(highlightedImage);
+                    mouseOver = true;
+                    createDescription();
+                }
+                if (mouseOver && Greenfoot.mouseMoved(null) && ! Greenfoot.mouseMoved(this))
+                {
+                    setImage(myImage);
+                    mouseOver = false;
+                    deleteDescription();
+                }
             }
         }
     }
