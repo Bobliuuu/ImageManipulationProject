@@ -30,8 +30,7 @@ public class TextButton extends Control
     private Color borderColor;
 
     private Font font;
-    private SuperTextBox description;
-    
+
     /**
      * Construct a TextButton with a given String at the default size
      * 
@@ -95,8 +94,6 @@ public class TextButton extends Control
         highlightPadding = padding + 2;
         buttonText = text;
         active = true;
-        
-        description = new SuperTextBox(getDescriptionText(), Color.DARK_GRAY, Color.WHITE, new Font("Comic Sans MS", false, false, 13), true, 160, 1, Color.WHITE);
 
         update();
         setImage(myImage);
@@ -209,22 +206,4 @@ public class TextButton extends Control
         return resultImage;
     }
 
-    public void createDescription(){
-        (getWorld()).addObject(description, getX(), getY() + 60);
-    }
-    
-    public void deleteDescription(){
-        (getWorld()).removeObject(description);
-    }
-    
-    public String[] getDescriptionText(){
-        switch(buttonText){
-            case "Undo":
-                return new String[]{"Returns the image", " to the state ", "before the last edit"};
-            case "Redo":
-                return new String[]{"Returns the image", " to the state ", "before the last undo"};
-            default:
-                return new String[]{"Unfinished"};
-        }
-    }
 }
