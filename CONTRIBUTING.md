@@ -36,6 +36,15 @@ git reset --hard main
 git push
 ``` 
 
+## Merging Upstream from Branch
+Since it's not possible to fork a repo to itself, run:
+```
+git checkout branch
+git fetch origin
+git merge origin/main
+git push
+```
+
 ## Merge Commits
 If able to fix using Github web browser, open file and resolve manually. 
 If unable to fix, use the command line to force a `git merge --no-ff` and then a rebase operation. 
