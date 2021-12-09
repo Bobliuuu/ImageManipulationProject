@@ -43,9 +43,9 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton;
     
-    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, topBar;
+    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, topBar;
 
-    private SuperTextBox openFile, saveFile;
+    private SuperTextBox openFile, saveFile, colorifyLabel;
 
     private String fileName;
 
@@ -62,56 +62,62 @@ public class Background extends World
         image = new ImageHolder(STARTING_FILE); // The image holder constructor does the actual image loading
         
         // Set up UI elements
-        blueButton = new TextButton("Blueify", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        blueButton = new TextButton("Blueify", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
     
         // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
-        hRevButton = new TextButton("Flip Horizontal", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        vRevButton = new TextButton("Flip Vertical", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        resetButton = new TextButton("Reset", 8, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        openButton = new TextButton ("Open", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        hRevButton = new TextButton("Flip Horizontal", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        vRevButton = new TextButton("Flip Vertical", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        resetButton = new TextButton("Reset", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        openButton = new TextButton ("Open", 7, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         //openButton.setFixedWidth(80);
-        rotateButton = new TextButton("Rotate Clockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        rotateOtherButton = new TextButton("Rotate Counterclockwise", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));        
-        negativeButton = new TextButton("Negative", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        brightButton = new TextButton("Brighten", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        darkButton = new TextButton("Darken", 8, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
-        saveButton = new TextButton ("Save", 8, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,16));
+        rotateButton = new TextButton("Rotate Clockwise", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        rotateOtherButton = new TextButton("Rotate Counterclockwise", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));        
+        negativeButton = new TextButton("Negative", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        brightButton = new TextButton("Brighten", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        darkButton = new TextButton("Darken", 7, 160, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
+        saveButton = new TextButton ("Save", 7, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         
         bluePicture = new ColorButton(Color.BLUE);
         redPicture = new ColorButton(Color.RED);
         greenPicture = new ColorButton(Color.GREEN);
         yellowPicture = new ColorButton(Color.YELLOW);
+        orangePicture = new ColorButton(Color.ORANGE);
+        pinkPicture = new ColorButton(Color.PINK);
         
-        topBar = new ColorButton(Color.BLACK, 1280, 150);
+        topBar = new ColorButton(Color.BLACK, 1280, 144);
         
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
         saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
-
+        colorifyLabel = new SuperTextBox(new String[]{"Colour-ify"}, Color.DARK_GRAY, Color.WHITE, new Font("Comic Sans MS", false, false, 13), true, 74, 1, Color.WHITE);
+        
         // Add objects to the screen
-        addObject (topBar, 640, 75);
-        addObject (image, 600, 500);
+        addObject (topBar, 640, 72);
+        addObject (image, 640, 525);
         addObject (blueButton, 244, 120);
         addObject (hRevButton, 406, 79);
         addObject (rotateButton, 568, 79);
+        addObject (rotateOtherButton, 568, 120);
         addObject (vRevButton, 406, 120);
         addObject (resetButton, 730, 79);
         addObject (negativeButton, 82, 79);
         addObject (brightButton, 82, 120);
         addObject (darkButton, 244, 79);
-        addObject (bluePicture, 940, 295);
-        addObject (redPicture, 940, 246);
-        addObject (greenPicture, 940, 342);
-        addObject (yellowPicture, 940, 390);
-        addObject (rotateOtherButton, 568, 120);
+        addObject (bluePicture, 1215, 45);
+        addObject (redPicture, 1240, 45);
+        addObject (greenPicture, 1265, 70);
+        addObject (yellowPicture, 1265, 45);
+        addObject (orangePicture, 1240, 70);
+        addObject (pinkPicture, 1215, 70);
+        addObject (colorifyLabel, 1240, 16);
         
         
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
-        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 2, openFile.getImage().getHeight() / 2 - 7);
+        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 3, openFile.getImage().getHeight() / 2 - 8);
         // place the save file button 
-        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 84, openFile.getImage().getHeight() / 2 - 7);
+        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 85, openFile.getImage().getHeight() / 2 - 8);
         
         editPos = -1;
         original = deepCopy(image.getBufferedImage());
