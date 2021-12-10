@@ -8,6 +8,7 @@ Colorify buttons for builtin colours:
 - [x] Grey
 - [x] Orange
 - [x] Pink
+
 Create other required features: 
 - [x] Vertical Flip
 - [x] Horizontal Flip
@@ -15,6 +16,7 @@ Create other required features:
 - [x] 90 Counterclockwise
 - [x] Greyscale
 - [x] Sepia
+
 Useful Features: 
 - [x] Undo
 - [x] Redo
@@ -28,6 +30,7 @@ Colorify buttons for custom colors:
 - [ ] Dark blue
 - [ ] Light blue
 - [ ] Etc
+
 UI Features: 
 - [x] Buttons added
 - [ ] Button icons
@@ -38,10 +41,12 @@ UI Features:
 - [ ] Navbar on top
 - [ ] Display images used/recent images
 - [ ] Sounds for hovering/clicking
+
 Custom color changes: 
 - [ ] Colorify + alpha blend (e.g. 0.5 * newColor + 0.5 * color)
 - [ ] Colorify with more than one color 
 - [ ] Custom color changes
+
 Image drawing/adjustment: 
 - [ ] Zoom in
 - [ ] Zoom out
@@ -54,6 +59,7 @@ Image drawing/adjustment:
 - [ ] Bucket fill
 - [ ] Remove stamp/watermark
 - [ ] Steganography
+
 Advanced features: 
 - [ ] Sharpen 
 - [ ] Edges highlighting
