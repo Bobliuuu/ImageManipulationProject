@@ -96,7 +96,7 @@ public class TextButton extends Control
         buttonText = text;
         active = true;
 
-        description = new SuperTextBox(getDescriptionText(), Color.DARK_GRAY, Color.WHITE, new Font("Comic Sans MS", false, false, 13), true, 160, 1, Color.WHITE);
+        description = new SuperTextBox(getDescriptionText(), Color.DARK_GRAY, Color.WHITE, new Font("Comic Sans MS", false, false, 10), true, 90, 1, Color.WHITE);
         
         update();
         setImage(myImage);
@@ -220,9 +220,25 @@ public class TextButton extends Control
     public String[] getDescriptionText(){
         switch(buttonText){
             case "Undo":
-                return new String[]{"Returns the image", " to the state ", "before the last edit"};
+                return new String[]{"Returns the image", "to the state", "before the", "last edit"};
             case "Redo":
-                return new String[]{"Returns the image", " to the state ", "before the last undo"};
+                return new String[]{"Returns the image", "to the state", "before the", "last undo"};
+            case "Reset":
+                return new String[]{"Sets image back", "to the original"};
+            case "Rotate Clockwise":
+                return new String[]{"Turns the image", "90 degrees", "clockwise"};
+            case "Rotate Counterclockwise":
+                return new String[]{"Turns the image", "90 degrees", "counterclockwise"};
+            case "Flip Horizontal":
+                return new String[]{"Mirror-reversal", "of the original", "image across a", "horizontal axis"};
+            case "Flip Vertical":
+                return new String[]{"Mirror-reversal", "of the original", "image across a", "vertical axis"};
+            case "Negative":
+                return new String[]{"A total inversion", "in which, the", "light areas seem", "dark and", "vice-versa"};
+            case "Brighten":
+                return new String[]{"Turns the image", "brighter"};
+            case "Darken":
+                return new String[]{"Turns the image", "darker"};
             default:
                 return new String[]{"Unfinished"};
         }
