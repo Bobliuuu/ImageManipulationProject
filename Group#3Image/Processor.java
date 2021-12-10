@@ -662,10 +662,10 @@ public class Processor
                 int blue = rgbValues[3];
                 
                 // Makes the pixel more transparent
-                if (alpha > 50){
-                    alpha -= 2;
-                    if (alpha < 50){
-                        alpha = 50;
+                if (alpha > 10){
+                    alpha -= 2; 
+                    if (alpha < 10){
+                        alpha = 10;
                     }
                 }
 
@@ -677,6 +677,7 @@ public class Processor
     
     /**
      * Make image less transparent by decreasing it's alpha value
+     * Less transparent means more opaque
      * 
      * @param bi    The BufferedImage (passed by reference) to change.
      */ 
@@ -711,7 +712,7 @@ public class Processor
                         alpha = 200;
                     }
                 }
-
+                
                 int newColour = packagePixel (red, green, blue, alpha);
                 bi.setRGB (x, y, newColour);
             }
@@ -788,9 +789,11 @@ public class Processor
         // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
         // Using array size as limit
-        for (int x = 0; x < xSize; x += pixelSize)
+        for (int x = ySize; x < xSize; x += pixelSize)
         {
             for (int y = 0; y < ySize; y += pixelSize)
             {
@@ -810,11 +813,17 @@ public class Processor
                 BufferedImage croppedImage = getCroppedImage(bi, x, y, pixelSize, pixelSize);
                 int dominantColor = getDominantColor(croppedImage);
                 
-                for(int yd = y; (yd < y + pixelSize) && (yd < ySize); yd++) {
-                    for(int xd = x; (xd < x + pixelSize) && (xd < xSize); xd++) {
-                        bi.setRGB(xd, yd, dominantColor);
+                for (int xNew = Math.max(x - pixelSize, 0); (xNew < x + pixelSize) && (xNew < xSize); xNew++) {
+                    for (int yNew = Math.max(y - pixelSize, 0); (yNew < y + pixelSize) && (yNew < ySize); yNew++) {
+                        newBi.setRGB(xNew, yNew, dominantColor);
                     }
                 }
+            }
+        }
+        
+        for(int i = 0; i < ySize; i++){
+            for(int j = 0; j < xSize; j++){
+                bi.setRGB(j, i, newBi.getRGB(j, i));
             }
         }
     }

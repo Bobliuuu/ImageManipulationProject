@@ -15,7 +15,7 @@ import java.awt.image.WritableRaster;
 /**
  * Starter code for Image Manipulation Array Assignment.
  * 
- * The class Processor contains all of the code to actually perform
+ * The class Background contains all of the code to actually perform
  * transformation. The rest of the classes serve to support that
  * capability. This World allows the user to choose transformations
  * and open files.
@@ -25,6 +25,7 @@ import java.awt.image.WritableRaster;
  * @author Jordan Cohen
  * @version November 2013
  */
+
 public class Background extends World
 {
     // Constants:
@@ -45,7 +46,9 @@ public class Background extends World
 
     private int editPos;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent;
+    
+    private TextButton pixelateButton, blurButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar;
 
@@ -71,14 +74,18 @@ public class Background extends World
         resetButton = new TextButton("Reset", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         openButton = new TextButton ("Open", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         //openButton.setFixedWidth(80);
-        rotateButton = new TextButton("Rotate Clockwise", 5, 130, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        rotateOtherButton = new TextButton("Rotate Counterclockwise", 5, 130, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));        
+        rotateButton = new TextButton("Rotate Clockwise", 5, 120, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        rotateOtherButton = new TextButton("Rotate Counterclockwise", 5, 140, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));        
         negativeButton = new TextButton("Negative", 5, 90, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         brightButton = new TextButton("Brighten", 5, 90, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         darkButton = new TextButton("Darken", 5, 90, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         saveButton = new TextButton ("Save", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         undoButton = new TextButton("Undo", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         redoButton = new TextButton("Redo", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        moreTransparent = new TextButton("More Transparent", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        lessTransparent = new TextButton("Less Transparent", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        pixelateButton = new TextButton("Pixelate", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        blurButton = new TextButton("Blur", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
@@ -111,6 +118,10 @@ public class Background extends World
         addObject (negativeButton, 52, 76);
         addObject (brightButton, 52, 108);
         addObject (darkButton, 52, 140);
+        addObject (pixelateButton, 510, 76);
+        addObject (blurButton, 510, 108);
+        addObject (moreTransparent, 162, 140);
+        addObject (lessTransparent, 292, 140);
         addObject (colorifyLabel, 1215, 16);
         addObject (brownPicture, 1165, 45);
         addObject (grayPicture, 1190, 45);
@@ -265,6 +276,30 @@ public class Background extends World
             }
             else if (Greenfoot.mouseClicked(darkButton)){
                 Processor.darken(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(moreTransparent)){
+                Processor.moreTransparent(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(lessTransparent)){
+                Processor.lessTransparent(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(pixelateButton)){
+                Processor.pixelate(image.getBufferedImage(), 5);
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(blurButton)){
+                Processor.blur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
