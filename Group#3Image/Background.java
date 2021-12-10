@@ -29,9 +29,13 @@ public class Background extends World
 {
     // Constants:
     private final String STARTING_FILE = "mountain.jpg";
+    
     public static final int MAX_WIDTH = 800;
     public static final int MAX_HEIGHT = 720;
 
+    public static final Color PURPLE = new Color(102, 0, 153);
+    public static final Color BROWN = new Color(102, 51, 0);
+    
     // Objects and Variables:
     private ImageHolder image;
 
@@ -43,7 +47,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton;
     
-    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, topBar;
+    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar;
 
     private SuperTextBox openFile, saveFile, colorifyLabel;
 
@@ -62,9 +66,6 @@ public class Background extends World
         image = new ImageHolder(STARTING_FILE); // The image holder constructor does the actual image loading
         
         // Set up UI elements
-        blueButton = new TextButton("Blueify", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
-    
-        // blueButton.setFixedWidth(160); // setting a fixed width so buttons will be the same width
         hRevButton = new TextButton("Flip Horizontal", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         vRevButton = new TextButton("Flip Vertical", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         resetButton = new TextButton("Reset", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
@@ -79,12 +80,19 @@ public class Background extends World
         undoButton = new TextButton("Undo", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         redoButton = new TextButton("Redo", 7, 160, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,14));
         
+        // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
         redPicture = new ColorButton(Color.RED);
         greenPicture = new ColorButton(Color.GREEN);
         yellowPicture = new ColorButton(Color.YELLOW);
         orangePicture = new ColorButton(Color.ORANGE);
         pinkPicture = new ColorButton(Color.PINK);
+        grayPicture = new ColorButton(Color.GRAY);
+        blackPicture = new ColorButton(Color.BLACK);
+        
+        // Custom colours
+        purplePicture = new ColorButton(PURPLE);
+        brownPicture = new ColorButton(BROWN);
         
         topBar = new ColorButton(Color.BLACK, 1280, 144, false);
         
@@ -95,7 +103,6 @@ public class Background extends World
         // Add objects to the screen
         addObject (topBar, 640, 72);
         addObject (image, 640, 525);
-        addObject (blueButton, 244, 120);
         addObject (hRevButton, 406, 79);
         addObject (rotateButton, 568, 79);
         addObject (rotateOtherButton, 568, 120);
@@ -104,16 +111,19 @@ public class Background extends World
         addObject (negativeButton, 82, 79);
         addObject (brightButton, 82, 120);
         addObject (darkButton, 244, 79);
-        addObject (bluePicture, 1215, 45);
-        addObject (redPicture, 1240, 45);
-        addObject (greenPicture, 1265, 70);
-        addObject (yellowPicture, 1265, 45);
-        addObject (orangePicture, 1240, 70);
+        addObject (colorifyLabel, 1215, 16);
+        addObject (brownPicture, 1165, 45);
+        addObject (grayPicture, 1190, 45);
+        addObject (redPicture, 1215, 45);
+        addObject (yellowPicture, 1240, 45);
+        addObject (bluePicture, 1265, 45);
+        addObject (purplePicture, 1165, 70);
+        addObject (blackPicture, 1190, 70);
         addObject (pinkPicture, 1215, 70);
-        addObject (colorifyLabel, 1240, 16);
+        addObject (orangePicture, 1240, 70);
+        addObject (greenPicture, 1265, 70);
         addObject (undoButton, 730, 120);
         addObject (redoButton, 892, 120);
-        
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -143,8 +153,62 @@ public class Background extends World
         // Avoid excess mouse checks - only check mouse if somethething is clicked.
         if (Greenfoot.mouseClicked(null))
         {
-            if (Greenfoot.mouseClicked(blueButton)){
-                Processor.blueify(image.getBufferedImage());
+            if (Greenfoot.mouseClicked(brownPicture)){
+                Processor.brown(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(grayPicture)){
+                Processor.gray(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(redPicture)){
+                Processor.red(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(yellowPicture)){
+                Processor.yellow(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(bluePicture)){
+                Processor.blue(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(purplePicture)){
+                Processor.purple(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(blackPicture)){
+                Processor.black(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(pinkPicture)){
+                Processor.pink(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(orangePicture)){
+                Processor.orange(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            }
+            else if (Greenfoot.mouseClicked(greenPicture)){
+                Processor.green(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();

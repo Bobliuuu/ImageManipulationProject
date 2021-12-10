@@ -114,17 +114,105 @@ public class Processor
     }
     
     /**
-     * Increase the blue value while decreasing the red and green values. 
-     * 
-     * Demonstrates use of packagePixel() and unpackPixel() methods.
+     * Make the image more brown by making the image's pixel values closer to brown's RGB values
      * 
      * @param bi    The BufferedImage (passed by reference) to change.
      */
-    public static void blueify (BufferedImage bi)
+    public static void brown (BufferedImage bi)
     {
-        colorify(bi, 50, 50, 253, 1, 1, 2);
+        colorify(bi, 102, 51, 10, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more gray by making the image's pixel values closer to gray's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void gray (BufferedImage bi)
+    {
+        colorify(bi, 153, 153, 153, 2, 2, 2);
     }
 
+    /**
+     * Make the image more red by making the image's pixel values closer to red's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void red (BufferedImage bi)
+    {
+        colorify(bi, 240, 10, 10, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more yellow by making the image's pixel values closer to yellow's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void yellow (BufferedImage bi)
+    {
+        colorify(bi, 240, 240, 10, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more blue by making the image's pixel values closer to blue's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void blue (BufferedImage bi)
+    {
+        colorify(bi, 10, 10, 240, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more purple by making the image's pixel values closer to purple's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void purple (BufferedImage bi)
+    {
+        colorify(bi, 102, 10, 153, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more black by making the image's pixel values closer to black's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void black (BufferedImage bi)
+    {
+        colorify(bi, 10, 10, 10, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more pink by making the image's pixel values closer to pink's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void pink (BufferedImage bi)
+    {
+        colorify(bi, 240, 192, 203, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more orange by making the image's pixel values closer to orange's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void orange (BufferedImage bi)
+    {
+        colorify(bi, 240, 102, 10, 2, 2, 2);
+    }
+    
+    /**
+     * Make the image more green by making the image's pixel values closer to green's RGB values
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change.
+     */
+    public static void green (BufferedImage bi)
+    {
+        colorify(bi, 10, 204, 10, 2, 2, 2);
+    }
+    
     /**
      * Convert's each pixel's RGB value of the image to the average of the RGB values
      * Uses the greyscale algorithm
