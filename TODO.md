@@ -48,6 +48,19 @@ Custom color changes:
 - [ ] Colorify with more than one color 
 - [ ] Custom color changes
 
+Create optional features: 
+- [x] Brighten
+- [x] Darken
+- [x] Warmer
+- [x] Cooler
+- [x] Blur
+- [x] Pixelate
+- [ ] Add/remove contrast
+- [ ] Distort
+- [ ] Noise
+- [ ] Soften
+- [ ] Lens flare
+
 Image drawing/adjustment: 
 - [ ] Zoom in
 - [ ] Zoom out
