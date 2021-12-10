@@ -24,6 +24,7 @@ Useful Features:
 - [x] Open
 - [x] Save (jpg, png)
 - [ ] Recently opened images
+
 Colorify buttons for custom colors: 
 - [x] Purple
 - [x] Brown
