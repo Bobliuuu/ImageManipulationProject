@@ -48,7 +48,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent;
     
-    private TextButton pixelateButton, blurButton, warmButton, coolButton;
+    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar;
 
@@ -88,6 +88,13 @@ public class Background extends World
         blurButton = new TextButton("Blur", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         warmButton = new TextButton("Warmer", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         coolButton = new TextButton("Cooler", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        gaussianButton = new TextButton("Gaussian Blur", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        sepiaButton = new TextButton("Sepia", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        contrastButton = new TextButton("Change Contrast", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        hueButton = new TextButton("Change Hue", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        swapRGBButton = new TextButton("Swap RGB", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        sharpenButton = new TextButton("Sharpen", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
@@ -123,6 +130,14 @@ public class Background extends World
         addObject (darkButton, 52, 140);
         addObject (pixelateButton, 510, 76);
         addObject (blurButton, 510, 108);
+        addObject (warmButton, 510, 140);
+        addObject (coolButton, 608, 76);
+        addObject (gaussianButton, 608, 108);
+        addObject (sepiaButton, 608, 140);
+        addObject (contrastButton, 706, 76);
+        addObject (hueButton, 706, 108);
+        addObject (swapRGBButton, 706, 140);
+        addObject (sharpenButton, 804, 76);
         addObject (moreTransparent, 162, 140);
         addObject (lessTransparent, 292, 140);
         addObject (colorifyLabel, 1215, 16);
@@ -138,6 +153,7 @@ public class Background extends World
         addObject (greenPicture, 1265, 70);
         addObject (undoButton, 412, 76);
         addObject (redoButton, 412, 108);
+        
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -322,6 +338,46 @@ public class Background extends World
                     image.redraw();
                     openFile.update (image.getDetails ());
                 }
+            } else if (Greenfoot.mouseClicked(warmButton)){
+                Processor.warmer(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(coolButton)){
+                Processor.cooler(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(gaussianButton)){
+                Processor.gaussianBlur(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(sepiaButton)){
+                Processor.sepia(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(contrastButton)){
+                Processor.contrast(image.getBufferedImage(), 0.1);
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(hueButton)){
+                Processor.adjustHue(image.getBufferedImage(), (float) 0.1);
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(swapRGBButton)){
+                Processor.swapRGB(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+            } else if (Greenfoot.mouseClicked(sharpenButton)){
+                Processor.sharpen(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(openButton))
             {
