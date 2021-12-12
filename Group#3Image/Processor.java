@@ -29,6 +29,9 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.IntStream;
+import java.awt.Color;
+import java.lang.Math;
 import greenfoot.*;
 
 public class Processor  
@@ -37,7 +40,7 @@ public class Processor
      * General colorify method that will turn the RGB pixels of an image into a certain colour
      * Works for any color (R, G, B) and increment/decrement values
      * 
-     * @param bi        The BufferedImage (passed by reference) to change.
+     * @param bi        The BufferedImage (passed by reference) to change
      * @param colorR    The red value of the desired color 
      * @param colorG    The green value of the desired color 
      * @param colorB    The blue value of the desired color 
@@ -116,7 +119,7 @@ public class Processor
     /**
      * Make the image more brown by making the image's pixel values closer to brown's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void brown (BufferedImage bi)
     {
@@ -126,7 +129,7 @@ public class Processor
     /**
      * Make the image more gray by making the image's pixel values closer to gray's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void gray (BufferedImage bi)
     {
@@ -136,7 +139,7 @@ public class Processor
     /**
      * Make the image more red by making the image's pixel values closer to red's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void red (BufferedImage bi)
     {
@@ -146,7 +149,7 @@ public class Processor
     /**
      * Make the image more yellow by making the image's pixel values closer to yellow's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void yellow (BufferedImage bi)
     {
@@ -156,7 +159,7 @@ public class Processor
     /**
      * Make the image more blue by making the image's pixel values closer to blue's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void blue (BufferedImage bi)
     {
@@ -166,7 +169,7 @@ public class Processor
     /**
      * Make the image more purple by making the image's pixel values closer to purple's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void purple (BufferedImage bi)
     {
@@ -176,7 +179,7 @@ public class Processor
     /**
      * Make the image more black by making the image's pixel values closer to black's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void black (BufferedImage bi)
     {
@@ -186,7 +189,7 @@ public class Processor
     /**
      * Make the image more pink by making the image's pixel values closer to pink's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void pink (BufferedImage bi)
     {
@@ -196,7 +199,7 @@ public class Processor
     /**
      * Make the image more orange by making the image's pixel values closer to orange's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void orange (BufferedImage bi)
     {
@@ -206,7 +209,7 @@ public class Processor
     /**
      * Make the image more green by making the image's pixel values closer to green's RGB values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void green (BufferedImage bi)
     {
@@ -217,7 +220,7 @@ public class Processor
      * Convert's each pixel's RGB value of the image to the average of the RGB values
      * Uses the greyscale algorithm
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void greyScale(BufferedImage bi)
     {
@@ -294,7 +297,7 @@ public class Processor
     /**
      * Sets each pixel's RGB value to it's negative value (255 - value)
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void negative(BufferedImage bi)
     {
@@ -335,7 +338,7 @@ public class Processor
     /**
      * Increases the RGB values of each pixel to make the image brighter
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void brighten(BufferedImage bi)
     {
@@ -390,7 +393,7 @@ public class Processor
      * Decreases the red, green and blue values of each pixel to make
      * image darker
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void darken(BufferedImage bi)
     {
@@ -445,7 +448,7 @@ public class Processor
     /**
      * Turns the image closer to sepia 
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void sepia(BufferedImage bi)
     {
@@ -525,7 +528,7 @@ public class Processor
     /**
      * Make image warmer by increasing it's red values while decreasing its blue and green values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void warmer(BufferedImage bi)
     {
@@ -580,7 +583,7 @@ public class Processor
     /**
      * Make image cooler by increasing it's blue and green values while decreasing its red values
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void cooler(BufferedImage bi)
     {
@@ -635,7 +638,7 @@ public class Processor
     /**
      * Make image more transparent by increasing it's alpha value
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void moreTransparent(BufferedImage bi)
     {
@@ -662,10 +665,10 @@ public class Processor
                 int blue = rgbValues[3];
                 
                 // Makes the pixel more transparent
-                if (alpha > 10){
-                    alpha -= 2; 
-                    if (alpha < 10){
-                        alpha = 10;
+                if (alpha > 0){
+                    alpha -= 4; 
+                    if (alpha < 0){
+                        alpha = 0;
                     }
                 }
 
@@ -679,7 +682,7 @@ public class Processor
      * Make image less transparent by decreasing it's alpha value
      * Less transparent means more opaque
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
     public static void lessTransparent(BufferedImage bi)
     {
@@ -706,10 +709,10 @@ public class Processor
                 int blue = rgbValues[3];
                 
                 // Makes the pixel less transparent
-                if (alpha < 200){
-                    alpha += 2;
-                    if (alpha > 200){
-                        alpha = 200;
+                if (alpha < 250){
+                    alpha += 4;
+                    if (alpha > 250){
+                        alpha = 250;
                     }
                 }
                 
@@ -722,9 +725,9 @@ public class Processor
     /**
      * Blur the image by putting the pixel values closer together
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */ 
-    public static void blur(BufferedImage bi)
+    public static void fastBlur(BufferedImage bi)
     {
         // Get image size to use in for loops
         int xSize = bi.getWidth();
@@ -735,7 +738,6 @@ public class Processor
         {
             for (int y = 0; y < ySize; y++)
             {
-                
                 int rgb = bi.getRGB(x, y);
                 int[] rgbValues = unpackPixel(rgb);
                 int alpha = rgbValues[0];
@@ -780,27 +782,82 @@ public class Processor
     }
     
     /**
+     * Applies a gaussian blur effect to the image. Algorithm from Stack Overflow:
+     * https://stackoverflow.com/questions/39684820/java-implementation-of-gaussian-blur 
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */
+    public static void gaussianBlur (BufferedImage bi)
+    {
+        int[] filter = {1, 2, 1, 2, 4, 2, 1, 2, 1};
+        int filterWidth = 3;
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        int sum = IntStream.of(filter).sum();
+        
+        int[] input = bi.getRGB(0, 0, xSize, ySize, null, 0, xSize);
+
+        int[] output = new int[input.length];
+        
+        int pixelIndexOffset = xSize - filterWidth;
+        int centerOffsetX = filterWidth / 2;
+        int centerOffsetY = filter.length / filterWidth / 2;
+        
+        for (int h = ySize - filter.length / filterWidth + 1, w = xSize - filterWidth + 1, y = 0; y < h; y++)
+        {
+            for (int x = 0; x < w; x++)
+            {
+                int red = 0;
+                int green = 0;
+                int blue = 0;
+
+                for (int filterIndex = 0, pixelIndex = y * xSize + x; filterIndex < filter.length; pixelIndex += pixelIndexOffset)
+                {
+                    for (int fx = 0; fx < filterWidth; fx++, pixelIndex++, filterIndex++) {
+                        int col = input[pixelIndex];
+                        int[] values = unpackPixel(col);
+                        int factor = filter[filterIndex];
+                        
+                        red += (values[1]) * factor;
+                        green += (values[2]) * factor;
+                        blue += (values[3]) * factor;
+                    }
+                }
+                red /= sum;
+                green /= sum;
+                blue /= sum;
+                
+                output[x + centerOffsetX + (y + centerOffsetY) * xSize] = (red << 16) | (green << 8) | blue | 0xFF000000;
+            }
+        }
+        BufferedImage newBi = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_ARGB);
+        newBi.setRGB(0, 0, xSize, ySize, output, 0, xSize);
+        
+        for (int x = 0; x < xSize; x++) {
+            for (int y = 0; y < ySize; y++) {
+                bi.setRGB(x, y, newBi.getRGB(x, y));
+            }
+        }
+    }
+    
+    /**
      * Pixelate method to make an image less defined
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
+     * @param percentage    The percentage of adjustment
      */ 
     public static void pixelate(BufferedImage bi, int pixelSize)
     {
-        // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-        
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
-        
-        // Using array size as limit
-        for (int x = ySize; x < xSize; x += pixelSize)
+        for (int x = 0; x < xSize; x += pixelSize)
         {
             for (int y = 0; y < ySize; y += pixelSize)
             {
                 // Calls method in BufferedImage that returns R G B and alpha values
                 // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
-
+                
                 // Call the unpackPixel method to retrieve the four integers for
                 // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
@@ -812,18 +869,197 @@ public class Processor
                 
                 BufferedImage croppedImage = getCroppedImage(bi, x, y, pixelSize, pixelSize);
                 int dominantColor = getDominantColor(croppedImage);
-                
-                for (int xNew = Math.max(x - pixelSize, 0); (xNew < x + pixelSize) && (xNew < xSize); xNew++) {
-                    for (int yNew = Math.max(y - pixelSize, 0); (yNew < y + pixelSize) && (yNew < ySize); yNew++) {
-                        newBi.setRGB(xNew, yNew, dominantColor);
-                    }
+                for (int xNew = x; (xNew < x + pixelSize) && (xNew < xSize); xNew++)
+                {
+                   for(int yNew = y; (yNew < y + pixelSize) && (yNew < ySize); yNew++) 
+                   {
+                     bi.setRGB(xNew, yNew, rgb);
+                   }
                 }
             }
         }
+    }
+    
+    /**
+     * Adjusts the contrast based on a percentage
+     * @param bi            The BufferedImage (passed by reference) to change
+     * @param percentage    The percentage of adjustment
+     */
+     public static void contrast (BufferedImage bi, double percentage)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                int rgb = bi.getRGB(x, y);
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                if (red < 240) {
+                    red = (int)(percentage * (red - 128) + 128); 
+                }
+                if (blue < 240) {
+                    blue = (int)(percentage * (blue - 128) + 128);
+                }
+                if (green < 240) {
+                    green = (int)(percentage * (green - 128) + 128);
+                }
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                bi.setRGB (x, y, newColour);
+            }
+        }
+    }
+    
+    /** 
+     * Adjust the hues of the ased on a percentage. Method used: 
+     * https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html#RGBtoHSB(int,%20int,%20int,%20float[])
+     * 
+     * @param bi            The BufferedImage (passed by reference) to change
+     * @param percentage    The percentage of adjustment
+     */
+    public static void adjustHue (BufferedImage bi, float percentage)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                int rgb = bi.getRGB(x, y);
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+
+                float[] hsbValues = Color.RGBtoHSB(red, green, blue, null);
+                hsbValues[0] += percentage;
+                int c = Color.HSBtoRGB(hsbValues[0], hsbValues[1], hsbValues[2]);
+                
+                bi.setRGB (x, y, c);
+            }
+        }
+    }
+    
+    /**
+     * Swaps the RGB values 
+     * red -> blue, blue -> green, green -> red
+     * @param bi            The BufferedImage (passed by reference) to change
+     */
+     public static void swapRGB (BufferedImage bi)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                int rgb = bi.getRGB(x, y);
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[3];
+                int green = rgbValues[1];
+                int blue = rgbValues[2];
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                bi.setRGB (x, y, newColour);
+            }
+        }
+    }
+    
+    /**
+     * Sharpens an image to make it more defined
+     * @param bi            The BufferedImage (passed by reference) to change
+     */
+     public static void sharpen (BufferedImage bi)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
         
-        for(int i = 0; i < ySize; i++){
-            for(int j = 0; j < xSize; j++){
-                bi.setRGB(j, i, newBi.getRGB(j, i));
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
+                    newBi.setRGB(x, y, bi.getRGB(x, y));
+                    continue;
+                }
+                
+                int rgb = bi.getRGB(x, y);
+                
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+
+                int sumRed = red * 9;
+                int sumGreen = green * 9;
+                int sumBlue = blue * 9;
+                
+                for (int r = -1; r <= 1; r++)
+                {
+                    for (int c = -1; c <= 1; c++)
+                    {
+                        //if (x + r < 0 || x + r > xSize - 1 || y + c < 0 || y + c > ySize - 1){
+                            //continue;
+                        //}
+    
+                        // Calls method in BufferedImage that returns R G B and alpha values
+                        // encoded together in an integer
+                        rgb = bi.getRGB(x + r, y + c);
+        
+                        // Call the unpackPixel method to retrieve the four integers for
+                        // R, G, B and alpha and assign them each to their own integer
+                        rgbValues = unpackPixel (rgb);
+                        
+                        if (r != 0 || c != 0){
+                            sumRed -= rgbValues[1];
+                            sumGreen -= rgbValues[2];
+                            sumBlue -= rgbValues[3];
+                        }
+                    }
+                }
+
+                if (sumRed > 255){
+                    sumRed = 255; 
+                }
+                if (sumRed < 0){
+                    sumRed = 0;
+                }
+                if (sumBlue > 255){
+                    sumBlue = 255; 
+                }
+                if (sumBlue < 0){
+                    sumBlue = 0;
+                }
+                if (sumGreen > 255){
+                    sumGreen = 255; 
+                }
+                if (sumGreen < 0){
+                    sumGreen = 0;
+                }
+                
+                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        for(int i = 0; i < xSize; i++){
+            for(int j = 0; j < ySize; j++){
+                bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
     }
@@ -831,7 +1067,7 @@ public class Processor
     /**
      * Rotates an image 90 degrees clockwise
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static BufferedImage rotate90Clockwise (BufferedImage bi){
         BufferedImage newBi = new BufferedImage (bi.getHeight(), bi.getWidth(), 3);
@@ -848,7 +1084,7 @@ public class Processor
     /**
      * Rotates an image 90 degrees counterclockwise
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static BufferedImage rotate90CounterClockwise (BufferedImage bi){
         BufferedImage newBi = new BufferedImage (bi.getHeight(), bi.getWidth(), 3);
@@ -863,7 +1099,7 @@ public class Processor
     /**
      * Flips an image horizontally
      * 
-     * @param bi    The BufferedImage (passed by reference) to change.
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void flipHorizontal (BufferedImage bi)
     {
@@ -901,7 +1137,9 @@ public class Processor
     }
     
     /**
-     * Flips and image vertically
+     * Flips an image vertically
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
      */
     public static void flipVertical(BufferedImage bi){
         int xSize = bi.getWidth();
@@ -922,6 +1160,11 @@ public class Processor
         }
     }
     
+    /**
+     * Gets the dominant color of a BufferedImage
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */
     public static int getDominantColor(BufferedImage bi) {
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
@@ -953,6 +1196,13 @@ public class Processor
         return maxColor;
     }
     
+    /**
+     * Takes a BufferedImage and crops it to its desired size. Method used: 
+     * https://docs.oracle.com/javase/7/docs/api/java/awt/image/BufferedImage.html#getSubimage(int,%20int,%20int,%20int)
+     * 
+     * @param bi              The BufferedImage (passed by reference) to change
+     * @return BufferedImage  The updated and cropped BufferedImage
+     */
     public static BufferedImage getCroppedImage(BufferedImage bi, int startX, int startY, int width, int height) {
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
