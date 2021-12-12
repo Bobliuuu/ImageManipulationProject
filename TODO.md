@@ -8,6 +8,7 @@ Colorify buttons for builtin colours:
 - [x] Grey
 - [x] Orange
 - [x] Pink
+- [ ] Magenta
 
 Create other required features: 
 - [x] Vertical Flip
