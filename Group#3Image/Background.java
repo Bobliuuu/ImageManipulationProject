@@ -48,7 +48,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent;
     
-    private TextButton pixelateButton, blurButton;
+    private TextButton pixelateButton, blurButton, warmButton, coolButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar;
 
@@ -86,6 +86,8 @@ public class Background extends World
         lessTransparent = new TextButton("Less Transparent", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         pixelateButton = new TextButton("Pixelate", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         blurButton = new TextButton("Blur", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        warmButton = new TextButton("Warmer", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        coolButton = new TextButton("Cooler", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
@@ -96,6 +98,7 @@ public class Background extends World
         pinkPicture = new ColorButton(Color.PINK);
         grayPicture = new ColorButton(Color.GRAY);
         blackPicture = new ColorButton(Color.BLACK);
+        
         
         // Custom colours
         purplePicture = new ColorButton(PURPLE);
@@ -293,13 +296,13 @@ public class Background extends World
                 checkForEdit();
             }
             else if (Greenfoot.mouseClicked(pixelateButton)){
-                Processor.pixelate(image.getBufferedImage(), 5);
+                Processor.pixelate(image.getBufferedImage(), 6);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
             }
             else if (Greenfoot.mouseClicked(blurButton)){
-                Processor.blur(image.getBufferedImage());
+                Processor.gaussianBlur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
