@@ -46,7 +46,7 @@ UI Features:
 Custom color changes: 
 - [ ] Colorify + alpha blend (e.g. 0.5 * newColor + 0.5 * color)
 - [ ] Colorify with more than one color 
-- [ ] Custom color changes
+- [x] Colorify with hues
 
 Create optional features: 
 - [x] Brighten
@@ -54,12 +54,15 @@ Create optional features:
 - [x] Warmer
 - [x] Cooler
 - [x] Blur
+- [x] Gaussian blur
 - [x] Pixelate
-- [ ] Add/remove contrast
+- [x] Add contrast
+- [ ] Remove contrast
 - [ ] Distort
 - [ ] Noise
 - [ ] Soften
 - [ ] Lens flare
+- [ ] Spherify
 
 Image drawing/adjustment: 
 - [ ] Zoom in
@@ -75,7 +78,7 @@ Image drawing/adjustment:
 - [ ] Steganography
 
 Advanced features: 
-- [ ] Sharpen 
+- [x] Sharpen 
 - [ ] Edges highlighting
 - [ ] Gradients (e.g. fade)
 
