@@ -57,6 +57,7 @@ Create optional features:
 - [x] Gaussian blur
 - [x] Pixelate
 - [x] Add contrast
+- [ ] Solarization
 - [ ] Remove contrast
 - [ ] Distort
 - [ ] Noise
