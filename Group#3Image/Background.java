@@ -389,13 +389,13 @@ public class Background extends World
                 checkForEdit();
                 resetCrop();
             } else if (Greenfoot.mouseClicked(contrastButton)){
-                Processor.contrast(image.getBufferedImage(), 0.1);
+                Processor.contrast(image.getBufferedImage(), 0.9);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } else if (Greenfoot.mouseClicked(hueButton)){
-                Processor.adjustHue(image.getBufferedImage(), (float) 0.1);
+                Processor.adjustHue(image.getBufferedImage(), (float)0.1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
@@ -407,7 +407,7 @@ public class Background extends World
                 checkForEdit();
                 resetCrop();
             } else if (Greenfoot.mouseClicked(sharpenButton)){
-                Processor.sharpen(image.getBufferedImage());
+                Processor.noise(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
