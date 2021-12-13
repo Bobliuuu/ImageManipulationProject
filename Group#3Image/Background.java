@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.lang.Math;
 /**
  * Starter code for Image Manipulation Array Assignment.
  * 
@@ -46,9 +47,11 @@ public class Background extends World
 
     private int editPos;
     
+    private boolean inCropOne, inCropTwo;
+    
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent;
     
-    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton;
+    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar;
 
@@ -94,7 +97,8 @@ public class Background extends World
         hueButton = new TextButton("Change Hue", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         swapRGBButton = new TextButton("Swap RGB", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         sharpenButton = new TextButton("Sharpen", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        
+        cropButton = new TextButton("Crop", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
@@ -153,7 +157,7 @@ public class Background extends World
         addObject (greenPicture, 1265, 70);
         addObject (undoButton, 412, 76);
         addObject (redoButton, 412, 108);
-        
+        addObject (cropButton, 804, 108);
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -165,6 +169,8 @@ public class Background extends World
         editPos = 0;
         original = deepCopy(image.getBufferedImage());
         edits.add(deepCopy(original));
+        inCropOne = false;
+        inCropTwo = false;
     }
 
     /**
@@ -188,60 +194,70 @@ public class Background extends World
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(grayPicture)){
                 Processor.gray(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(redPicture)){
                 Processor.red(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(yellowPicture)){
                 Processor.yellow(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(bluePicture)){
                 Processor.blue(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(purplePicture)){
                 Processor.purple(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(blackPicture)){
                 Processor.black(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(pinkPicture)){
                 Processor.pink(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(orangePicture)){
                 Processor.orange(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(greenPicture)){
                 Processor.green(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(hRevButton)){
                 Processor.flipHorizontal(image.getBufferedImage());
@@ -256,6 +272,7 @@ public class Background extends World
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
                 //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
                 //image.setImage(createGreenfootImageFromBI (temp));
             }
@@ -280,48 +297,56 @@ public class Background extends World
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(negativeButton)){
                 Processor.negative(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(brightButton)){
                 Processor.brighten(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(darkButton)){
                 Processor.darken(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(moreTransparent)){
                 Processor.moreTransparent(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(lessTransparent)){
                 Processor.lessTransparent(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(pixelateButton)){
                 Processor.pixelate(image.getBufferedImage(), 6);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(blurButton)){
                 Processor.gaussianBlur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(undoButton)){
                 if(editPos - 1 >= 0){
@@ -330,6 +355,7 @@ public class Background extends World
                     image.redraw();
                     openFile.update (image.getDetails ());
                 }
+                resetCrop();
             }
             else if (Greenfoot.mouseClicked(redoButton)){
                 if(editPos + 1 < edits.size()){
@@ -338,6 +364,7 @@ public class Background extends World
                     image.redraw();
                     openFile.update (image.getDetails ());
                 }
+                resetCrop();
             } else if (Greenfoot.mouseClicked(warmButton)){
                 Processor.warmer(image.getBufferedImage());
                 image.redraw();
@@ -348,45 +375,85 @@ public class Background extends World
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             } else if (Greenfoot.mouseClicked(gaussianButton)){
                 Processor.gaussianBlur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             } else if (Greenfoot.mouseClicked(sepiaButton)){
                 Processor.sepia(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             } else if (Greenfoot.mouseClicked(contrastButton)){
                 Processor.contrast(image.getBufferedImage(), 0.1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             } else if (Greenfoot.mouseClicked(hueButton)){
                 Processor.adjustHue(image.getBufferedImage(), (float) 0.1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             } else if (Greenfoot.mouseClicked(swapRGBButton)){
                 Processor.swapRGB(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
             } else if (Greenfoot.mouseClicked(sharpenButton)){
                 Processor.sharpen(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
+                resetCrop();
+            }
+            else if( Greenfoot.mouseClicked(image)){
+                if(!inCropOne){
+                    MouseInfo first = Greenfoot.getMouseInfo();
+                    firstPoint = new TextButton ("  ", 0, 5, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+                    addObject(firstPoint, first.getX(), first.getY());
+                    inCropOne = true;
+                }
+                else{
+                    MouseInfo second = Greenfoot.getMouseInfo();
+                    secondPoint = new TextButton ("  ", 0, 5, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));                    
+                    addObject(secondPoint, second.getX(), second.getY());
+                    inCropTwo = true;
+                }
+            }
+            else if (Greenfoot.mouseClicked(cropButton)){
+                if(inCropOne && inCropTwo){
+                    int topX = Math.min(firstPoint.getX(), secondPoint.getX())-(640-(int)(image.getRealWidth()/2)), topY = Math.min(firstPoint.getY(), secondPoint.getY())-(560-(int)(image.getRealHeight()/2));
+                    int height = Math.abs(firstPoint.getY()-secondPoint.getY()), width = Math.abs(firstPoint.getX()-secondPoint.getX());
+                    //width = 50;
+                    //height = 50;
+                    //topX = firstPoint.getX()-330;
+                    //topY = 0;
+                    image.setFullImage(createGreenfootImageFromBI(image.getBufferedImage().getSubimage(topX, topY, width, height)));
+                    image.redraw();
+                    openFile.update (image.getDetails ());
+                    resetCrop();
+                }
             }
             else if (Greenfoot.mouseClicked(openButton))
             {
+                resetCrop();
                 openFile ();
             }
 
             else if (Greenfoot.mouseClicked(saveButton))
             {
+                resetCrop();
                 saveFile ();
+            }
+            else{
+                resetCrop();
             }
         }
     }
@@ -512,6 +579,17 @@ public class Background extends World
         }
         edits.add(deepCopy(image.getBufferedImage()));
         editPos++;
+    }
+    
+    private void resetCrop(){
+        if(inCropOne){
+            removeObject(firstPoint);                        
+        }
+        if(inCropTwo){
+            removeObject(secondPoint);
+        }
+        inCropOne = false;
+        inCropTwo = false;
     }
 }
 
