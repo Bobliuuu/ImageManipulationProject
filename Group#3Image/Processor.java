@@ -29,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.stream.IntStream;
 import java.awt.Color;
 import java.lang.Math;
@@ -1013,10 +1014,6 @@ public class Processor
                 {
                     for (int c = -1; c <= 1; c++)
                     {
-                        //if (x + r < 0 || x + r > xSize - 1 || y + c < 0 || y + c > ySize - 1){
-                            //continue;
-                        //}
-    
                         // Calls method in BufferedImage that returns R G B and alpha values
                         // encoded together in an integer
                         rgb = bi.getRGB(x + r, y + c);
@@ -1060,6 +1057,181 @@ public class Processor
         for(int i = 0; i < xSize; i++){
             for(int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
+            }
+        }
+    }
+    
+    /**
+     * Distorts the image into a swirl using bilinear interpolation: 
+     * https://stackoverflow.com/questions/225548/resources-for-image-distortion-algorithms
+     * @param bi            The BufferedImage (passed by reference) to change
+     * @param percentage    The percentage of adjustment
+     */
+     public static void distort (BufferedImage bi, double a, double b)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        double x0 = 0.5 * (xSize  - 1);
+        double y0 = 0.5 * (ySize - 1);
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                int rgb = bi.getRGB(x, y);
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                double dx = x - x0;
+                double dy = y - y0;
+                double r = Math.sqrt(dx*dx + dy*dy);
+                double angle = Math.PI / 256 * r;
+                int tx = (int) (dx * Math.cos(angle) - dy * Math.sin(angle) + x0);
+                int ty = (int) (dx * Math.sin(angle) + dy * Math.cos(angle) + y0);
+
+                if (tx >= 0 && tx < xSize && ty >= 0 && ty < ySize){
+                    newBi.setRGB(x, y, bi.getRGB(tx, ty));
+                }
+            }
+        }
+        
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < ySize; j++) {
+                bi.setRGB(i, j, newBi.getRGB(i, j));
+            }
+        }        
+    }
+    
+    /**
+     * Distorts the imagine into a spherical shape
+     * Credit: http://popscan.blogspot.com/2012/04/fisheye-lens-equation-simple-fisheye.html
+     * 
+     * @param bi    the image to be distorted
+     */
+    public static void spherify (BufferedImage bi)
+    {
+        double xSize = bi.getWidth(); 
+        double ySize = bi.getHeight();
+        
+        BufferedImage newBi = new BufferedImage((int)xSize, (int)ySize, 3);
+        
+        int[] srcpixels = bi.getRGB(0, 0, (int)xSize, (int)ySize, null, 0, (int)xSize);
+        int[] dstpixels = new int[(int)xSize * (int)ySize];            
+        for (int y = 0; y < ySize; y++) {                                
+            double ny = ((2*y)/ySize)-1;                        
+            double ny2 = ny*ny;                                
+            for (int x = 0; x < xSize; x++) {                            
+                double nx = ((2*x)/xSize)-1;                    
+                double nx2 = nx*nx;
+                double r = Math.sqrt(nx2+ny2);                
+                if (0.0 <= r && r <= 1.0) {                            
+                    double nr = Math.sqrt(1.0-r*r);            
+                    nr = (r + (1.0-nr)) / 2.0;
+                    if (nr<=1.0) {
+                        double theta = Math.atan2(ny,nx);         
+                        double nxn = nr*Math.cos(theta);        
+                        double nyn = nr*Math.sin(theta);        
+                        int x2 = (int)(((nxn+1)*xSize)/2.0);        
+                        int y2 = (int)(((nyn+1)*ySize)/2.0);        
+                        int srcpos = (int)(y2*xSize+x2);            
+                        if (srcpos >= 0 & srcpos < xSize*ySize) {
+                            dstpixels[(int)(y*xSize+x)] = srcpixels[srcpos];    
+                        }
+                    }
+                }
+            }
+        }
+        newBi.setRGB(0, 0, (int)xSize, (int)ySize, dstpixels, 0, (int)xSize);
+        
+        for (int y = 0; y < ySize; y++) {
+            for (int x = 0; x < xSize; x++) {
+                bi.setRGB(x, y, newBi.getRGB(x, y));
+            }
+        }
+    }
+    
+    /**
+     * Distorts the image by adding randomized noise (WIP)
+     * https://www.codeproject.com/Questions/98491/Adding-random-noise-to-an-image
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     * @param percentage    The percentage of adjustment
+     */ 
+    public static void noise(BufferedImage bi)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        Random r = new Random();
+        
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                double percentage = 1.2;
+                red *= percentage;
+                green *= percentage;
+                blue *= percentage;
+                
+                int newColour = packagePixel (red, blue, green, alpha);
+                bi.setRGB(x, y, newColour);
+            }
+        }
+    }
+    
+    /**
+     * Creates a lens flare effect
+     * @param bi            The BufferedImage (passed by reference) to change
+     * @param percentage    The percentage of adjustment
+     */
+     public static void lensFlare (BufferedImage bi, double percentage)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                int rgb = bi.getRGB(x, y);
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                if (red < 240) {
+                    red = (int)(percentage * (red - 128) + 128); 
+                }
+                if (blue < 240) {
+                    blue = (int)(percentage * (blue - 128) + 128);
+                }
+                if (green < 240) {
+                    green = (int)(percentage * (green - 128) + 128);
+                }
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                bi.setRGB (x, y, newColour);
             }
         }
     }

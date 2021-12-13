@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=RecentFiles
+comment1.params=
+comment1.target=java.util.ArrayList\ getRecentFiles()
+comment2.params=filename
+comment2.target=void\ addRecentlyOpenedFile(java.lang.String)
+comment3.params=
+comment3.target=void\ saveList()
+comment4.params=
+comment4.target=java.util.ArrayList\ loadList()
+numComments=5
