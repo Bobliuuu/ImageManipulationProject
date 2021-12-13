@@ -408,7 +408,7 @@ public class Background extends World
                 checkForEdit();
                 resetCrop();
             } else if (Greenfoot.mouseClicked(sharpenButton)){
-                Processor.noise(image.getBufferedImage());
+                Processor.sharpen(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();

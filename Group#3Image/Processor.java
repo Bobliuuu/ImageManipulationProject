@@ -251,45 +251,7 @@ public class Processor
                 // Calculates they greyscale value
                 int grey = (blue + red + green)/3;
                 
-                // Turns the image closer to the greyscale image
-                if(red > grey){
-                    red -= 2;
-                    if (red < grey){
-                        red = grey;
-                    }
-                }
-                if(red < grey){
-                    red += 2;
-                    if (red > grey){
-                        red = grey;
-                    }
-                }
-                if(green > grey){
-                    green -= 2;
-                    if (green < grey){
-                        green = grey;
-                    }
-                }
-                if(green < grey){
-                    green += 2;
-                    if (green > grey){
-                        green = grey;
-                    }
-                }
-                if(blue > grey){
-                    blue -= 2;
-                    if (blue < grey){
-                        blue = grey;
-                    }
-                }
-                if(blue < grey){
-                    blue += 2;
-                    if (blue > grey){
-                        blue = grey;
-                    }
-                }
-
-                int newColour = packagePixel (red, green, blue, alpha);
+                int newColour = packagePixel (grey, grey, grey, alpha);
                 bi.setRGB (x, y, newColour);
             }
         }
@@ -456,7 +418,7 @@ public class Processor
         // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-
+        
         // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
@@ -478,47 +440,13 @@ public class Processor
                 int sepiaRed = (int)(0.393 * red + 0.769 * green
                                    + 0.189 * blue);
                 int sepiaGreen = (int)(0.349 * red + 0.686 * green
-                                     + 0.168 * blue);
+                                         + 0.168 * blue);
                 int sepiaBlue = (int)(0.272 * red + 0.534 * green
-                                    + 0.131 * blue);
-                                    
-                // Turn the picture closer to sepia
-                if (red < sepiaRed){
-                    red += 2;
-                    if (red > sepiaRed){
-                        red = sepiaRed;
-                    }
-                }
-                if (red > sepiaRed){
-                    red -= 2;
-                    if (red < sepiaRed){
-                        red = sepiaRed;
-                    }
-                }
-                if (blue < sepiaBlue){
-                    blue += 2;
-                    if (blue > sepiaBlue){
-                        blue = sepiaBlue;
-                    }
-                }
-                if (blue > sepiaBlue){
-                    blue -= 2;
-                    if (blue < sepiaBlue){
-                        blue = sepiaBlue;
-                    }
-                }
-                if (green < sepiaGreen){
-                    green += 2;
-                    if (green > sepiaGreen){
-                        green = sepiaGreen;
-                    }
-                }
-                if (green > sepiaGreen){
-                    green -= 2;
-                    if (green < sepiaGreen){
-                        green = sepiaGreen;
-                    }
-                }
+                                        + 0.131 * blue);
+                
+                red = Math.min(sepiaRed, 255);
+                green = Math.min(sepiaGreen, 255);
+                blue = Math.min(sepiaBlue, 255);
                 
                 int newColour = packagePixel (red, green, blue, alpha);
                 bi.setRGB (x, y, newColour);
@@ -1158,18 +1086,15 @@ public class Processor
     }
     
     /**
-     * Distorts the image by adding randomized noise (WIP)
+     * Distorts the image by adding randomized noise 
      * https://www.codeproject.com/Questions/98491/Adding-random-noise-to-an-image
      * 
      * @param bi    The BufferedImage (passed by reference) to change
-     * @param percentage    The percentage of adjustment
      */ 
-    public static void noise(BufferedImage bi)
+    public static void noise(BufferedImage bi, int density)
     {
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
-        
-        Random r = new Random();
         
         for (int x = 0; x < xSize; x++)
         {
@@ -1188,13 +1113,159 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
-                double percentage = 1.2;
-                red *= percentage;
-                green *= percentage;
-                blue *= percentage;
+                if ((Math.random() * 1000) < density){
+                    red = 255;
+                    blue = 255;
+                    green = 255;
+                }
                 
-                int newColour = packagePixel (red, blue, green, alpha);
+                int newColour = packagePixel (red, green, blue, alpha);
                 bi.setRGB(x, y, newColour);
+            }
+        }
+    }
+    
+    /**
+     * Solarizes the image based on a threshold
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */ 
+    public static void solarize(BufferedImage bi, int threshold)
+    {
+
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                // Find the negative (inverse) of each pixel's RGB values
+                if (red < threshold){
+                    red = 255 - red;
+                }
+                if (green < threshold){
+                    green = 255 - green;
+                }
+                if (blue < threshold){
+                    blue = 255 - blue;
+                }
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                bi.setRGB (x, y, newColour);
+            }
+        }
+    }
+    
+    public static int getSobelFilter(BufferedImage bi, int i, int j, int xSize, int ySize, int colorPosition){
+        float sumX = 0;
+        float sumY = 0;
+    
+        int gx[][] = {{-1,0,1}, {-2,0,2}, {-1,0,1}};
+        int gy[][] = {{-1,-2,-1}, {0,0,0}, {1,2,1}}; 
+        for (int k = i - 1, x = 0; k < (i + 2); k++, x++)
+        {
+            for (int l = j - 1, y = 0; l < (j + 2); l++, y++)
+            {
+                if (k < 0 || l < 0 || k >= xSize || l >= ySize)
+                {
+                    continue;
+                }
+                
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(k, l);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                if (colorPosition == 0)
+                {
+                    sumX += red * gx[x][y];
+                    sumY += red * gy[x][y];
+                }
+                else if (colorPosition == 1)
+                {
+                    sumX += green * gx[x][y];
+                    sumY += green * gy[x][y];
+                }
+                else
+                {
+                    sumX += blue * gx[x][y];
+                    sumY += blue * gy[x][y];
+                }
+            }
+        }
+        int result = (int)Math.round( Math.sqrt((sumX * sumX) + (sumY * sumY)) );
+        
+        return result < 255 ? result : 255;
+    }
+    
+    /**
+     * Make the edges more defined using a sobel operator
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */ 
+    public static void edges(BufferedImage bi)
+    {
+
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                red = getSobelFilter(bi, x, y, xSize, ySize, 0);
+                green = getSobelFilter(bi, x, y, xSize, ySize, 1);
+                blue = getSobelFilter(bi, x, y, xSize, ySize, 2);
+
+                int newColour = packagePixel (red, green, blue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        for(int i = 0; i < xSize; i++){
+            for(int j = 0; j < ySize; j++){
+                bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
     }
@@ -1465,3 +1536,6 @@ public class Processor
         return newRGB;
     }
 }
+
+
+
