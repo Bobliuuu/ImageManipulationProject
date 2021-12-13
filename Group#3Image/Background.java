@@ -51,7 +51,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent;
     
-    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint;
+    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
 
@@ -98,7 +98,7 @@ public class Background extends World
         swapRGBButton = new TextButton("Swap RGB", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         sharpenButton = new TextButton("Sharpen", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         cropButton = new TextButton("Crop", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-
+        greyScaleButton = new TextButton("Greyscale", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
@@ -142,6 +142,7 @@ public class Background extends World
         addObject (hueButton, 706, 108);
         addObject (swapRGBButton, 706, 140);
         addObject (sharpenButton, 804, 76);
+        addObject (greyScaleButton, 804, 140);
         addObject (moreTransparent, 162, 140);
         addObject (lessTransparent, 292, 140);
         addObject (colorifyLabel, 1215, 16);
@@ -408,6 +409,12 @@ public class Background extends World
                 resetCrop();
             } else if (Greenfoot.mouseClicked(sharpenButton)){
                 Processor.noise(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(greyScaleButton)){
+                Processor.greyScale(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
