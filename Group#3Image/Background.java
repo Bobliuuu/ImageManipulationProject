@@ -53,7 +53,7 @@ public class Background extends World
     
     private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint;
     
-    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar;
+    private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
 
     private SuperTextBox openFile, saveFile, colorifyLabel;
 
@@ -416,14 +416,17 @@ public class Background extends World
             else if( Greenfoot.mouseClicked(image)){
                 if(!inCropOne){
                     MouseInfo first = Greenfoot.getMouseInfo();
-                    firstPoint = new TextButton ("  ", 0, 5, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+                    firstPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
                     addObject(firstPoint, first.getX(), first.getY());
                     inCropOne = true;
                 }
-                else{
+                else if(!inCropTwo){
                     MouseInfo second = Greenfoot.getMouseInfo();
-                    secondPoint = new TextButton ("  ", 0, 5, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));                    
+                    secondPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));                    
                     addObject(secondPoint, second.getX(), second.getY());
+                    cropBox = new ColorButton(Color.BLACK, Math.abs(firstPoint.getX()-secondPoint.getX()), Math.abs(firstPoint.getY()-secondPoint.getY()), 2, false, false);
+                    addObject(cropBox, Math.min(firstPoint.getX(), secondPoint.getX())+((int)(Math.abs(firstPoint.getX()-secondPoint.getX())/2)), Math.min(firstPoint.getY(), secondPoint.getY())+((int)(Math.abs(firstPoint.getY()-secondPoint.getY())/2)));
+                    //addObject(cropBox, 100, 100);
                     inCropTwo = true;
                 }
             }
@@ -587,6 +590,7 @@ public class Background extends World
         }
         if(inCropTwo){
             removeObject(secondPoint);
+            removeObject(cropBox);
         }
         inCropOne = false;
         inCropTwo = false;

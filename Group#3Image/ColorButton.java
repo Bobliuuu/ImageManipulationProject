@@ -111,6 +111,25 @@ public class ColorButton extends Control
         setImage(image);
     } 
     
+    public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable, boolean transparent) {
+        this.color = color;
+        this.width = width;
+        this.height = height;
+        image = new GreenfootImage(width, height);
+        borderColor = Color.BLACK;
+        image.setColor (borderColor);
+        for (int i = 0; i < borderThickness; i++){
+            image.drawRect (0 + i, 0 + i, width - 1 - (i * 2), height - 1 - (i*2));
+        }
+        if(transparent){
+            image.setColor(color);
+            image.fillRect(borderThickness, borderThickness, width - borderThickness * 2, height - borderThickness * 2);
+        }
+        mouseOver = false;
+        clickable = isClickable;
+        setImage(image);
+    } 
+    
     /**
      * Most sophisticated constructor, adding the ability to adjust border color
      * @param color           Base color of the color button
