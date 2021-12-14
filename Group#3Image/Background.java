@@ -1,15 +1,22 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+// import javax.swing.*;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.lang.Math;
@@ -49,7 +56,7 @@ public class Background extends World
     
     private boolean inCropOne, inCropTwo;
     
-    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent;
+    private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent, recentFilesButton;
     
     private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton;
     
@@ -76,6 +83,8 @@ public class Background extends World
         vRevButton = new TextButton("Flip Vertical", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         resetButton = new TextButton("Reset", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         openButton = new TextButton ("Open", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        recentFilesButton = new TextButton ("Open Recent File", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 5, 120, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         rotateOtherButton = new TextButton("Rotate Counterclockwise", 5, 140, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));        
@@ -118,7 +127,6 @@ public class Background extends World
         topBar = new ColorButton(Color.BLACK, 1280, 166, false);
         
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
-        saveFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
         colorifyLabel = new SuperTextBox(new String[]{"Colour-ify"}, Color.DARK_GRAY, Color.WHITE, new Font("Comic Sans MS", false, false, 13), true, 74, 1, Color.WHITE);
         
         // Add objects to the screen
@@ -164,8 +172,12 @@ public class Background extends World
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
         addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 3, openFile.getImage().getHeight() / 2 - 8);
+        
+        addObject (recentFilesButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 85, openFile.getImage().getHeight() / 2 - 8);
+        
         // place the save file button 
-        addObject (saveButton, saveFile.getImage().getWidth()  + saveButton.getImage().getWidth()/2 + 85, openFile.getImage().getHeight() / 2 - 8);
+        addObject (saveButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 167, openFile.getImage().getHeight() / 2 - 8);
+        
         
         editPos = 0;
         original = deepCopy(image.getBufferedImage());
@@ -462,11 +474,91 @@ public class Background extends World
                 resetCrop();
                 saveFile ();
             }
+            else if (Greenfoot.mouseClicked(recentFilesButton))
+            {
+                resetCrop();
+                selectRecentlyOpenedFile();
+            }
+
             else{
                 resetCrop();
             }
         }
     }
+
+
+    private void selectRecentlyOpenedFile () {
+        JFrame recentFrame = new JFrame("Recent Files");
+
+        RecentFiles recent = new RecentFiles();
+        ArrayList <String> fileList = recent.getRecentFiles();
+        
+        ButtonGroup bg = new ButtonGroup();
+        for (int i = 0; i < fileList.size(); i++) {
+
+            File file = new File(fileList.get(i));
+            JRadioButton rb = new JRadioButton(file.getName()); 
+            rb.setBounds(25, 5 + (i*25), 300, 30);
+            bg.add(rb);
+            recentFrame.add(rb);
+        }
+        recentFrame.setLocationRelativeTo(null);
+        recentFrame.setSize(300,300);
+        recentFrame.setResizable(false);    
+        recentFrame.setLayout(null);    
+        recentFrame.setVisible(true);
+        // recentFrame.setUndecorated(true);
+        recentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+
+        JButton openRecentFileButton = new JButton("Open");  
+        openRecentFileButton.setBounds(200,230,95,30);  
+        recentFrame.add(openRecentFileButton);
+
+        JButton cancelButton = new JButton("Cancel");  
+        cancelButton.setBounds(100,230,95,30);  
+        recentFrame.add(cancelButton);
+        
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recentFrame.setVisible(false);
+                recentFrame.dispose();
+            }
+        });
+
+        openRecentFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+                // https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
+                for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons.hasMoreElements();) {
+                    AbstractButton button = buttons.nextElement();
+        
+                    if (button.isSelected()) {
+
+                        // get Full filename
+                        for (int i = 0; i < fileList.size(); i++) {
+                            File file = new File(fileList.get(i));
+                            if (file.getName().equalsIgnoreCase(button.getText())) {
+                                recentFrame.setVisible(false);
+                                recentFrame.dispose();
+
+                                if (image.openFile (file.getAbsolutePath(), file.getName()))
+                                {
+                                    openFile.update (image.getDetails ());
+                                    recent.addRecentlyOpenedFile(file.getAbsolutePath());
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, "This file does not exist");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
 
     // Code provided, but not yet implemented - This will save image as a png.
     private void saveFile () {
@@ -536,6 +628,9 @@ public class Background extends World
 
         // Add File filter for PNG and JPEG.
         // https://stackoverflow.com/questions/19302029/filter-file-types-with-jfilechooser
+        // fileChooser.addChoosableFileFilter(new java.awt.image.ImageFilter());
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg", "jpeg"}));
 
@@ -548,6 +643,8 @@ public class Background extends World
             {
                 //String display = " [ Open File: " + selectedFile.getName() + " ] ";
                 openFile.update (image.getDetails ());
+                RecentFiles recent = new RecentFiles();
+                recent.addRecentlyOpenedFile(selectedFile.getAbsolutePath());
             }
         }
         // If the file opening operation is successful, update the text in the open file button
