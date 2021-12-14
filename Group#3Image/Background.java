@@ -49,6 +49,8 @@ public class Background extends World
     private ImageHolder image;
 
     private BufferedImage original, stampImage;
+    
+    private GreenfootImage testHolder;
 
     private ArrayList<BufferedImage> edits = new ArrayList<BufferedImage>();
 
@@ -78,6 +80,8 @@ public class Background extends World
         super(1280, 900, 1); 
 
         // Initialize buttons and the image
+        testHolder = new GreenfootImage("coin.png");
+        stampImage = testHolder.getAwtImage();
         image = new ImageHolder(STARTING_FILE); // The image holder constructor does the actual image loading
         
         // Set up UI elements
@@ -468,11 +472,11 @@ public class Background extends World
                     MouseInfo click = Greenfoot.getMouseInfo();
                     int topX = click.getX()-(640-(int)(bi.getWidth()/2)), topY = click.getY()-(560-(int)(bi.getHeight()/2));
                     
-                    if(!(topX + stampImage.getWidth() > bi.getWidth()) && !(topY + stampImage.getHeight() > bi.getHeight())){
-                        for(int i = topY; i <= topY + stampImage.getHeight(); i++){
-                            for(int j = topX; j <= topX + stampImage.getWidth(); j++){
+                    if((topX + stampImage.getWidth() <= bi.getWidth()) && (topY + stampImage.getHeight() <= bi.getHeight())){
+                        for(int i = topY; i < topY + stampImage.getHeight(); i++){
+                            for(int j = topX; j < topX + stampImage.getWidth(); j++){
                                 if(bi.getRGB(j, i) != stampImage.getRGB(j - topX, i - topY)){
-                                    bi.setRGB(stampImage.getRGB(j - topX, i - topY), j, i);
+                                    bi.setRGB(j, i, stampImage.getRGB(j - topX, i - topY));
                                 }
                             }
                         }
