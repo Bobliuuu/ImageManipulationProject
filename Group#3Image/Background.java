@@ -48,17 +48,19 @@ public class Background extends World
     // Objects and Variables:
     private ImageHolder image;
 
-    private BufferedImage original;
+    private BufferedImage original, stampImage;
 
     private ArrayList<BufferedImage> edits = new ArrayList<BufferedImage>();
 
     private int editPos;
     
-    private boolean inCropOne, inCropTwo;
+    private boolean inCropOne, inCropTwo, stamping;
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent, recentFilesButton;
     
     private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, lensFlareButton;
+    
+    private TextButton stampButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
 
@@ -111,6 +113,7 @@ public class Background extends World
         solarizeButton = new TextButton("Solarize", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         noiseButton = new TextButton("Noise", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         lensFlareButton = new TextButton("Lens Flare", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        stampButton = new TextButton("Stamp", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         
         // Builtin colors
@@ -174,6 +177,7 @@ public class Background extends World
         addObject (undoButton, 412, 76);
         addObject (redoButton, 412, 108);
         addObject (cropButton, 804, 108);
+        addObject (stampButton, 1000, 76);
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -191,6 +195,7 @@ public class Background extends World
         edits.add(deepCopy(original));
         inCropOne = false;
         inCropTwo = false;
+        stamping = false;
     }
 
     /**
@@ -458,7 +463,27 @@ public class Background extends World
                 resetCrop();
             }
             else if( Greenfoot.mouseClicked(image)){
-                if(!inCropOne){
+                if(stamping){
+                    BufferedImage bi = image.getBufferedImage();
+                    MouseInfo click = Greenfoot.getMouseInfo();
+                    int topX = click.getX()-(640-(int)(bi.getWidth()/2)), topY = click.getY()-(560-(int)(bi.getHeight()/2));
+                    
+                    if(!(topX + stampImage.getWidth() > bi.getWidth()) && !(topY + stampImage.getHeight() > bi.getHeight())){
+                        for(int i = topY; i <= topY + stampImage.getHeight(); i++){
+                            for(int j = topX; j <= topX + stampImage.getWidth(); j++){
+                                if(bi.getRGB(j, i) != stampImage.getRGB(j - topX, i - topY)){
+                                    bi.setRGB(stampImage.getRGB(j - topX, i - topY), j, i);
+                                }
+                            }
+                        }
+                    }
+                    image.setFullImage(createGreenfootImageFromBI(bi));
+                    image.redraw();
+                    openFile.update (image.getDetails ());
+                    checkForEdit();
+                    resetCrop();
+                }
+                else if(!inCropOne){
                     MouseInfo first = Greenfoot.getMouseInfo();
                     firstPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
                     addObject(firstPoint, first.getX(), first.getY());
@@ -485,7 +510,15 @@ public class Background extends World
                     image.setFullImage(createGreenfootImageFromBI(image.getBufferedImage().getSubimage(topX, topY, width, height)));
                     image.redraw();
                     openFile.update (image.getDetails ());
+                    checkForEdit();
                     resetCrop();
+                }
+            }
+            else if (Greenfoot.mouseClicked(stampButton)){
+                resetCrop();
+                if(stampImage != null){
+                    if(!stamping) stamping = true;
+                    else stamping = false;
                 }
             }
             else if (Greenfoot.mouseClicked(openButton))
