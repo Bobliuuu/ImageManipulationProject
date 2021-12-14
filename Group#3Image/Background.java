@@ -58,7 +58,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent, recentFilesButton;
     
-    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton;
+    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, lensFlareButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
 
@@ -83,7 +83,7 @@ public class Background extends World
         vRevButton = new TextButton("Flip Vertical", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         resetButton = new TextButton("Reset", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         openButton = new TextButton ("Open", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        recentFilesButton = new TextButton ("Open Recent File", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        recentFilesButton = new TextButton ("Open Recent File", 5, 100, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
 
         //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 5, 120, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
@@ -108,6 +108,10 @@ public class Background extends World
         sharpenButton = new TextButton("Sharpen", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         cropButton = new TextButton("Crop", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         greyScaleButton = new TextButton("Greyscale", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        solarizeButton = new TextButton("Solarize", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        noiseButton = new TextButton("Noise", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        lensFlareButton = new TextButton("Lens Flare", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
@@ -151,6 +155,9 @@ public class Background extends World
         addObject (swapRGBButton, 706, 140);
         addObject (sharpenButton, 804, 76);
         addObject (greyScaleButton, 804, 140);
+        addObject (solarizeButton, 902, 76);
+        addObject (noiseButton, 902, 108);
+        addObject (lensFlareButton, 902, 140);
         addObject (moreTransparent, 162, 140);
         addObject (lessTransparent, 292, 140);
         addObject (colorifyLabel, 1215, 16);
@@ -171,12 +178,12 @@ public class Background extends World
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
         // place the open file button directly beside the open file text box
-        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 3, openFile.getImage().getHeight() / 2 - 8);
+        addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 3, openFile.getImage().getHeight() / 2 - 10);
         
-        addObject (recentFilesButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 85, openFile.getImage().getHeight() / 2 - 8);
+        addObject (recentFilesButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 94, openFile.getImage().getHeight() / 2 - 10);
         
         // place the save file button 
-        addObject (saveButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 167, openFile.getImage().getHeight() / 2 - 8);
+        addObject (saveButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 185, openFile.getImage().getHeight() / 2 - 10);
         
         
         editPos = 0;
@@ -427,6 +434,24 @@ public class Background extends World
                 resetCrop();
             } else if (Greenfoot.mouseClicked(greyScaleButton)){
                 Processor.greyScale(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(solarizeButton)){
+                Processor.solarize(image.getBufferedImage(), 1);
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(noiseButton)){
+                Processor.noise(image.getBufferedImage(), 5);
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(lensFlareButton)){
+                Processor.lensFlare(image.getBufferedImage(), 0.5);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
