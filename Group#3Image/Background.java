@@ -451,7 +451,7 @@ public class Background extends World
                 resetCrop();
             } 
             else if (Greenfoot.mouseClicked(greyScaleButton)){
-                Processor.greyScale(image.getBufferedImage());
+                Processor.grayScale(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
