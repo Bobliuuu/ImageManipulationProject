@@ -60,7 +60,7 @@ public class Background extends World
     
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent, recentFilesButton;
     
-    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, lensFlareButton;
+    private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, laplaceButton;
     
     private TextButton stampButton;
     
@@ -116,7 +116,7 @@ public class Background extends World
         greyScaleButton = new TextButton("Greyscale", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         solarizeButton = new TextButton("Solarize", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         noiseButton = new TextButton("Noise", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        lensFlareButton = new TextButton("Lens Flare", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        laplaceButton = new TextButton("Lens Flare", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         stampButton = new TextButton("Stamp", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         
@@ -164,7 +164,7 @@ public class Background extends World
         addObject (greyScaleButton, 804, 140);
         addObject (solarizeButton, 902, 76);
         addObject (noiseButton, 902, 108);
-        addObject (lensFlareButton, 902, 140);
+        addObject (laplaceButton, 902, 140);
         addObject (moreTransparent, 162, 140);
         addObject (lessTransparent, 292, 140);
         addObject (colorifyLabel, 1215, 16);
@@ -394,84 +394,95 @@ public class Background extends World
                     openFile.update (image.getDetails ());
                 }
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(warmButton)){
+            } 
+            else if (Greenfoot.mouseClicked(warmButton)){
                 Processor.warmer(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
-            } else if (Greenfoot.mouseClicked(coolButton)){
+            } 
+            else if (Greenfoot.mouseClicked(coolButton)){
                 Processor.cooler(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(gaussianButton)){
+            } 
+            else if (Greenfoot.mouseClicked(gaussianButton)){
                 Processor.gaussianBlur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(sepiaButton)){
+            } 
+            else if (Greenfoot.mouseClicked(sepiaButton)){
                 Processor.sepia(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(contrastButton)){
+            } 
+            else if (Greenfoot.mouseClicked(contrastButton)){
                 Processor.contrast(image.getBufferedImage(), 0.9);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(hueButton)){
+            } 
+            else if (Greenfoot.mouseClicked(hueButton)){
                 Processor.adjustHue(image.getBufferedImage(), (float)0.1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(swapRGBButton)){
+            } 
+            else if (Greenfoot.mouseClicked(swapRGBButton)){
                 Processor.swapRGB(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(sharpenButton)){
+            }
+            else if (Greenfoot.mouseClicked(sharpenButton)){
                 Processor.sharpen(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(greyScaleButton)){
+            } 
+            else if (Greenfoot.mouseClicked(greyScaleButton)){
                 Processor.greyScale(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(solarizeButton)){
+            } 
+            else if (Greenfoot.mouseClicked(solarizeButton)){
                 Processor.solarize(image.getBufferedImage(), 1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(noiseButton)){
+            } 
+            else if (Greenfoot.mouseClicked(noiseButton)){
                 Processor.noise(image.getBufferedImage(), 5);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(lensFlareButton)){
-                Processor.lensFlare(image.getBufferedImage(), 0.5);
+            } 
+            else if (Greenfoot.mouseClicked(laplaceButton)){
+                Processor.laplace(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if( Greenfoot.mouseClicked(image)){
+            else if (Greenfoot.mouseClicked(image)){
                 if(stamping){
                     BufferedImage bi = image.getBufferedImage();
                     MouseInfo click = Greenfoot.getMouseInfo();
                     int topX = click.getX()-(640-(int)(bi.getWidth()/2)), topY = click.getY()-(560-(int)(bi.getHeight()/2));
-                    
                     if((topX + stampImage.getWidth() <= bi.getWidth()) && (topY + stampImage.getHeight() <= bi.getHeight())){
                         for(int i = topY; i < topY + stampImage.getHeight(); i++){
                             for(int j = topX; j < topX + stampImage.getWidth(); j++){
@@ -487,13 +498,13 @@ public class Background extends World
                     checkForEdit();
                     resetCrop();
                 }
-                else if(!inCropOne){
+                else if (!inCropOne){
                     MouseInfo first = Greenfoot.getMouseInfo();
                     firstPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
                     addObject(firstPoint, first.getX(), first.getY());
                     inCropOne = true;
                 }
-                else if(!inCropTwo){
+                else if (!inCropTwo){
                     MouseInfo second = Greenfoot.getMouseInfo();
                     secondPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));                    
                     addObject(secondPoint, second.getX(), second.getY());
