@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.awt.Color;
+import java.math.BigInteger;
 import java.lang.Math;
 import greenfoot.*;
 
@@ -409,7 +410,7 @@ public class Processor
     }
     
     /**
-     * Turns the image closer to sepia 
+     * Adds a sepia filter to the image
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      */ 
@@ -447,6 +448,52 @@ public class Processor
                 red = Math.min(sepiaRed, 255);
                 green = Math.min(sepiaGreen, 255);
                 blue = Math.min(sepiaBlue, 255);
+                
+                int newColour = packagePixel (red, green, blue, alpha);
+                bi.setRGB (x, y, newColour);
+            }
+        }
+    }
+    
+    /**
+     * Adds a luminance filter to the image
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */ 
+    public static void luminance(BufferedImage bi)
+    {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                int lumRed = (int)(0.299 * red + 0.587 * green
+                                   + 0.114 * blue);
+                int lumGreen = (int)(0.598 * red - 0.274 * green
+                                         - 0.322 * blue);
+                int lumBlue = (int)(0.211 * red - 0.523 * green
+                                        + 0.312 * blue);
+                
+                red = Math.min(lumRed, 255);
+                green = Math.min(lumGreen, 255);
+                blue = Math.min(lumBlue, 255);
                 
                 int newColour = packagePixel (red, green, blue, alpha);
                 bi.setRGB (x, y, newColour);
@@ -904,90 +951,7 @@ public class Processor
             }
         }
     }
-    
-    /**
-     * Sharpens an image to make it more defined
-     * @param bi            The BufferedImage (passed by reference) to change
-     */
-     public static void sharpen (BufferedImage bi)
-    {
-        int xSize = bi.getWidth();
-        int ySize = bi.getHeight();
-        
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
-        
-        for (int x = 0; x < xSize; x++)
-        {
-            for (int y = 0; y < ySize; y++)
-            {
-                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
-                    newBi.setRGB(x, y, bi.getRGB(x, y));
-                    continue;
-                }
-                
-                int rgb = bi.getRGB(x, y);
-                
-                int[] rgbValues = unpackPixel (rgb);
-                
-                int alpha = rgbValues[0];
-                int red = rgbValues[1];
-                int green = rgbValues[2];
-                int blue = rgbValues[3];
 
-                int sumRed = red * 9;
-                int sumGreen = green * 9;
-                int sumBlue = blue * 9;
-                
-                for (int r = -1; r <= 1; r++)
-                {
-                    for (int c = -1; c <= 1; c++)
-                    {
-                        // Calls method in BufferedImage that returns R G B and alpha values
-                        // encoded together in an integer
-                        rgb = bi.getRGB(x + r, y + c);
-        
-                        // Call the unpackPixel method to retrieve the four integers for
-                        // R, G, B and alpha and assign them each to their own integer
-                        rgbValues = unpackPixel (rgb);
-                        
-                        if (r != 0 || c != 0){
-                            sumRed -= rgbValues[1];
-                            sumGreen -= rgbValues[2];
-                            sumBlue -= rgbValues[3];
-                        }
-                    }
-                }
-
-                if (sumRed > 255){
-                    sumRed = 255; 
-                }
-                if (sumRed < 0){
-                    sumRed = 0;
-                }
-                if (sumBlue > 255){
-                    sumBlue = 255; 
-                }
-                if (sumBlue < 0){
-                    sumBlue = 0;
-                }
-                if (sumGreen > 255){
-                    sumGreen = 255; 
-                }
-                if (sumGreen < 0){
-                    sumGreen = 0;
-                }
-                
-                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
-                newBi.setRGB (x, y, newColour);
-            }
-        }
-        
-        for(int i = 0; i < xSize; i++){
-            for(int j = 0; j < ySize; j++){
-                bi.setRGB(i, j, newBi.getRGB(i, j));
-            }
-        }
-    }
     
     /**
      * Distorts the image into a swirl using bilinear interpolation: 
@@ -1271,41 +1235,365 @@ public class Processor
     }
     
     /**
-     * Creates a lens flare effect
-     * @param bi            The BufferedImage (passed by reference) to change
-     * @param percentage    The percentage of adjustment
-     */
-     public static void lensFlare (BufferedImage bi, double percentage)
+     * Removes randomized noise from the image and adds a Laplace Filter
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */ 
+    public static void laplace(BufferedImage bi)
     {
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
+                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
+                    newBi.setRGB(x, y, bi.getRGB(x, y));
+                    continue;
+                }
+                
                 int rgb = bi.getRGB(x, y);
+                
                 int[] rgbValues = unpackPixel (rgb);
                 
                 int alpha = rgbValues[0];
                 int red = rgbValues[1];
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
+
+                int sumRed = red * 8;
+                int sumGreen = green * 8;
+                int sumBlue = blue * 8;
                 
-                if (red < 240) {
-                    red = (int)(percentage * (red - 128) + 128); 
-                }
-                if (blue < 240) {
-                    blue = (int)(percentage * (blue - 128) + 128);
-                }
-                if (green < 240) {
-                    green = (int)(percentage * (green - 128) + 128);
+                for (int r = -1; r <= 1; r++)
+                {
+                    for (int c = -1; c <= 1; c++)
+                    {
+                        // Calls method in BufferedImage that returns R G B and alpha values
+                        // encoded together in an integer
+                        rgb = bi.getRGB(x + r, y + c);
+        
+                        // Call the unpackPixel method to retrieve the four integers for
+                        // R, G, B and alpha and assign them each to their own integer
+                        rgbValues = unpackPixel (rgb);
+                        
+                        if (r != 0 || c != 0){
+                            sumRed -= rgbValues[1];
+                            sumGreen -= rgbValues[2];
+                            sumBlue -= rgbValues[3];
+                        }
+                    }
                 }
 
-                int newColour = packagePixel (red, green, blue, alpha);
-                bi.setRGB (x, y, newColour);
+                if (sumRed > 255){
+                    sumRed = 255; 
+                }
+                if (sumRed < 0){
+                    sumRed = 0;
+                }
+                if (sumBlue > 255){
+                    sumBlue = 255; 
+                }
+                if (sumBlue < 0){
+                    sumBlue = 0;
+                }
+                if (sumGreen > 255){
+                    sumGreen = 255; 
+                }
+                if (sumGreen < 0){
+                    sumGreen = 0;
+                }
+                
+                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        for(int i = 0; i < xSize; i++){
+            for(int j = 0; j < ySize; j++){
+                bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
     }
+    
+    /**
+     * Removes randomized noise from the image and adds a Laplace Filter
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */ 
+    public static void emboss(BufferedImage bi)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
+                    newBi.setRGB(x, y, bi.getRGB(x, y));
+                    continue;
+                }
+                
+                int rgb = bi.getRGB(x, y);
+                
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+
+                int sumRed = 0;
+                int sumGreen = 0;
+                int sumBlue = 0;
+                
+                for (int r = -1; r <= 1; r++)
+                {
+                    for (int c = -1; c <= 1; c++)
+                    {
+                        // Calls method in BufferedImage that returns R G B and alpha values
+                        // encoded together in an integer
+                        rgb = bi.getRGB(x + r, y + c);
+        
+                        // Call the unpackPixel method to retrieve the four integers for
+                        // R, G, B and alpha and assign them each to their own integer
+                        rgbValues = unpackPixel (rgb);
+                        
+                        if (c == -1){
+                            sumRed -= rgbValues[1];
+                            sumGreen -= rgbValues[2];
+                            sumBlue -= rgbValues[3];
+                        }
+                        else if (c == 0 && (r == -1 || r == 1)){
+                            
+                        }
+                        else {
+                            sumRed += rgbValues[1];
+                            sumGreen += rgbValues[2];
+                            sumBlue += rgbValues[3];
+                        }
+                    }
+                }
+
+                if (sumRed > 255){
+                    sumRed = 255; 
+                }
+                if (sumRed < 0){
+                    sumRed = 0;
+                }
+                if (sumBlue > 255){
+                    sumBlue = 255; 
+                }
+                if (sumBlue < 0){
+                    sumBlue = 0;
+                }
+                if (sumGreen > 255){
+                    sumGreen = 255; 
+                }
+                if (sumGreen < 0){
+                    sumGreen = 0;
+                }
+                
+                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        for(int i = 0; i < xSize; i++){
+            for(int j = 0; j < ySize; j++){
+                bi.setRGB(i, j, newBi.getRGB(i, j));
+            }
+        }
+    }
+    
+    public static String encodeMessage (String message) {
+	String bitString = new BigInteger(message.getBytes()).toString(2);
+	if (bitString.length() % 8 != 0){
+            String zeroes = "";
+            while ((bitString.length() + zeroes.length()) % 8 != 0) {
+                zeroes = zeroes + "0";
+            }
+            bitString = zeroes + bitString;
+	}
+	return bitString;
+    }
+    
+    public static void encodeImage (String bit, BufferedImage bi) {
+        int pointer = bit.length() - 1; 
+        for (int x = bi.getWidth()-1; x >= 0; x--) {
+	    for (int y = bi.getHeight()-1; y >= 0; y--) { 
+                Color c = new Color(bi.getRGB(x,y)); 
+                byte r = (byte) c.getRed(); 
+                byte g = (byte) c.getGreen(); 
+                byte b = (byte) c.getBlue(); 
+                byte[] RGB = {r, g, b};
+                byte[] newRGB = new byte[3];
+                for (int i = 2; i >= 0; i--) { 
+                    if (pointer >= 0) { 
+                        int lsb;
+                        if ((RGB[i] & 1) == 1) {
+                            	lsb = 1;
+                        } 
+                        else {
+                            	lsb = 0;
+                        }
+                        if (Character.getNumericValue(bit.charAt(pointer)) != lsb) {
+                            if (lsb == 1) { 
+                                newRGB[i] = (byte) (RGB[i] & ~(1));
+                            } 
+                            else { 
+                                newRGB[i] = (byte) (RGB[i] | 1);
+                            }
+                        } 
+                        else {
+                            newRGB[i] = RGB[i];
+                        }
+                    } 
+                    else { 
+                        newRGB[i] = (byte) (RGB[i] & ~(1));
+                    }
+                    pointer--;
+                }
+                Color newColor = new Color(Byte.toUnsignedInt(newRGB[0]), Byte.toUnsignedInt(newRGB[1]), Byte.toUnsignedInt(newRGB[2]));
+                bi.setRGB(x,y,newColor.getRGB());
+            }
+	}
+    }
+    
+    public static String getMessage (String encoded) {
+        int count = encoded.length()-1;
+        StringBuilder message = new StringBuilder();
+        int values = encoded.length()/8;
+        byte[] ba = new byte[values];
+        int arrayCount = values-1;
+        while (arrayCount > 0) {
+            StringBuilder bits = new StringBuilder();
+            for (int i = 0; i < 8; i++) {
+                bits.insert(0,encoded.charAt(count-i));
+            }
+            byte b = (byte) Integer.parseInt(bits.toString(), 2);
+            int x = Byte.toUnsignedInt(b);
+            ba[arrayCount] = (byte) x;
+            char c = (char) x;
+            message.insert(0,c);
+            count = count - 8;
+            arrayCount--;
+        }
+        String fin = new String(ba);
+        return fin;
+    } 
+
+    public static String decodeMessage(BufferedImage bi) {
+    	StringBuilder sb = new StringBuilder();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                Color c = new Color(bi.getRGB(x,y)); 
+                byte r = (byte) c.getRed(); 
+                byte g = (byte) c.getGreen(); 
+                byte b = (byte) c.getBlue(); 
+                byte[] RGB = {r, g, b};
+                for (int i = 0; i < 3; i++) {
+                    if ((RGB[i] & 1) == 1) { 
+                    	sb.append("1");
+                    } 
+                    else {
+                    	sb.append("0");
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * Sharpens an image to make it more defined
+     * @param bi            The BufferedImage (passed by reference) to change
+     */
+     public static void sharpen (BufferedImage bi)
+    {
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
+                    newBi.setRGB(x, y, bi.getRGB(x, y));
+                    continue;
+                }
+                
+                int rgb = bi.getRGB(x, y);
+                
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+
+                int sumRed = red * 9;
+                int sumGreen = green * 9;
+                int sumBlue = blue * 9;
+                
+                for (int r = -1; r <= 1; r++)
+                {
+                    for (int c = -1; c <= 1; c++)
+                    {
+                        // Calls method in BufferedImage that returns R G B and alpha values
+                        // encoded together in an integer
+                        rgb = bi.getRGB(x + r, y + c);
+        
+                        // Call the unpackPixel method to retrieve the four integers for
+                        // R, G, B and alpha and assign them each to their own integer
+                        rgbValues = unpackPixel (rgb);
+                        
+                        if (r != 0 || c != 0){
+                            sumRed -= rgbValues[1];
+                            sumGreen -= rgbValues[2];
+                            sumBlue -= rgbValues[3];
+                        }
+                    }
+                }
+
+                if (sumRed > 255){
+                    sumRed = 255; 
+                }
+                if (sumRed < 0){
+                    sumRed = 0;
+                }
+                if (sumBlue > 255){
+                    sumBlue = 255; 
+                }
+                if (sumBlue < 0){
+                    sumBlue = 0;
+                }
+                if (sumGreen > 255){
+                    sumGreen = 255; 
+                }
+                if (sumGreen < 0){
+                    sumGreen = 0;
+                }
+                
+                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        for(int i = 0; i < xSize; i++){
+            for(int j = 0; j < ySize; j++){
+                bi.setRGB(i, j, newBi.getRGB(i, j));
+            }
+        }
+    }    
     
     /**
      * Rotates an image 90 degrees clockwise
