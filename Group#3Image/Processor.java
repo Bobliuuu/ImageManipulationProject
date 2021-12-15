@@ -259,6 +259,45 @@ public class Processor
     }
     
     /**
+     * Uses a weighted greyscale algorithm
+     * 
+     * @param bi    The BufferedImage (passed by reference) to change
+     */ 
+    public static void weightedGreyScale(BufferedImage bi)
+    {
+
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+                
+                // Calculates they greyscale value
+                int grey = (int)((0.3 * red) + (0.59 * green) + (0.11 * blue));
+                
+                int newColour = packagePixel (grey, grey, grey, alpha);
+                bi.setRGB (x, y, newColour);
+            }
+        }
+    }
+    
+    /**
      * Sets each pixel's RGB value to it's negative value (255 - value)
      * 
      * @param bi    The BufferedImage (passed by reference) to change
@@ -1413,21 +1452,21 @@ public class Processor
     }
     
     public static String encodeMessage (String message) {
-	String bitString = new BigInteger(message.getBytes()).toString(2);
-	if (bitString.length() % 8 != 0){
+    String bitString = new BigInteger(message.getBytes()).toString(2);
+    if (bitString.length() % 8 != 0){
             String zeroes = "";
             while ((bitString.length() + zeroes.length()) % 8 != 0) {
                 zeroes = zeroes + "0";
             }
             bitString = zeroes + bitString;
-	}
-	return bitString;
+    }
+    return bitString;
     }
     
     public static void encodeImage (String bit, BufferedImage bi) {
         int pointer = bit.length() - 1; 
         for (int x = bi.getWidth()-1; x >= 0; x--) {
-	    for (int y = bi.getHeight()-1; y >= 0; y--) { 
+        for (int y = bi.getHeight()-1; y >= 0; y--) { 
                 Color c = new Color(bi.getRGB(x,y)); 
                 byte r = (byte) c.getRed(); 
                 byte g = (byte) c.getGreen(); 
@@ -1438,10 +1477,10 @@ public class Processor
                     if (pointer >= 0) { 
                         int lsb;
                         if ((RGB[i] & 1) == 1) {
-                            	lsb = 1;
+                                lsb = 1;
                         } 
                         else {
-                            	lsb = 0;
+                                lsb = 0;
                         }
                         if (Character.getNumericValue(bit.charAt(pointer)) != lsb) {
                             if (lsb == 1) { 
@@ -1463,7 +1502,7 @@ public class Processor
                 Color newColor = new Color(Byte.toUnsignedInt(newRGB[0]), Byte.toUnsignedInt(newRGB[1]), Byte.toUnsignedInt(newRGB[2]));
                 bi.setRGB(x,y,newColor.getRGB());
             }
-	}
+    }
     }
     
     public static String getMessage (String encoded) {
@@ -1490,7 +1529,7 @@ public class Processor
     } 
 
     public static String decodeMessage(BufferedImage bi) {
-    	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (int x = 0; x < bi.getWidth(); x++) {
             for (int y = 0; y < bi.getHeight(); y++) {
                 Color c = new Color(bi.getRGB(x,y)); 
@@ -1500,10 +1539,10 @@ public class Processor
                 byte[] RGB = {r, g, b};
                 for (int i = 0; i < 3; i++) {
                     if ((RGB[i] & 1) == 1) { 
-                    	sb.append("1");
+                        sb.append("1");
                     } 
                     else {
-                    	sb.append("0");
+                        sb.append("0");
                     }
                 }
             }
