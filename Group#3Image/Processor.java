@@ -112,6 +112,10 @@ public class Processor
             }
         }
     }
+
+    /**
+     * Reference colors for all colorify methods: https://www.rapidtables.com/web/color/RGB_Color.html
+     */
     
     /**
      * Make the image more brown by making the image's pixel values closer to brown's RGB values
@@ -277,6 +281,7 @@ public class Processor
     
     /**
      * Uses a weighted greyscale algorithm
+     * Reference: https://www.tutorialspoint.com/dip/grayscale_to_rgb_conversion
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -417,8 +422,7 @@ public class Processor
     }
     
     /**
-     * Decreases the red, green and blue values of each pixel to make
-     * image darker
+     * Decreases the red, green and blue values of each pixel to make image darker
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -477,6 +481,7 @@ public class Processor
     
     /**
      * Adds a sepia filter to the image
+     * Reference: https://dyclassroom.com/image-processing-project/how-to-convert-a-color-image-into-sepia-image
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -527,6 +532,7 @@ public class Processor
     
     /**
      * Adds a luminance filter to the image
+     * Reference: http://www.songho.ca/dsp/luminance/luminance.html
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -692,7 +698,8 @@ public class Processor
     }
     
     /**
-     * Make image more transparent by increasing it's alpha value
+     * Make image more transparent by increasing it's alpha value (using alpha blending to add a composited more transparent image)
+     * Reference: https://en.wikipedia.org/wiki/Alpha_compositing
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -738,8 +745,8 @@ public class Processor
     }
     
     /**
-     * Make image less transparent by decreasing it's alpha value
-     * Less transparent means more opaque
+     * Make image less transparent by decreasing it's alpha value (less transparent means more opaque)
+     * Reference: https://en.wikipedia.org/wiki/Alpha_compositing
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -785,8 +792,9 @@ public class Processor
     }
     
     /**
-     * Blur the image by putting the pixel values closer together
+     * Blur the image using a box blur by putting the pixel values closer together
      * Uses blur matrix: |1/9|1/9|1/9|1/9|1/9|1/9|1/9|1/9|1/9|
+     * Reference: https://en.wikipedia.org/wiki/Box_blur
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -803,7 +811,12 @@ public class Processor
         {
             for (int y = 0; y < ySize; y++)
             {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel(rgb);
                 int alpha = rgbValues[0];
                 
@@ -836,7 +849,8 @@ public class Processor
                         total++;
                     }
                 }
-
+                
+                // Divide by the number of blur values
                 sumRed /= total;
                 sumGreen /= total;
                 sumBlue /= total;
@@ -866,16 +880,19 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
-        int sum = IntStream.of(filter).sum(); // Get sum of kernel matrix
+        // Get sum of kernel matrix
+        int sum = IntStream.of(filter).sum(); 
         
+        // Input and output array for pixel manipulation
         int[] input = bi.getRGB(0, 0, xSize, ySize, null, 0, xSize);
-
         int[] output = new int[input.length];
         
+        // Initialize offset variables
         int pixelIndexOffset = xSize - filterWidth;
         int centerOffsetX = filterWidth / 2;
         int centerOffsetY = filter.length / filterWidth / 2;
         
+        // Loop through each pixel to calculate gaussian blur value 
         for (int h = ySize - filter.length / filterWidth + 1, w = xSize - filterWidth + 1, y = 0; y < h; y++)
         {
             for (int x = 0; x < w; x++)
@@ -891,6 +908,7 @@ public class Processor
                         int[] values = unpackPixel(col);
                         int factor = filter[filterIndex];
                         
+                        // Append this factor to the color values to blur them
                         red += (values[1]) * factor;
                         green += (values[2]) * factor;
                         blue += (values[3]) * factor;
@@ -900,15 +918,18 @@ public class Processor
                 green /= sum;
                 blue /= sum;
                 
+                // Set the new pixel value
                 output[x + centerOffsetX + (y + centerOffsetY) * xSize] = (red << 16) | (green << 8) | blue | 0xFF000000;
             }
         }
         
+        // Get a new bufferedImage and set the new image values
         BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
         newBi.setRGB(0, 0, xSize, ySize, output, 0, xSize);
         
-        for (int x = 0; x < xSize; x++) {
-            for (int y = 0; y < ySize; y++) {
+        // Edit the original BufferedImage to reflect the new image
+        for (int x = 0; x < xSize; x++){
+            for (int y = 0; y < ySize; y++){
                 bi.setRGB(x, y, newBi.getRGB(x, y));
             }
         }
@@ -916,6 +937,7 @@ public class Processor
     
     /**
      * Pixelate method to make an image less defined
+     * Reference: https://stackoverflow.com/questions/15777821/how-can-i-pixelate-a-jpg-with-java
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * @param percentage    The percentage of adjustment
@@ -928,6 +950,7 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Loop in intervals creating large "pixels" 
         for (int x = 0; x < xSize; x += pixelSize)
         {
             for (int y = 0; y < ySize; y += pixelSize)
@@ -945,8 +968,11 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
+                // Get the cropped image and get the dominant color
                 BufferedImage croppedImage = getCroppedImage(bi, x, y, pixelSize, pixelSize);
                 int dominantColor = getDominantColor(croppedImage);
+                
+                // Set new RGB values for each pixel in the range
                 for (int xNew = x; (xNew < x + pixelSize) && (xNew < xSize); xNew++)
                 {
                    for(int yNew = y; (yNew < y + pixelSize) && (yNew < ySize); yNew++) 
@@ -960,6 +986,8 @@ public class Processor
     
     /**
      * Adjusts the contrast based on a percentage
+     * Reference: https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-4-brightness-adjustment/
+     * 
      * @param bi            The BufferedImage (passed by reference) to change
      * @param percentage    The percentage of adjustment
      * 
@@ -971,11 +999,17 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
                 
                 int alpha = rgbValues[0];
@@ -983,6 +1017,7 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
+                // Adjust the contrast of the image
                 if (red < 240) {
                     red = (int)(percentage * (red - 128) + 128); 
                 }
@@ -1001,8 +1036,8 @@ public class Processor
     }
     
     /** 
-     * Adjust the hues of the ased on a percentage. Method used: 
-     * https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html#RGBtoHSB(int,%20int,%20int,%20float[])
+     * Adjust the hues of the ased on a percentage, using an alpha blend technique and an RGB to HSB conversion
+     * Reference: https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html#RGBtoHSB(int,%20int,%20int,%20float[])
      * 
      * @param bi            The BufferedImage (passed by reference) to change
      * @param percentage    The percentage of adjustment
@@ -1015,11 +1050,17 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
                 
                 int alpha = rgbValues[0];
@@ -1027,10 +1068,13 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
 
+                // Get the HSB values and adjust the hue percentage
                 float[] hsbValues = Color.RGBtoHSB(red, green, blue, null);
                 hsbValues[0] += percentage;
+                // Convert back to RGB values
                 int c = Color.HSBtoRGB(hsbValues[0], hsbValues[1], hsbValues[2]);
                 
+                // Set the new pixel color value
                 bi.setRGB (x, y, c);
             }
         }
@@ -1038,7 +1082,8 @@ public class Processor
     
     /**
      * Swaps the RGB values 
-     * red -> blue, blue -> green, green -> red
+     * Swaps colors red -> blue, blue -> green, green -> red
+     * 
      * @param bi            The BufferedImage (passed by reference) to change
      * 
      * @author Jerry Zhu
@@ -1049,11 +1094,17 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
                 
                 // Swap RGB values
@@ -1070,29 +1121,36 @@ public class Processor
     }
 
     /**
-     * Distorts the image into a swirl using bilinear interpolation: 
-     * https://stackoverflow.com/questions/225548/resources-for-image-distortion-algorithms
+     * Distorts the image into a swirl using bilinear interpolation 
+     * Reference: https://stackoverflow.com/questions/225548/resources-for-image-distortion-algorithms
+     * 
      * @param bi            The BufferedImage (passed by reference) to change
-     * @param percentage    The percentage of adjustment
      * 
      * @author Jerry Zhu
      */
-     public static void distort (BufferedImage bi, double a, double b)
+     public static void distort (BufferedImage bi)
     {
         // Get image size to use in for loops
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Initialize new BufferedImage and distort center coordinate
         double x0 = 0.5 * (xSize  - 1);
         double y0 = 0.5 * (ySize - 1);
         
         BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
         
+        // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
                 
                 int alpha = rgbValues[0];
@@ -1100,21 +1158,26 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
+                // Calculate x position, y position, and angles
+                // Utilizes polar form calculations to represent coordinates in the distortion
                 double dx = x - x0;
                 double dy = y - y0;
                 double r = Math.sqrt(dx*dx + dy*dy);
                 double angle = Math.PI / 256 * r;
+                // Calculates new distorted pixel
                 int tx = (int) (dx * Math.cos(angle) - dy * Math.sin(angle) + x0);
                 int ty = (int) (dx * Math.sin(angle) + dy * Math.cos(angle) + y0);
 
+                // Set the new BufferedImage's corresponding pixel to the distored pixel found in the distortion calculation
                 if (tx >= 0 && tx < xSize && ty >= 0 && ty < ySize){
                     newBi.setRGB(x, y, bi.getRGB(tx, ty));
                 }
             }
         }
         
-        for (int i = 0; i < xSize; i++) {
-            for (int j = 0; j < ySize; j++) {
+        // Update the original BufferedImage with the new values
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }        
@@ -1122,51 +1185,58 @@ public class Processor
     
     /**
      * Distorts the imagine into a spherical shape
-     * Credit: http://popscan.blogspot.com/2012/04/fisheye-lens-equation-simple-fisheye.html
+     * Reference: http://popscan.blogspot.com/2012/04/fisheye-lens-equation-simple-fisheye.html
      * 
-     * @param bi    the image to be distorted
+     * @param bi    The BufferedImage (passed by reference) to change
      * 
      * @author Jerry Zhu
      */
     public static void spherify (BufferedImage bi)
     {
-        
+        // Get image size to use in for loops
         double xSize = bi.getWidth(); 
         double ySize = bi.getHeight();
         
+        // Initialize new BufferedIamge and pixel values to be updated
         BufferedImage newBi = new BufferedImage((int)xSize, (int)ySize, 3);
         
         int[] srcpixels = bi.getRGB(0, 0, (int)xSize, (int)ySize, null, 0, (int)xSize);
-        int[] dstpixels = new int[(int)xSize * (int)ySize];            
-        for (int y = 0; y < ySize; y++) {                                
-            double ny = ((2*y)/ySize)-1;                        
-            double ny2 = ny*ny;                                
-            for (int x = 0; x < xSize; x++) {                            
-                double nx = ((2*x)/xSize)-1;                    
+        int[] distpixels = new int[(int)xSize * (int)ySize]; 
+        // Using array size as limit
+        for (int y = 0; y < ySize; y++){ 
+            double ny = ((2*y)/ySize)-1;
+            double ny2 = ny*ny; 
+            for (int x = 0; x < xSize; x++){ 
+                // Calculate new x and y values using trig mapping values
+                double nx = ((2*x)/xSize) - 1;
                 double nx2 = nx*nx;
-                double r = Math.sqrt(nx2+ny2);                
-                if (0.0 <= r && r <= 1.0) {                            
-                    double nr = Math.sqrt(1.0-r*r);            
-                    nr = (r + (1.0-nr)) / 2.0;
-                    if (nr<=1.0) {
-                        double theta = Math.atan2(ny,nx);         
-                        double nxn = nr*Math.cos(theta);        
-                        double nyn = nr*Math.sin(theta);        
-                        int x2 = (int)(((nxn+1)*xSize)/2.0);        
-                        int y2 = (int)(((nyn+1)*ySize)/2.0);        
-                        int srcpos = (int)(y2*xSize+x2);            
-                        if (srcpos >= 0 & srcpos < xSize*ySize) {
-                            dstpixels[(int)(y*xSize+x)] = srcpixels[srcpos];    
+                double r = Math.sqrt(nx2 + ny2); 
+                if (0.0 <= r && r <= 1.0){ // If pixel is in range of radius
+                    double nr = Math.sqrt(1.0 - r*r); 
+                    nr = (r + (1.0-nr)) / 2.0; // Find a new radius
+                    if (nr <= 1.0){ // If new radius is in range
+                        // Calculate pixel values for the spherified coordinate
+                        double theta = Math.atan2(ny,nx); 
+                        double nxn = nr*Math.cos(theta); 
+                        double nyn = nr*Math.sin(theta); 
+                        int x2 = (int)(((nxn+1)*xSize)/2.0); 
+                        int y2 = (int)(((nyn+1)*ySize)/2.0); 
+                        int srcpos = (int)(y2*xSize+x2); 
+                        // Add teh sperified coordinate to the new image
+                        if (srcpos >= 0 & srcpos < xSize*ySize){
+                            distpixels[(int)(y*xSize+x)] = srcpixels[srcpos]; 
                         }
                     }
                 }
             }
         }
         
-        newBi.setRGB(0, 0, (int)xSize, (int)ySize, dstpixels, 0, (int)xSize);
+        // Update the new BufferedImage with the spherified coordinates in distpixels
+        newBi.setRGB(0, 0, (int)xSize, (int)ySize, distpixels, 0, (int)xSize);
         
-        for (int y = 0; y < ySize; y++) {
-            for (int x = 0; x < xSize; x++) {
+        // Update the original BufferedImage with the new values
+        for (int y = 0; y < ySize; y++){
+            for (int x = 0; x < xSize; x++){
                 bi.setRGB(x, y, newBi.getRGB(x, y));
             }
         }
@@ -1176,7 +1246,8 @@ public class Processor
      * Distorts the image by adding randomized noise 
      * https://www.codeproject.com/Questions/98491/Adding-random-noise-to-an-image
      * 
-     * @param bi    The BufferedImage (passed by reference) to change
+     * @param bi       The BufferedImage (passed by reference) to change
+     * @param density  The density of white noise desired
      * 
      * @author Jerry Zhu
      */ 
@@ -1186,6 +1257,7 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
@@ -1203,6 +1275,7 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
+                // If there should be white noise at this point
                 if ((Math.random() * 1000) < density){
                     red = 255;
                     blue = 255;
@@ -1219,7 +1292,8 @@ public class Processor
     /**
      * Solarizes the image based on a threshold
      * 
-     * @param bi    The BufferedImage (passed by reference) to change
+     * @param bi         The BufferedImage (passed by reference) to change
+     * @param threshold  The threshold of RGB values required in order to flip certain pixels
      * 
      * @author Jerry Zhu
      */ 
@@ -1265,12 +1339,26 @@ public class Processor
         }
     }
     
+    /**
+     * Method to get the sobel filter value for a pixel at an indicated position
+     * 
+     * @param bi             The BufferedImage passed by reference
+     * @param i              The x coordinate of the desired pixel
+     * @param j              The y coordinate of the desired pixel
+     * @param xSize          The width of the BufferedImage
+     * @param ySize          The length of the BufferedImage
+     * @param colorPosition  The position (R, G, B corresponds to 0, 1, 2) of the desired pixel
+     * 
+     * @author Jerry Zhu
+     */
     public static int getSobelFilter(BufferedImage bi, int i, int j, int xSize, int ySize, int colorPosition){
+        // Initialize sum and kernel matrix
         float sumX = 0;
         float sumY = 0;
     
-        int gx[][] = {{-1,0,1}, {-2,0,2}, {-1,0,1}};
-        int gy[][] = {{-1,-2,-1}, {0,0,0}, {1,2,1}}; 
+        int gx[][] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+        int gy[][] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}}; 
+        // Loops through array values
         for (int k = i - 1, x = 0; k < (i + 2); k++, x++)
         {
             for (int l = j - 1, y = 0; l < (j + 2); l++, y++)
@@ -1293,16 +1381,19 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
+                // If red value is desired pixel value
                 if (colorPosition == 0)
                 {
                     sumX += red * gx[x][y];
                     sumY += red * gy[x][y];
                 }
+                // If green value is desired pixel value
                 else if (colorPosition == 1)
                 {
                     sumX += green * gx[x][y];
                     sumY += green * gy[x][y];
                 }
+                // If blue value is desired pixel value
                 else
                 {
                     sumX += blue * gx[x][y];
@@ -1310,6 +1401,7 @@ public class Processor
                 }
             }
         }
+        // Calculate and return result of sobel filter value
         int result = (int)Math.round( Math.sqrt((sumX * sumX) + (sumY * sumY)) );
         
         return result < 255 ? result : 255;
@@ -1317,6 +1409,7 @@ public class Processor
     
     /**
      * Make the edges more defined using a sobel operator
+     * Reference: https://cs50.harvard.edu/x/2020/psets/4/filter/more/
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -1328,6 +1421,7 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Initialize new BufferedImage
         BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
         
         // Using array size as limit
@@ -1348,18 +1442,21 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
                 
+                // Get the sobel filter for the RGB value for each pixel
                 red = getSobelFilter(bi, x, y, xSize, ySize, 0);
                 green = getSobelFilter(bi, x, y, xSize, ySize, 1);
                 blue = getSobelFilter(bi, x, y, xSize, ySize, 2);
 
                 // Use the packagePixel method to package the integers back into a single integer
                 int newColour = packagePixel (red, green, blue, alpha);
+                // Set the new BufferedImage to the desired colour
                 newBi.setRGB (x, y, newColour);
             }
         }
         
-        for(int i = 0; i < xSize; i++){
-            for(int j = 0; j < ySize; j++){
+        // Edit the original BufferedImage to reflect the new image
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
@@ -1367,6 +1464,8 @@ public class Processor
     
     /**
      * Removes randomized noise from the image and adds a Laplace Filter
+     * Reference: https://introcs.cs.princeton.edu/java/31datatype/LaplaceFilter.java.html
+     * Uses kernel matrix |-1|-1|-1|-1|8|-1|-1|-1|-1|
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -1378,19 +1477,26 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Initialize new BufferedImage
         BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
         
+        // Using array size as limit
         for (int x = 0; x < xSize; x++)
         {
             for (int y = 0; y < ySize; y++)
             {
+                // If edges of image, set to same as the original value
                 if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
                     newBi.setRGB(x, y, bi.getRGB(x, y));
                     continue;
                 }
                 
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
                 
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
                 
                 int alpha = rgbValues[0];
@@ -1398,10 +1504,12 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
 
+                // Initialize sum of pixel values
                 int sumRed = red * 8;
                 int sumGreen = green * 8;
                 int sumBlue = blue * 8;
                 
+                // Loop the kernel matrix around the pixel
                 for (int r = -1; r <= 1; r++)
                 {
                     for (int c = -1; c <= 1; c++)
@@ -1414,6 +1522,7 @@ public class Processor
                         // R, G, B and alpha and assign them each to their own integer
                         rgbValues = unpackPixel (rgb);
                         
+                        // Use the kernel matrix to offset the RGB pixel value
                         if (r != 0 || c != 0){
                             sumRed -= rgbValues[1];
                             sumGreen -= rgbValues[2];
@@ -1422,6 +1531,7 @@ public class Processor
                     }
                 }
 
+                // Make sure RGB values are in range
                 if (sumRed > 255){
                     sumRed = 255; 
                 }
@@ -1443,19 +1553,21 @@ public class Processor
                 
                 // Use the packagePixel method to package the integers back into a single integer
                 int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                // Sets the new colour to the new BufferedImage
                 newBi.setRGB (x, y, newColour);
             }
         }
         
-        for(int i = 0; i < xSize; i++){
-            for(int j = 0; j < ySize; j++){
+        // Edit the original BufferedImage to reflect the new image
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
     }
     
     /**
-     * Adds an emboss filter to the iamge
+     * Adds an emboss filter to the image
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -1467,6 +1579,7 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Initialize new BufferedImage
         BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
         
         for (int x = 0; x < xSize; x++)
@@ -1544,8 +1657,8 @@ public class Processor
             }
         }
         
-        for(int i = 0; i < xSize; i++){
-            for(int j = 0; j < ySize; j++){
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
@@ -1764,8 +1877,8 @@ public class Processor
             }
         }
         
-        for(int i = 0; i < xSize; i++){
-            for(int j = 0; j < ySize; j++){
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
