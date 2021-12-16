@@ -1,3 +1,4 @@
+// Import all required packages
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -20,7 +21,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Scanner;
 import java.lang.Math;
+
 /**
+ * Background class - The class that 
  * Starter code for Image Manipulation Array Assignment.
  * 
  * The class Background contains all of the code to actually perform
@@ -94,12 +97,12 @@ public class Background extends World
         recentFilesButton = new TextButton ("Open Recent File", 5, 100, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
 
         //openButton.setFixedWidth(80);
-        rotateButton = new TextButton("Rotate Clockwise", 5, 120, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        rotateOtherButton = new TextButton("Rotate Counterclockwise", 5, 140, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));        
-        negativeButton = new TextButton("Negative", 5, 90, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        brightButton = new TextButton("Brighten", 5, 90, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        darkButton = new TextButton("Darken", 5, 90, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        saveButton = new TextButton ("Save", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        rotateButton = new TextButton("Rotate Clockwise", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        rotateOtherButton = new TextButton("Rotate Counterclockwise", 5, 140, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));        
+        negativeButton = new TextButton("Negative", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        brightButton = new TextButton("Brighten", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        darkButton = new TextButton("Darken", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        saveButton = new TextButton ("Save", 5, 80, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         undoButton = new TextButton("Undo", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         redoButton = new TextButton("Redo", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         moreTransparent = new TextButton("More Transparent", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
@@ -110,7 +113,7 @@ public class Background extends World
         coolButton = new TextButton("Cooler", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         gaussianButton = new TextButton("Gaussian Blur", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         sepiaButton = new TextButton("Sepia", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        contrastButton = new TextButton("Change Contrast", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        contrastButton = new TextButton("Contrast", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         hueButton = new TextButton("Change Hue", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         swapRGBButton = new TextButton("Swap RGB", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         sharpenButton = new TextButton("Sharpen", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
@@ -125,7 +128,7 @@ public class Background extends World
         encodeButton = new TextButton("Encode", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         decodeButton = new TextButton("Decode", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         luminanceButton = new TextButton("Luminate", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        weightedGreyscaleButton = new TextButton("Weighted Greyscale", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        weightedGreyscaleButton = new TextButton("Weighted Greyscale", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);

@@ -30,7 +30,8 @@ import greenfoot.*;
  */
 public class Processor  
 {
-    private final static int HASHMAP_SIZE = 100;
+    // Instance variables
+    private final static int HASHMAP_SIZE = 100; // Static integer of hashmap size
     /**
      * General colorify method that will turn the RGB pixels of an image into a certain colour
      * Works for any color (R, G, B) and increment/decrement values
