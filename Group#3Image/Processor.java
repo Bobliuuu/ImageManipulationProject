@@ -30,6 +30,7 @@ import greenfoot.*;
  */
 public class Processor  
 {
+    private final static int HASHMAP_SIZE = 100;
     /**
      * General colorify method that will turn the RGB pixels of an image into a certain colour
      * Works for any color (R, G, B) and increment/decrement values
@@ -1553,7 +1554,7 @@ public class Processor
                 
                 // Use the packagePixel method to package the integers back into a single integer
                 int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
-                // Sets the new colour to the new BufferedImage
+                // Sets the new colour pixel value to the new BufferedImage
                 newBi.setRGB (x, y, newColour);
             }
         }
@@ -1568,6 +1569,8 @@ public class Processor
     
     /**
      * Adds an emboss filter to the image
+     * Reference: https://en.wikipedia.org/wiki/Image_embossing
+     * Uses kernel matrix |-1|0|1|-1|1|1|-1|0|1|
      * 
      * @param bi    The BufferedImage (passed by reference) to change
      * 
@@ -1591,8 +1594,12 @@ public class Processor
                     continue;
                 }
                 
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
                 int rgb = bi.getRGB(x, y);
                 
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
                 int[] rgbValues = unpackPixel (rgb);
                 
                 int alpha = rgbValues[0];
@@ -1600,10 +1607,12 @@ public class Processor
                 int green = rgbValues[2];
                 int blue = rgbValues[3];
 
+                // Initialize sum of RGB values
                 int sumRed = 0;
                 int sumGreen = 0;
                 int sumBlue = 0;
                 
+                // Loop through kernel matrix of this pixel
                 for (int r = -1; r <= 1; r++)
                 {
                     for (int c = -1; c <= 1; c++)
@@ -1616,6 +1625,7 @@ public class Processor
                         // R, G, B and alpha and assign them each to their own integer
                         rgbValues = unpackPixel (rgb);
                         
+                        // Use kernel matrix to figure out whether to add or subtract this pixel value from the desired pixel value
                         if (c == -1){
                             sumRed -= rgbValues[1];
                             sumGreen -= rgbValues[2];
@@ -1631,7 +1641,8 @@ public class Processor
                         }
                     }
                 }
-
+    
+                // Make sure pixel values are in range
                 if (sumRed > 255){
                     sumRed = 255; 
                 }
@@ -1653,16 +1664,127 @@ public class Processor
                 
                 // Use the packagePixel method to package the integers back into a single integer
                 int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                // Sets the new colour pixel value to the new BufferedImage
                 newBi.setRGB (x, y, newColour);
             }
         }
         
+        // Updae the original BufferedImage with the new image
         for (int i = 0; i < xSize; i++){
             for (int j = 0; j < ySize; j++){
                 bi.setRGB(i, j, newBi.getRGB(i, j));
             }
         }
     }
+    
+    /**
+     * Sharpens an image to make it more defined
+     * Reference: https://www.imatest.com/docs/sharpening/
+     * Uses kernel matrix |-1|-1|-1|-1|9|-1|-1|-1|-1|
+     *
+     * @param bi            The BufferedImage (passed by reference) to change
+     * 
+     * @author Jerry Zhu
+     */
+     public static void sharpen (BufferedImage bi)
+    {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        // Initialize new BufferedImage
+        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
+        
+        // Using array size as limit
+        for (int x = 0; x < xSize; x++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                // Make sure coordinate is in range
+                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
+                    newBi.setRGB(x, y, bi.getRGB(x, y));
+                    continue;
+                }
+                
+                // Calls method in BufferedImage that returns R G B and alpha values
+                // encoded together in an integer
+                int rgb = bi.getRGB(x, y);
+                
+                // Call the unpackPixel method to retrieve the four integers for
+                // R, G, B and alpha and assign them each to their own integer
+                int[] rgbValues = unpackPixel (rgb);
+                
+                int alpha = rgbValues[0];
+                int red = rgbValues[1];
+                int green = rgbValues[2];
+                int blue = rgbValues[3];
+
+                // Initialize sum of RGB values
+                int sumRed = red * 9;
+                int sumGreen = green * 9;
+                int sumBlue = blue * 9;
+                
+                // Loop through kernel matrix of this pixel
+                for (int r = -1; r <= 1; r++)
+                {
+                    for (int c = -1; c <= 1; c++)
+                    {
+                        // Calls method in BufferedImage that returns R G B and alpha values
+                        // encoded together in an integer
+                        rgb = bi.getRGB(x + r, y + c);
+        
+                        // Call the unpackPixel method to retrieve the four integers for
+                        // R, G, B and alpha and assign them each to their own integer
+                        rgbValues = unpackPixel (rgb);
+                        
+                        // Subtract the pixel values from the desired pixel values
+                        if (r != 0 || c != 0){
+                            sumRed -= rgbValues[1];
+                            sumGreen -= rgbValues[2];
+                            sumBlue -= rgbValues[3];
+                        }
+                    }
+                }
+
+                // Make sure values are in range
+                if (sumRed > 255){
+                    sumRed = 255; 
+                }
+                if (sumRed < 0){
+                    sumRed = 0;
+                }
+                if (sumBlue > 255){
+                    sumBlue = 255; 
+                }
+                if (sumBlue < 0){
+                    sumBlue = 0;
+                }
+                if (sumGreen > 255){
+                    sumGreen = 255; 
+                }
+                if (sumGreen < 0){
+                    sumGreen = 0;
+                }
+                
+                // Use the packagePixel method to package the integers back into a single integer
+                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
+                // Sets the new colour pixel value to the new BufferedImage
+                newBi.setRGB (x, y, newColour);
+            }
+        }
+        
+        // Updae the original BufferedImage with the new image
+        for (int i = 0; i < xSize; i++){
+            for (int j = 0; j < ySize; j++){
+                bi.setRGB(i, j, newBi.getRGB(i, j));
+            }
+        }
+    }
+    
+    /**
+     * The next four methods are for encoding a message in an image, using least significant bit steganography
+     * Reference: https://courses.cs.duke.edu/cps100/spring10/assign/steg/howto.html
+     */
     
     /**
      * Encodes a string into a binary string
@@ -1672,8 +1794,11 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-    public static String encodeMessage (String message) {
+    public static String encodeMessage (String message) 
+    {
+        // Use a binary string to store the message by converting to a big integer
         String bitString = new BigInteger(message.getBytes()).toString(2);
+        // For each value, get the value of the string index, and append to the binary string
         if (bitString.length() % 8 != 0){
             String zeroes = "";
             while ((bitString.length() + zeroes.length()) % 8 != 0) {
@@ -1681,6 +1806,7 @@ public class Processor
             }
             bitString = zeroes + bitString;
         }
+        // Return the binary string
         return bitString;
     }
     
@@ -1692,10 +1818,12 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-    public static void encodeImage (String bit, BufferedImage bi) {
+    public static void encodeImage (String bit, BufferedImage bi) 
+    {
         int pointer = bit.length() - 1; 
-        for (int x = bi.getWidth()-1; x >= 0; x--) {
-            for (int y = bi.getHeight()-1; y >= 0; y--) { 
+        // Loop through the image
+        for (int x = bi.getWidth() - 1; x >= 0; x--) {
+            for (int y = bi.getHeight() - 1; y >= 0; y--) { 
                 Color c = new Color(bi.getRGB(x,y)); 
                 byte r = (byte) c.getRed(); 
                 byte g = (byte) c.getGreen(); 
@@ -1742,7 +1870,8 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-    public static String getMessage (String encoded) {
+    public static String getMessage (String encoded) 
+    {
         int count = encoded.length()-1;
         StringBuilder message = new StringBuilder();
         int values = encoded.length()/8;
@@ -1773,7 +1902,8 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-    public static String decodeMessage(BufferedImage bi) {
+    public static String decodeMessage(BufferedImage bi) 
+    {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < bi.getWidth(); x++) {
             for (int y = 0; y < bi.getHeight(); y++) {
@@ -1794,95 +1924,6 @@ public class Processor
         }
         return sb.toString();
     }
-    
-    /**
-     * Sharpens an image to make it more defined
-     *
-     * @param bi            The BufferedImage (passed by reference) to change
-     * 
-     * @author Jerry Zhu
-     */
-     public static void sharpen (BufferedImage bi)
-    {
-        // Get image size to use in for loops
-        int xSize = bi.getWidth();
-        int ySize = bi.getHeight();
-        
-        BufferedImage newBi = new BufferedImage(xSize, ySize, 3);
-        
-        for (int x = 0; x < xSize; x++)
-        {
-            for (int y = 0; y < ySize; y++)
-            {
-                if (x == 0 || x == xSize - 1 || y == 0 || y == ySize - 1){
-                    newBi.setRGB(x, y, bi.getRGB(x, y));
-                    continue;
-                }
-                
-                int rgb = bi.getRGB(x, y);
-                
-                int[] rgbValues = unpackPixel (rgb);
-                
-                int alpha = rgbValues[0];
-                int red = rgbValues[1];
-                int green = rgbValues[2];
-                int blue = rgbValues[3];
-
-                int sumRed = red * 9;
-                int sumGreen = green * 9;
-                int sumBlue = blue * 9;
-                
-                for (int r = -1; r <= 1; r++)
-                {
-                    for (int c = -1; c <= 1; c++)
-                    {
-                        // Calls method in BufferedImage that returns R G B and alpha values
-                        // encoded together in an integer
-                        rgb = bi.getRGB(x + r, y + c);
-        
-                        // Call the unpackPixel method to retrieve the four integers for
-                        // R, G, B and alpha and assign them each to their own integer
-                        rgbValues = unpackPixel (rgb);
-                        
-                        if (r != 0 || c != 0){
-                            sumRed -= rgbValues[1];
-                            sumGreen -= rgbValues[2];
-                            sumBlue -= rgbValues[3];
-                        }
-                    }
-                }
-
-                if (sumRed > 255){
-                    sumRed = 255; 
-                }
-                if (sumRed < 0){
-                    sumRed = 0;
-                }
-                if (sumBlue > 255){
-                    sumBlue = 255; 
-                }
-                if (sumBlue < 0){
-                    sumBlue = 0;
-                }
-                if (sumGreen > 255){
-                    sumGreen = 255; 
-                }
-                if (sumGreen < 0){
-                    sumGreen = 0;
-                }
-                
-                // Use the packagePixel method to package the integers back into a single integer
-                int newColour = packagePixel (sumRed, sumGreen, sumBlue, alpha);
-                newBi.setRGB (x, y, newColour);
-            }
-        }
-        
-        for (int i = 0; i < xSize; i++){
-            for (int j = 0; j < ySize; j++){
-                bi.setRGB(i, j, newBi.getRGB(i, j));
-            }
-        }
-    }    
     
     /**
      * Rotates an image 90 degrees clockwise
@@ -2000,9 +2041,13 @@ public class Processor
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
-        Map<Integer, Integer> colorCount = new HashMap<>(100);
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
+        // Create a hashmap of a certain size
+        Map<Integer, Integer> colorCount = new HashMap<>(HASHMAP_SIZE);
+        
+        // Loop through image pixels
+        for (int x = 0; x < bi.getWidth(); x++){
+            for (int y = 0; y < bi.getHeight(); y++){
+                // Update the hashmap based on the curent pixel value
                 int rgb = bi.getRGB(x, y);
                 if (colorCount.containsKey(rgb)){
                     colorCount.replace(rgb, colorCount.get(rgb) + 1);
@@ -2013,6 +2058,7 @@ public class Processor
             }
         }
         
+        // Find the most frequent color and it's count
         int maxColor = 0;
         int maxCount = 0;
         
@@ -2024,12 +2070,14 @@ public class Processor
                 maxColor = color;
             }
         }
+        
+        // Return the most frequent color
         return maxColor;
     }
     
     /**
-     * Takes a BufferedImage and crops it to its desired size. Method used: 
-     * https://docs.oracle.com/javase/7/docs/api/java/awt/image/BufferedImage.html#getSubimage(int,%20int,%20int,%20int)
+     * Takes a BufferedImage and crops it to its desired size. 
+     * Reference: https://docs.oracle.com/javase/7/docs/api/java/awt/image/BufferedImage.html#getSubimage(int,%20int,%20int,%20int)
      * 
      * @param bi              The BufferedImage (passed by reference) to change
      * @return BufferedImage  The updated and cropped BufferedImage
@@ -2037,9 +2085,11 @@ public class Processor
      * @author Jerry Zhu
      */
     public static BufferedImage getCroppedImage(BufferedImage bi, int startX, int startY, int width, int height) {
+        // Get size of array
         int xSize = bi.getWidth();
         int ySize = bi.getHeight();
         
+        // Make sure the coordinates are in range
         if (startX < 0){
             startX = 0;
         }
@@ -2058,6 +2108,8 @@ public class Processor
         if (startY + height > ySize){
             height = ySize - startY;
         }
+        
+        // Return a cropped image using the coordinates given
         return bi.getSubimage(startX, startY, width, height);
     }
     
