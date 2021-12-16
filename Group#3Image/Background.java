@@ -23,17 +23,11 @@ import java.util.Scanner;
 import java.lang.Math;
 
 /**
- * Background class - The class that 
- * Starter code for Image Manipulation Array Assignment.
+ * Background class - The class that contains the user interface of the Image Manipulation Pojrect
+ * This class contains the implementation to perform any methods in the other classes, and adds the UI interface objects to the World. 
+ * The class implements buttons, a color palette, and an image that can be manipulated. 
  * 
- * The class Background contains all of the code to actually perform
- * transformation. The rest of the classes serve to support that
- * capability. This World allows the user to choose transformations
- * and open files.
- * 
- * Add to it and make it your own!
- * 
- * @author Jordan Cohen
+ * @author Daniel Qian, Jerry Zhu, Matthew Gong
  * @version November 2013
  */
 
