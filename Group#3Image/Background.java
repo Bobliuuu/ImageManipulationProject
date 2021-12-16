@@ -14,10 +14,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Scanner;
 import java.lang.Math;
 /**
  * Starter code for Image Manipulation Array Assignment.
@@ -69,6 +70,8 @@ public class Background extends World
 
     private String fileName;
 
+    private Scanner in;
+    
     /**
      * Constructor for objects of class Background.
      * 
@@ -124,7 +127,6 @@ public class Background extends World
         luminanceButton = new TextButton("Luminate", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         weightedGreyscaleButton = new TextButton("Weighted Greyscale", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
-        
         // Builtin colors
         bluePicture = new ColorButton(Color.BLUE);
         redPicture = new ColorButton(Color.RED);
@@ -134,7 +136,6 @@ public class Background extends World
         pinkPicture = new ColorButton(Color.PINK);
         grayPicture = new ColorButton(Color.GRAY);
         blackPicture = new ColorButton(Color.BLACK);
-        
         
         // Custom colours
         purplePicture = new ColorButton(PURPLE);
@@ -204,13 +205,14 @@ public class Background extends World
         // place the save file button 
         addObject (saveButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 185, openFile.getImage().getHeight() / 2 - 10);
         
-        
         editPos = 0;
         original = deepCopy(image.getBufferedImage());
         edits.add(deepCopy(original));
         inCropOne = false;
         inCropTwo = false;
         stamping = false;
+        
+        in = new Scanner(System.in);
     }
 
     /**
@@ -488,35 +490,52 @@ public class Background extends World
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(embossButton)){
+            } 
+            else if (Greenfoot.mouseClicked(embossButton)){
                 Processor.emboss(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(edgesButton)){
+            } 
+            else if (Greenfoot.mouseClicked(edgesButton)){
                 Processor.edges(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(encodeButton)){
-                
-            } else if (Greenfoot.mouseClicked(decodeButton)){
-                
-            } else if (Greenfoot.mouseClicked(luminanceButton)){
+            } 
+            else if (Greenfoot.mouseClicked(encodeButton)){
+                System.out.println("Enter the message you would like to encode: ");
+                String message = in.nextLine();
+                Processor.encodeImage(Processor.encodeMessage(message), image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } 
+            else if (Greenfoot.mouseClicked(decodeButton)){
+                System.out.println("The hidden message is: \n" + Processor.decodeMessage(Processor.decodeImage(image.getBufferedImage())) + "\n");
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            }
+            else if (Greenfoot.mouseClicked(luminanceButton)){
                 Processor.luminance(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(weightedGreyscaleButton)){
+            } 
+            else if (Greenfoot.mouseClicked(weightedGreyscaleButton)){
                 Processor.weightedGrayScale(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            } else if (Greenfoot.mouseClicked(image)){
+            } 
+            else if (Greenfoot.mouseClicked(image)){
                 if(stamping){
                     BufferedImage bi = image.getBufferedImage();
                     MouseInfo click = Greenfoot.getMouseInfo();

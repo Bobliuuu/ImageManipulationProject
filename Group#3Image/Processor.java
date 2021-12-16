@@ -1870,7 +1870,7 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-    public static String getMessage (String encoded) 
+    public static String decodeMessage (String encoded) 
     {
         int count = encoded.length()-1;
         StringBuilder message = new StringBuilder();
@@ -1902,7 +1902,7 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-    public static String decodeMessage(BufferedImage bi) 
+    public static String decodeImage(BufferedImage bi) 
     {
         StringBuilder sb = new StringBuilder();
         for (int x = 0; x < bi.getWidth(); x++) {

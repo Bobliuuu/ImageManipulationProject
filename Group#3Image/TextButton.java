@@ -287,6 +287,60 @@ public class TextButton extends Control
                 return new String[]{"Turns the image", "brighter"};
             case "Darken":
                 return new String[]{"Turns the image", "darker"};
+            case "Open":
+                return new String[]{"Open a new", "image"};
+            case "Open Recent File":
+                return new String[]{"Open a recent", "file"};
+            case "Save":
+                return new String[]{"Save the image"};
+            case "More Transparent":
+                return new String[]{"Makes the image", "more transparent"};
+            case "Less Transparent":
+                return new String[]{"Makes the image", "less transparent"};
+            case "Pixelate":
+                return new String[]{"Makes the image", "more pixelated"};
+            case "Blur":
+                return new String[]{"Makes the image", "blurrier"};
+            case "Warmer":
+                return new String[]{"Makes the image", "warmer"};
+            case "Cooler":
+                return new String[]{"Makes the image", "cooler"};
+            case "Gaussian Blur":
+                return new String[]{"Makes the image", "blurrier with a gaussian", "function"};
+            case "Sepia":
+                return new String[]{"Applies a sepia", "filter"};
+            case "Change Contrast":
+                return new String[]{"Increases the", "contrast of the", "image"};
+            case "Change Hue":
+                return new String[]{"Changes the hue", "of the image"};
+            case "Swap RGB":
+                return new String[]{"Swaps the RGB", "values of the image"};
+            case "Sharpen":
+                return new String[]{"Sharpens details in", "the image"};
+            case "Crop":
+                return new String[]{"Crop the image"};
+            case "Greyscale":
+                return new String[]{"Makes the image", "more grey"};
+            case "Solarize":
+                return new String[]{"Solarizes the image"};
+            case "Noise":
+                return new String[]{"Adds noise to", "the image"};
+            case "Distort":
+                return new String[]{"Distorts the image"};
+            case "Stamp":
+                return new String[]{"Add stamps of", "your choice to", "the image"};
+            case "Emboss":
+                return new String[]{"Adds an emboss", "filter to the image"};
+            case "Refine Edges":
+                return new String[]{"Refines the edges", "of the image"};
+            case "Encode":
+                return new String[]{"Encode a message", "in the image"};
+            case "Decode":
+                return new String[]{"Decode a message", "from the image"};
+            case "Luminate":
+                return new String[]{"Luminate", "the image"};
+            case "Weighted Greyscale":
+                return new String[]{"Applies a weighted", "greyscale to the", "image"};
             default:
                 return new String[]{"Unfinished"};
         }
