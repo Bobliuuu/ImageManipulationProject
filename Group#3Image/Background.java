@@ -561,13 +561,27 @@ public class Background extends World
     }
 
 
+    /**
+     * Allows user to select a recently opened file graphically using JFrame. 
+     * 
+     * @author Ibrahim Rahman
+     */
     private void selectRecentlyOpenedFile () {
+
+        // Parent component of the dialog.
         JFrame recentFrame = new JFrame("Recent Files");
 
+        // Creates a new Recent Files object. 
         RecentFiles recent = new RecentFiles();
+
+        // New arraylist containing all the recent files the user has. If there is
+        // no recently opened files, then the array will be blank. 
         ArrayList <String> fileList = recent.getRecentFiles();
         
+        // Creates a new button group (for the radio buttons). 
         ButtonGroup bg = new ButtonGroup();
+
+        // Creates a new radio button on the popup window for every recently opened file. 
         for (int i = 0; i < fileList.size(); i++) {
 
             File file = new File(fileList.get(i));
@@ -576,18 +590,21 @@ public class Background extends World
             bg.add(rb);
             recentFrame.add(rb);
         }
+
+        // Sets the location to null 
         recentFrame.setLocationRelativeTo(null);
         recentFrame.setSize(300,300);
         recentFrame.setResizable(false);    
         recentFrame.setLayout(null);    
         recentFrame.setVisible(true);
-        // recentFrame.setUndecorated(true);
         recentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 
+        // Open button (after user selects a file to open)
         JButton openRecentFileButton = new JButton("Open");  
         openRecentFileButton.setBounds(200,230,95,30);  
         recentFrame.add(openRecentFileButton);
 
+        // Cancel button (for user to select when they want to exit/cancel selection)
         JButton cancelButton = new JButton("Cancel");  
         cancelButton.setBounds(100,230,95,30);  
         recentFrame.add(cancelButton);
@@ -634,22 +651,34 @@ public class Background extends World
     }
 
 
-    // Code provided, but not yet implemented - This will save image as a png.
+    /**
+     * Saves file as a PNG or JPEG. User is able to select the path of their file graphically
+     * using JFrame. 
+     * 
+     * @throws IOException throws if file us unable to save. 
+     * @author Ibrahim Rahman
+     */
     private void saveFile () {
         try {
             // https://www.codejava.net/java-se/swing/show-save-file-dialog-using-jfilechooser
-            // parent component of the dialog
+            // Parent component of the dialog.
             JFrame parentFrame = new JFrame();
             
+            // Create a JFileChooser, a file chooser box 
             JFileChooser fileChooser = new JFileChooser();
+
+            // Allows user to save their file as either PNG or JPEG. 
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg"}));
             fileChooser.setAcceptAllFileFilterUsed(false);
+            
+            // If user does not select a file, display message.
             fileChooser.setDialogTitle("Specify a file to save");   
             
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // TODO: Not working
+            //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // TODO: Not working
             int userSelection = fileChooser.showSaveDialog(parentFrame);
             
+            // Saves file if user selects a valid option.
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
                 
@@ -658,25 +687,42 @@ public class Background extends World
 
                 // https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
                 // https://www.tabnine.com/code/java/methods/javax.swing.JFileChooser/getFileFilter
+                // Saves file as JPEG.
                 if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("JPEG file")) {
 
+                    // Appends a .jpg extension to file name.
                     fileName += ".jpg";
+
+                    // Creates a new Buffered Image. 
                     BufferedImage bi = image.getBufferedImage();
         
                     // https://stackoverflow.com/questions/16002167/using-imageio-write-to-create-a-jpeg-creates-a-0-byte-file
+                    // Uses Buffered Image to create a JPEG file.
                     BufferedImage newBufferedImage = new BufferedImage(bi.getWidth(),
                     bi.getHeight(), BufferedImage.TYPE_INT_RGB);
                     newBufferedImage.getGraphics().drawImage(bi, 0, 0, null);
-        
+                    
+                    // Creates a new file using the file name. 
                     File outputfile = new File(fileName);
+                    
                     // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
+                    // Writes the Buffered Image to the file using ImageIO. 
                     ImageIO.write(newBufferedImage, "jpg", outputfile);
                 }
+                // Saves file as PNG. 
                 else if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("PNG file")) {
+                    
+                    // Appends a .png extension to file name.
                     fileName += ".png";
+
+                    // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
+                    // Creates a new file using the file name. 
                     File f = new File (fileName);  
+
+                    // Writes the Buffered Image to the file using ImageIO. 
                     ImageIO.write(image.getBufferedImage(), "png", f); 
                 }
+                // If another file extension is chosen
                 else {
                     System.out.println("Invalid file extension");
                 }
@@ -691,16 +737,20 @@ public class Background extends World
     }
 
     /**
-     * Allows the user to open a new image file.
+     * Allows the user to open a new PNG, JPEG, or GIF image file. Updates
+     * the recently opened files when a new file is openend. 
+     * 
+     * @author Ibrahim Rahman
      */
     private void openFile ()
     {
         // Create a UI frame (required to show a UI element from Java.Swing)
         JFrame frame = new JFrame();
+
         // Create a JFileChooser, a file chooser box 
         JFileChooser fileChooser = new JFileChooser();
 
-        // Add File filter for PNG and JPEG.
+        // Add File filter for PNG, GIF, and JPEG. 
         // https://stackoverflow.com/questions/19302029/filter-file-types-with-jfilechooser
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
@@ -710,9 +760,14 @@ public class Background extends World
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION){
             File selectedFile = fileChooser.getSelectedFile();
+
+            // Opens the image
             if (image.openFile (selectedFile.getAbsolutePath(), selectedFile.getName()))
             {
+                // Updates the image's details in the top left corner. 
                 openFile.update (image.getDetails ());
+
+                // Updates the recently opened files file. 
                 RecentFiles recent = new RecentFiles();
                 recent.addRecentlyOpenedFile(selectedFile.getAbsolutePath());
             }
@@ -720,7 +775,10 @@ public class Background extends World
     }
 
     /**
-     * Allows the user to open a new image file.
+     * Allows the user to open a new image file for the stamp. The stamp must be
+     * either a PNG or JPEG and 32x32 pixels large. 
+     * 
+     * @author Ibrahim Rahman
      */
     private void openStampFile ()
     {
@@ -729,17 +787,24 @@ public class Background extends World
 
         // Create a JFileChooser, a file chooser box 
         JFileChooser fileChooser = new JFileChooser();
+
+        // Allows the user to only open PNG or JPEG files. 
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg", "jpeg"}));
 
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION){
+
+            // Gets the file selected, and assigns it to an Image Holder object. 
             File selectedFile = fileChooser.getSelectedFile();
             ImageHolder stampFile = new ImageHolder(selectedFile.getAbsolutePath());
+
+            // Ensures that a stamp file is 32x32 pixels. 
             if (stampFile.getRealHeight() != 32 || stampFile.getRealWidth() != 32) {
                 JOptionPane.showMessageDialog(null, "Please select a image file that is 32x32");
             }
+            // Deep copies the image to the stamp image. 
             else {
                 stampImage = deepCopy(stampFile.getBufferedImage()); 
             }

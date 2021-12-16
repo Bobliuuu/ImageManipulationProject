@@ -5,16 +5,37 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * <p>Useful methods to open recent files. Recent files works by saving 
+ * all recently opened files (as they open) in a text file and then retrieves them. 
+ * New files that have already been opened appear at the top of the text file.</p>
+ * 
+ * @author Ibrahim Rahman 
+ */
 public class RecentFiles {
     
+    // Maximum amount of files that can be stored. 
     private static int MAXFILES = 8;
+    
+    // Name of text file containing the list of recent files. 
     private static String RECENTFILES = "recentfiles.txt";
+
+    // Array List of names of recently opened files. 
     private ArrayList<String> filelist;
 
-
+    /**
+     * Gets an Array List of all recently opened files. 
+     * 
+     * @return Array List of files that have recently been opened. 
+     */
     public ArrayList<String> getRecentFiles() {
+
+        // Checks if the list of files is emty. If it is, load the Array List
+        // of files. 
         if (filelist == null) 
             filelist = loadList();
+        
+        // Returns the list of files. 
         return filelist;  
     }
 
