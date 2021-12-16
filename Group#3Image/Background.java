@@ -1,5 +1,4 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-// import javax.swing.*;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -531,6 +530,8 @@ public class Background extends World
             }
             else if (Greenfoot.mouseClicked(stampButton)){
                 resetCrop();
+                openStampFile();
+
                 if(stampImage != null){
                     if(!stamping) stamping = true;
                     else stamping = false;
@@ -696,38 +697,56 @@ public class Background extends World
     {
         // Create a UI frame (required to show a UI element from Java.Swing)
         JFrame frame = new JFrame();
-        // Create a JFileChooser, a file chooser box included with Java 
+        // Create a JFileChooser, a file chooser box 
         JFileChooser fileChooser = new JFileChooser();
 
         // Add File filter for PNG and JPEG.
         // https://stackoverflow.com/questions/19302029/filter-file-types-with-jfilechooser
-        // fileChooser.addChoosableFileFilter(new java.awt.image.ImageFilter());
         fileChooser.setAcceptAllFileFilterUsed(false);
-
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("GIF file", new String[] {"gif"}));
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg", "jpeg"}));
 
-        //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION){
             File selectedFile = fileChooser.getSelectedFile();
-            //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             if (image.openFile (selectedFile.getAbsolutePath(), selectedFile.getName()))
             {
-                //String display = " [ Open File: " + selectedFile.getName() + " ] ";
                 openFile.update (image.getDetails ());
                 RecentFiles recent = new RecentFiles();
                 recent.addRecentlyOpenedFile(selectedFile.getAbsolutePath());
             }
         }
-        // If the file opening operation is successful, update the text in the open file button
-        /**if (image.openFile (fileName))
-        {
-        String display = " [ Open File: " + fileName + " ] ";
-        openFile.update (display);
-        }*/
-        
     }
+
+    /**
+     * Allows the user to open a new image file.
+     */
+    private void openStampFile ()
+    {
+        // Create a UI frame (required to show a UI element from Java.Swing)
+        JFrame frame = new JFrame();
+
+        // Create a JFileChooser, a file chooser box 
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg", "jpeg"}));
+
+        int result = fileChooser.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fileChooser.getSelectedFile();
+            ImageHolder stampFile = new ImageHolder(selectedFile.getAbsolutePath());
+            if (stampFile.getRealHeight() != 32 || stampFile.getRealWidth() != 32) {
+                JOptionPane.showMessageDialog(null, "Please select a image file that is 32x32");
+            }
+            else {
+                stampImage = deepCopy(stampFile.getBufferedImage()); 
+            }
+            
+        }
+    }
+
 
     /**
      * Takes in a BufferedImage and returns a GreenfootImage.
