@@ -11,6 +11,7 @@ import java.io.IOException;
  * New files that have already been opened appear at the top of the text file.</p>
  * 
  * @author Ibrahim Rahman 
+ * @version December 2021
  */
 public class RecentFiles {
     

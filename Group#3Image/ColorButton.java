@@ -1,13 +1,17 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class TextButtonPicture here.
+ * Class that creates a button with a fill color and border around it. 
+ * Used for all colorify buttons
+ * <p>
+ * Subclass of control, and implements highlighting
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Jerry Zhu
+ * @version December 2021
  */
 public class ColorButton extends Control
 {
+    // Instance variables
     private GreenfootImage image;
     private int width;
     private int height;
@@ -17,9 +21,12 @@ public class ColorButton extends Control
     
     /**
      * Basic constructor to create a color button
+     * 
      * @param color           Base color of the color button
+     * 
+     * @author Jerry Zhu
      */
-    public ColorButton(Color color) {
+    public ColorButton(Color color){
         this.color = color;
         width = 20;
         height = 20;
@@ -39,11 +46,14 @@ public class ColorButton extends Control
     
     /**
      * Similar to above, but with the ability to adjust width and height
+     * 
      * @param color           Base color of the color button
      * @param width           The width of the image
      * @param height          The height of the image
+     * 
+     * @author Jerry Zhu
      */
-    public ColorButton(Color color, int width, int height) {
+    public ColorButton(Color color, int width, int height){
         this.color = color;
         this.width = width;
         this.height = height;
@@ -63,12 +73,15 @@ public class ColorButton extends Control
     
     /**
      * Similar to above, but with the ability to set the button to animate on hover
+     * 
      * @param color           Base color of the color button
      * @param width           The width of the image
      * @param height          The height of the image
      * @param isClickable     Whether the button supports UI animations or not
+     * 
+     * @author Jerry Zhu
      */
-    public ColorButton(Color color, int width, int height, boolean isClickable) {
+    public ColorButton(Color color, int width, int height, boolean isClickable){
         this.color = color;
         this.width = width;
         this.height = height;
@@ -88,13 +101,16 @@ public class ColorButton extends Control
     
     /**
      * Similar to above, but with the ability to adjust border thickness
+     * 
      * @param color           Base color of the color button
      * @param width           The width of the image
      * @param height          The height of the image
      * @param borderThickness The thickness of the border around the button
      * @param isClickable     Whether the button supports UI animations or not
+     * 
+     * @author Jerry Zhu
      */
-    public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable) {
+    public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable){
         this.color = color;
         this.width = width;
         this.height = height;
@@ -111,7 +127,19 @@ public class ColorButton extends Control
         setImage(image);
     } 
     
-    public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable, boolean transparent) {
+    /**
+     * Similar to above, but with the ability to adjust transparency
+     * 
+     * @param color           Base color of the color button
+     * @param width           The width of the image
+     * @param height          The height of the image
+     * @param borderThickness The thickness of the border around the button
+     * @param isClickable     Whether the button supports UI animations or not
+     * @param transparent     Whether or not the button is transparent
+     * 
+     * @author Jerry Zhu
+     */
+    public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable, boolean transparent){
         this.color = color;
         this.width = width;
         this.height = height;
@@ -132,14 +160,19 @@ public class ColorButton extends Control
     
     /**
      * Most sophisticated constructor, adding the ability to adjust border color
+     * Similar to above, but with the ability to adjust transparency
+     * 
      * @param color           Base color of the color button
      * @param width           The width of the image
      * @param height          The height of the image
      * @param borderThickness The thickness of the border around the button
-     * @param borderColor     The color of the button's border
+     * @param borderColor     The color of the border around the button
      * @param isClickable     Whether the button supports UI animations or not
+     * @param transparent     Whether or not the button is transparent
+     * 
+     * @author Jerry Zhu
      */
-    public ColorButton(Color color, int width, int height, int borderThickness, Color borderColor, boolean isClickable) {
+    public ColorButton(Color color, int width, int height, int borderThickness, Color borderColor, boolean isClickable, boolean transparent){
         this.color = color;
         this.width = width;
         this.height = height;
@@ -158,16 +191,19 @@ public class ColorButton extends Control
     /**
      * Update the image when the mouse is hovering over it by redrawing it and giving it a highlighted and enlarged effect
      */
-    public void update() {
+    public void update(){
         highlightedImage = reDraw (color, color, Color.WHITE, 2);
         myImage = image;
     }
     
     /**
      * Redraw the highlighted and enlarged color button
+     * 
+     * @param color 
+     * @param back
      */
     public GreenfootImage reDraw (Color color, Color back, Color border, int pixelsLarger){
-        // Get new width and hei
+        // Get new width and height
         int newWidth = width + pixelsLarger * 2;
         int newHeight = height + pixelsLarger * 2;
         GreenfootImage resultImage = new GreenfootImage(newWidth, newHeight);
@@ -178,15 +214,17 @@ public class ColorButton extends Control
         resultImage.setColor(color);
         resultImage.fillRect(borderThickness, borderThickness, newWidth - borderThickness * 2, newHeight - borderThickness * 2);
         
-        // Done!
+        // Return the result image
         return resultImage;
     }
     
-    public void deleteDescription() {
+    // Add empty methods for deleteDescription and createDescription to implement control
+    
+    public void deleteDescription(){
         
     }
     
-    public void createDescription() {
+    public void createDescription(){
         
     }
 }

@@ -1,7 +1,9 @@
 #BlueJ class context
 comment0.target=RecentFiles
+comment0.text=\r\n\ <p>Useful\ methods\ to\ open\ recent\ files.\ Recent\ files\ works\ by\ saving\ \r\n\ all\ recently\ opened\ files\ (as\ they\ open)\ in\ a\ text\ file\ and\ then\ retrieves\ them.\ \r\n\ New\ files\ that\ have\ already\ been\ opened\ appear\ at\ the\ top\ of\ the\ text\ file.</p>\r\n\ \r\n\ @author\ Ibrahim\ Rahman\ \r\n\ @version\ December\ 2021\r\n
 comment1.params=
 comment1.target=java.util.ArrayList\ getRecentFiles()
+comment1.text=\r\n\ Gets\ an\ Array\ List\ of\ all\ recently\ opened\ files.\ \r\n\ \r\n\ @return\ Array\ List\ of\ files\ that\ have\ recently\ been\ opened.\ \r\n
 comment2.params=filename
 comment2.target=void\ addRecentlyOpenedFile(java.lang.String)
 comment3.params=
