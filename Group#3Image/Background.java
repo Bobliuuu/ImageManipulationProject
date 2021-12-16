@@ -61,7 +61,7 @@ public class Background extends World
     
     private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, laplaceButton;
     
-    private TextButton stampButton;
+    private TextButton stampButton, embossButton, edgesButton, encodeButton, decodeButton, luminanceButton, weightedGreyscaleButton;
     
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
 
@@ -115,8 +115,14 @@ public class Background extends World
         greyScaleButton = new TextButton("Greyscale", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         solarizeButton = new TextButton("Solarize", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         noiseButton = new TextButton("Noise", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        laplaceButton = new TextButton("Lens Flare", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        laplaceButton = new TextButton("Distort", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         stampButton = new TextButton("Stamp", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        embossButton = new TextButton("Emboss", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        edgesButton = new TextButton("Refine Edges", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        encodeButton = new TextButton("Encode", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        decodeButton = new TextButton("Decode", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        luminanceButton = new TextButton("Luminate", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        weightedGreyscaleButton = new TextButton("Weighted Greyscale", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         
         
         // Builtin colors
@@ -181,6 +187,12 @@ public class Background extends World
         addObject (redoButton, 412, 108);
         addObject (cropButton, 804, 108);
         addObject (stampButton, 1000, 76);
+        addObject (embossButton, 1000, 108);
+        addObject (edgesButton, 1000, 140);
+        addObject (encodeButton, 1098, 76);
+        addObject (decodeButton, 1098, 108);
+        addObject (luminanceButton, 1098, 140);
+        addObject (weightedGreyscaleButton, 1206, 140);
         
         // place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -476,8 +488,35 @@ public class Background extends World
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-            }
-            else if (Greenfoot.mouseClicked(image)){
+            } else if (Greenfoot.mouseClicked(embossButton)){
+                Processor.emboss(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(edgesButton)){
+                Processor.edges(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(encodeButton)){
+                
+            } else if (Greenfoot.mouseClicked(decodeButton)){
+                
+            } else if (Greenfoot.mouseClicked(luminanceButton)){
+                Processor.luminance(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(weightedGreyscaleButton)){
+                Processor.weightedGrayScale(image.getBufferedImage());
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
+                resetCrop();
+            } else if (Greenfoot.mouseClicked(image)){
                 if(stamping){
                     BufferedImage bi = image.getBufferedImage();
                     MouseInfo click = Greenfoot.getMouseInfo();
