@@ -47,10 +47,10 @@ public class TextButton extends Control
     
     
     /**
-     * Construct a TextButton with a given String and a specified size
+     * Construct a TextButton with a given String and a specified font
      * 
      * @param text  String value to display
-     * @param textSize  size of text, as an integer
+     * @param font  the font of the text, as a Font
      * 
      */
     public TextButton (String text, Font font)
@@ -58,7 +58,14 @@ public class TextButton extends Control
         this (text, 8, true, font);
     }
 
-    
+    /**
+     * Construct a TextButton with a given String and a specified padding and size and clickability
+     * 
+     * @param text  String value to display
+     * @param padding  the padding around the text, as an integer
+     * @param clickable  boolean denoting if the user can click it
+     * @param font  the font of the text, as a Font
+     */
     public TextButton (String text, int padding, boolean clickable, Font font){
         this (text,  padding, 0, clickable, new Color (40, 40, 250), new Color (80, 80, 250), new Color (245, 245, 245), new Color (255, 255, 255), Color.BLACK, font);  
     }
@@ -102,27 +109,50 @@ public class TextButton extends Control
         setImage(myImage);
     }
 
+    /**
+     * Function called upon the text box's addition to the world
+     */
     public void addedToWorld (World w){
         super.addedToWorld (w);
         update();
     }
-
+    
+    /**
+     * Changes the fixed width of the text box
+     * 
+     * @param width - the new int width
+     */
     public void setFixedWidth (int width){
         fixedWidthEnabled = true;
         fixedWidth = width;
         update();
     }
-
+    
+    /**
+     * Changes if the text box is active or not
+     * 
+     * @param active - boolean
+     */
     public void setActive (boolean active)
     {
         this.active = active;
         update();
     }
 
+    /**
+     * Gets if the text box is active
+     * 
+     * @return boolean - Whether the box is active
+     */
     public boolean isActive (){
         return active;
     }
 
+    /**
+     * Gets the amount of padding of the text box
+     * 
+     * @return int - the padding
+     */
     public int getPadding (){
         return padding;
     }
@@ -137,12 +167,18 @@ public class TextButton extends Control
         update();
     }
 
+    /**
+     * Changes the color of the text box
+     */
     public void setColor (Color text, Color highlighted){
         this.textColor = text;
         this.highlightedTextColor = highlighted;
         update();
     }
-
+    
+    /**
+     * Changes the font of the text box
+     */
     public void setFont (Font font){
         this.font = font;
         update();
@@ -209,14 +245,26 @@ public class TextButton extends Control
         return resultImage;
     }
 
+    /**
+     * Adds the description box for the button below it
+     * 
+     */
     public void createDescription(){
         (getWorld()).addObject(description, getX(), getY() + 60);
     }
     
+    /**
+     * Removes the description box for the button
+     */
     public void deleteDescription(){
         (getWorld()).removeObject(description);
     }
     
+    /**
+     * Returns the text of the description box depending on what the button text is
+     * 
+     * @return String[] - The lines of String of the description
+     */
     public String[] getDescriptionText(){
         switch(buttonText){
             case "Undo":
