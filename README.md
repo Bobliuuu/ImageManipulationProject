@@ -2,7 +2,7 @@
 The Github repository for the ICS4U image manipulation project for Group #3. 
 
 ## Instructions
-1. Download the [gfar file](ImageManipulationProject/Group#3Image.gfar). 
+1. Download the [gfar file](Group%233Image.gfar). 
 2. Run the file! 
 
 ## Description: 
