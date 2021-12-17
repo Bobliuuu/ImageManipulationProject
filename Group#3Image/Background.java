@@ -35,40 +35,43 @@ public class Background extends World
 {
     // Constants:
     private final String STARTING_FILE = "mountain.jpg";
-    
+
     public static final int MAX_WIDTH = 800;
     public static final int MAX_HEIGHT = 720;
 
     public static final Color PURPLE = new Color(102, 0, 153);
     public static final Color BROWN = new Color(102, 51, 0);
-    
+
     // Objects and Variables:
     private ImageHolder image;
 
     private BufferedImage original, stampImage;
-    
+
     private GreenfootImage testHolder;
 
     private ArrayList<BufferedImage> edits = new ArrayList<BufferedImage>();
 
     private int editPos;
-    
+
     private boolean inCropOne, inCropTwo, stamping;
-    
+
+    // Declare TextButtons
     private TextButton blueButton, hRevButton, openButton, rotateButton, vRevButton, negativeButton, brightButton, darkButton, resetButton, saveButton, rotateOtherButton, undoButton, redoButton, moreTransparent, lessTransparent, recentFilesButton;
-    
+
     private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, laplaceButton;
-    
+
     private TextButton stampButton, embossButton, edgesButton, encodeButton, decodeButton, luminanceButton, weightedGreyscaleButton;
-    
+
+    // Declare ColorButtons
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
 
+    // Declare TextBoxes
     private SuperTextBox openFile, saveFile, colorifyLabel;
 
     private String fileName;
 
     private Scanner in;
-    
+
     /**
      * Constructor for objects of class Background.
      * 
@@ -82,15 +85,13 @@ public class Background extends World
         testHolder = new GreenfootImage("coin.png");
         stampImage = testHolder.getAwtImage();
         image = new ImageHolder(STARTING_FILE); // The image holder constructor does the actual image loading
-        
-        // Set up UI elements
+
+        // Initialize TextButtons
         hRevButton = new TextButton("Flip Horizontal", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         vRevButton = new TextButton("Flip Vertical", 5, 110, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         resetButton = new TextButton("Reset", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         openButton = new TextButton ("Open", 5, 80, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         recentFilesButton = new TextButton ("Open Recent File", 5, 100, true, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-
-        //openButton.setFixedWidth(80);
         rotateButton = new TextButton("Rotate Clockwise", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         rotateOtherButton = new TextButton("Rotate Counterclockwise", 5, 140, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));        
         negativeButton = new TextButton("Negative", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
@@ -123,8 +124,8 @@ public class Background extends World
         decodeButton = new TextButton("Decode", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         luminanceButton = new TextButton("Luminate", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         weightedGreyscaleButton = new TextButton("Weighted Greyscale", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        
-        // Builtin colors
+
+        // Initializing builtin colors
         bluePicture = new ColorButton(Color.BLUE);
         redPicture = new ColorButton(Color.RED);
         greenPicture = new ColorButton(Color.GREEN);
@@ -133,16 +134,18 @@ public class Background extends World
         pinkPicture = new ColorButton(Color.PINK);
         grayPicture = new ColorButton(Color.GRAY);
         blackPicture = new ColorButton(Color.BLACK);
-        
+
         // Custom colours
         purplePicture = new ColorButton(PURPLE);
         brownPicture = new ColorButton(BROWN);
-        
+
+        // Create top bar for UI
         topBar = new ColorButton(Color.BLACK, 1280, 166, false);
-        
+
+        // Initialize UI elements
         openFile = new SuperTextBox(new String[]{"File: " + STARTING_FILE,"Scale: " + image.getScale() + " W: " + image.getRealWidth() + " H: " + image.getRealHeight()}, new Font ("Comic Sans MS", false, false, 16), 600, true);//new TextButton(" [ Open File: " + STARTING_FILE + " ] ");
         colorifyLabel = new SuperTextBox(new String[]{"Colour-ify"}, Color.DARK_GRAY, Color.WHITE, new Font("Comic Sans MS", false, false, 13), true, 74, 1, Color.WHITE);
-        
+
         // Add objects to the screen
         addObject (topBar, 640, 83);
         addObject (image, 640, 560);
@@ -191,24 +194,26 @@ public class Background extends World
         addObject (decodeButton, 1098, 108);
         addObject (luminanceButton, 1098, 140);
         addObject (weightedGreyscaleButton, 1206, 140);
-        
-        // place the open file text box in the top left corner
+
+        // Place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
-        // place the open file button directly beside the open file text box
+        // Place the open file button directly beside the open file text box
         addObject (openButton, openFile.getImage().getWidth()  + openButton.getImage().getWidth()/2 + 3, openFile.getImage().getHeight() / 2 - 10);
-        
+
+        //Place the recent file button
         addObject (recentFilesButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 94, openFile.getImage().getHeight() / 2 - 10);
-        
-        // place the save file button 
+
+        // Place the save file button 
         addObject (saveButton, openFile.getImage().getWidth() + saveButton.getImage().getWidth()/2 + 185, openFile.getImage().getHeight() / 2 - 10);
-        
+
+        // Initiliaze instance variables
         editPos = 0;
         original = deepCopy(image.getBufferedImage());
         edits.add(deepCopy(original));
         inCropOne = false;
         inCropTwo = false;
         stamping = false;
-        
+
         in = new Scanner(System.in);
     }
 
@@ -228,166 +233,158 @@ public class Background extends World
         // Avoid excess mouse checks - only check mouse if somethething is clicked.
         if (Greenfoot.mouseClicked(null))
         {
-            if (Greenfoot.mouseClicked(brownPicture)){
+            if (Greenfoot.mouseClicked(brownPicture)){ // Checks if the brown button is clicked
                 Processor.brown(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(grayPicture)){
+            else if (Greenfoot.mouseClicked(grayPicture)){ // Checks if the gray button is clicked
                 Processor.gray(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(redPicture)){
+            else if (Greenfoot.mouseClicked(redPicture)){ // Checks if the red button is clicked
                 Processor.red(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(yellowPicture)){
+            else if (Greenfoot.mouseClicked(yellowPicture)){ // Checks if the yellow button is clicked
                 Processor.yellow(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(bluePicture)){
+            else if (Greenfoot.mouseClicked(bluePicture)){ // Checks if the blue button is clicked
                 Processor.blue(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(purplePicture)){
+            else if (Greenfoot.mouseClicked(purplePicture)){ // Checks if the purple button is clicked
                 Processor.purple(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(blackPicture)){
+            else if (Greenfoot.mouseClicked(blackPicture)){ // Checks if the black button is clicked
                 Processor.black(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(pinkPicture)){
+            else if (Greenfoot.mouseClicked(pinkPicture)){ // Checks if the pink button is clicked
                 Processor.pink(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(orangePicture)){
+            else if (Greenfoot.mouseClicked(orangePicture)){ // Checks if the orange button is clicked
                 Processor.orange(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(greenPicture)){
+            else if (Greenfoot.mouseClicked(greenPicture)){ // Checks if the green button is clicked
                 Processor.green(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(hRevButton)){
+            else if (Greenfoot.mouseClicked(hRevButton)){ // Checks if the horizontal flip button is clicked
                 Processor.flipHorizontal(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
-                //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
-                //image.setImage(createGreenfootImageFromBI (temp));
             }
-            else if (Greenfoot.mouseClicked(vRevButton)){
+            else if (Greenfoot.mouseClicked(vRevButton)){ // Checks if the vertical flip button is clicked
                 Processor.flipVertical(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
-                //BufferedImage temp = Processor.rotate90Clockwise (image.getBufferedImage());
-                //image.setImage(createGreenfootImageFromBI (temp));
             }
-            else if (Greenfoot.mouseClicked(rotateButton)){
-                // unfinished
+            else if (Greenfoot.mouseClicked(rotateButton)){ // Checks if the rotate clockwise button is clicked
                 image.setFullImage(createGreenfootImageFromBI(Processor.rotate90Clockwise(image.getBufferedImage())));
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
             }
-            else if (Greenfoot.mouseClicked(rotateOtherButton)){
-                // unfinished
+            else if (Greenfoot.mouseClicked(rotateOtherButton)){ // Checks if the rotate counterclockwise button is clicked
                 image.setFullImage(createGreenfootImageFromBI(Processor.rotate90CounterClockwise(image.getBufferedImage())));
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
             }
-            else if (Greenfoot.mouseClicked(resetButton)){
-                //image.setImage(createGreenfootImageFromBI(original));
-                //openFile.update (image.getDetails ());
+            else if (Greenfoot.mouseClicked(resetButton)){ // Checks if the reset button is clicked
                 image.setFullImage(createGreenfootImageFromBI(original));
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(negativeButton)){
+            else if (Greenfoot.mouseClicked(negativeButton)){ // Checks if the negative button is clicked
                 Processor.negative(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(brightButton)){
+            else if (Greenfoot.mouseClicked(brightButton)){ // Checks if the brighten button is clicked
                 Processor.brighten(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(darkButton)){
+            else if (Greenfoot.mouseClicked(darkButton)){ // Checks if the darken button is clicked
                 Processor.darken(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(moreTransparent)){
+            else if (Greenfoot.mouseClicked(moreTransparent)){ // Checks if the increase transparency button is clicked
                 Processor.moreTransparent(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(lessTransparent)){
+            else if (Greenfoot.mouseClicked(lessTransparent)){ // Checks if the decrease transparency button is clicked
                 Processor.lessTransparent(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(pixelateButton)){
+            else if (Greenfoot.mouseClicked(pixelateButton)){ // Checks if the pixelate button is clicked
                 Processor.pixelate(image.getBufferedImage(), 6);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(blurButton)){
-                Processor.gaussianBlur(image.getBufferedImage());
+            else if (Greenfoot.mouseClicked(blurButton)){ // Checks if the blur button is clicked
+                Processor.fastBlur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(undoButton)){
+            else if (Greenfoot.mouseClicked(undoButton)){ // Checks if the undo button is clicked
                 if(editPos - 1 >= 0){
                     editPos--;
                     image.setFullImage(createGreenfootImageFromBI(edits.get(editPos)));
@@ -396,7 +393,7 @@ public class Background extends World
                 }
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(redoButton)){
+            else if (Greenfoot.mouseClicked(redoButton)){ // Checks if the redo button is clicked
                 if(editPos + 1 < edits.size()){
                     editPos++;
                     image.setFullImage(createGreenfootImageFromBI(edits.get(editPos)));
@@ -405,104 +402,104 @@ public class Background extends World
                 }
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(warmButton)){
+            else if (Greenfoot.mouseClicked(warmButton)){ // Checks if the warm button is clicked
                 Processor.warmer(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
             } 
-            else if (Greenfoot.mouseClicked(coolButton)){
+            else if (Greenfoot.mouseClicked(coolButton)){ // Checks if the cool button is clicked
                 Processor.cooler(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(gaussianButton)){
+            else if (Greenfoot.mouseClicked(gaussianButton)){ // Checks if the gaussian blur button is clicked
                 Processor.gaussianBlur(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(sepiaButton)){
+            else if (Greenfoot.mouseClicked(sepiaButton)){ // Checks if the sepia button is clicked
                 Processor.sepia(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(contrastButton)){
+            else if (Greenfoot.mouseClicked(contrastButton)){ // Checks if the increase contrast button is clicked
                 Processor.contrast(image.getBufferedImage(), 0.9);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(hueButton)){
+            else if (Greenfoot.mouseClicked(hueButton)){ // Checks if the change hue button is clicked
                 Processor.adjustHue(image.getBufferedImage(), (float)0.1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(swapRGBButton)){
+            else if (Greenfoot.mouseClicked(swapRGBButton)){ // Checks if the swap RGB values button is clicked
                 Processor.swapRGB(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(sharpenButton)){
+            else if (Greenfoot.mouseClicked(sharpenButton)){ // Checks if the sharpen button is clicked
                 Processor.sharpen(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(greyScaleButton)){
+            else if (Greenfoot.mouseClicked(greyScaleButton)){ // Checks if the grayscale button is clicked
                 Processor.grayScale(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(solarizeButton)){
+            else if (Greenfoot.mouseClicked(solarizeButton)){ // Checks if the solarize button is clicked
                 Processor.solarize(image.getBufferedImage(), 1);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(noiseButton)){
+            else if (Greenfoot.mouseClicked(noiseButton)){ // Checks if the create noise button is clicked
                 Processor.noise(image.getBufferedImage(), 5);
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(laplaceButton)){
+            else if (Greenfoot.mouseClicked(laplaceButton)){ // Checks if the laplace button is clicked
                 Processor.laplace(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(embossButton)){
+            else if (Greenfoot.mouseClicked(embossButton)){ // Checks if the emboss button is clicked
                 Processor.emboss(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(edgesButton)){
+            else if (Greenfoot.mouseClicked(edgesButton)){ // Checks if the sharpen edges button is clicked
                 Processor.edges(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(encodeButton)){
+            else if (Greenfoot.mouseClicked(encodeButton)){ // Checks if the encode a message button is clicked
                 System.out.println("Enter the message you would like to encode: ");
                 String message = in.nextLine();
                 Processor.encodeImage(Processor.encodeMessage(message), image.getBufferedImage());
@@ -511,29 +508,29 @@ public class Background extends World
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(decodeButton)){
+            else if (Greenfoot.mouseClicked(decodeButton)){ // Checks if the decode a message button is clicked
                 System.out.println("The hidden message is: \n" + Processor.decodeMessage(Processor.decodeImage(image.getBufferedImage())) + "\n");
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             }
-            else if (Greenfoot.mouseClicked(luminanceButton)){
+            else if (Greenfoot.mouseClicked(luminanceButton)){ // Checks if the luminate button is clicked
                 Processor.luminance(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(weightedGreyscaleButton)){
+            else if (Greenfoot.mouseClicked(weightedGreyscaleButton)){ // Checks if the weighted gray button is clicked
                 Processor.weightedGrayScale(image.getBufferedImage());
                 image.redraw();
                 openFile.update (image.getDetails ());
                 checkForEdit();
                 resetCrop();
             } 
-            else if (Greenfoot.mouseClicked(image)){
-                if(stamping){
+            else if (Greenfoot.mouseClicked(image)){ 
+                if(stamping){ // Checks if stamping onto the image
                     BufferedImage bi = image.getBufferedImage();
                     MouseInfo click = Greenfoot.getMouseInfo();
                     int topX = click.getX()-(640-(int)(bi.getWidth()/2)), topY = click.getY()-(560-(int)(bi.getHeight()/2));
@@ -552,30 +549,25 @@ public class Background extends World
                     checkForEdit();
                     resetCrop();
                 }
-                else if (!inCropOne){
+                else if (!inCropOne){ // Gets the first corner of the crop
                     MouseInfo first = Greenfoot.getMouseInfo();
                     firstPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
                     addObject(firstPoint, first.getX(), first.getY());
                     inCropOne = true;
                 }
-                else if (!inCropTwo){
+                else if (!inCropTwo){ // Gets the second corner of the crop
                     MouseInfo second = Greenfoot.getMouseInfo();
                     secondPoint = new TextButton ("  ", 0, 10, false, Color.BLACK, Color.GREEN, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));                    
                     addObject(secondPoint, second.getX(), second.getY());
                     cropBox = new ColorButton(Color.BLACK, Math.abs(firstPoint.getX()-secondPoint.getX()), Math.abs(firstPoint.getY()-secondPoint.getY()), 2, false, false);
                     addObject(cropBox, Math.min(firstPoint.getX(), secondPoint.getX())+((int)(Math.abs(firstPoint.getX()-secondPoint.getX())/2)), Math.min(firstPoint.getY(), secondPoint.getY())+((int)(Math.abs(firstPoint.getY()-secondPoint.getY())/2)));
-                    //addObject(cropBox, 100, 100);
                     inCropTwo = true;
                 }
             }
-            else if (Greenfoot.mouseClicked(cropButton)){
+            else if (Greenfoot.mouseClicked(cropButton)){ // Crops the image using the 2 selected corners
                 if(inCropOne && inCropTwo){
                     int topX = Math.min(firstPoint.getX(), secondPoint.getX())-(640-(int)(image.getRealWidth()/2)), topY = Math.min(firstPoint.getY(), secondPoint.getY())-(560-(int)(image.getRealHeight()/2));
                     int height = Math.abs(firstPoint.getY()-secondPoint.getY()), width = Math.abs(firstPoint.getX()-secondPoint.getX());
-                    //width = 50;
-                    //height = 50;
-                    //topX = firstPoint.getX()-330;
-                    //topY = 0;
                     image.setFullImage(createGreenfootImageFromBI(image.getBufferedImage().getSubimage(topX, topY, width, height)));
                     image.redraw();
                     openFile.update (image.getDetails ());
@@ -583,7 +575,7 @@ public class Background extends World
                     resetCrop();
                 }
             }
-            else if (Greenfoot.mouseClicked(stampButton)){
+            else if (Greenfoot.mouseClicked(stampButton)){ // Stamps button
                 resetCrop();
                 openStampFile();
 
@@ -592,29 +584,28 @@ public class Background extends World
                     else stamping = false;
                 }
             }
-            else if (Greenfoot.mouseClicked(openButton))
+            else if (Greenfoot.mouseClicked(openButton)) // Checks if the open button is clicked.
             {
                 resetCrop();
                 openFile ();
             }
 
-            else if (Greenfoot.mouseClicked(saveButton))
+            else if (Greenfoot.mouseClicked(saveButton)) // Checks if the save button is clicked
             {
                 resetCrop();
                 saveFile ();
             }
-            else if (Greenfoot.mouseClicked(recentFilesButton))
+            else if (Greenfoot.mouseClicked(recentFilesButton)) // Checks if the open recent files button is clicked
             {
                 resetCrop();
                 selectRecentlyOpenedFile();
             }
 
             else{
-                resetCrop();
+                resetCrop(); // Resets crop
             }
         }
     }
-
 
     /**
      * Allows user to select a recently opened file graphically using JFrame. 
@@ -632,7 +623,7 @@ public class Background extends World
         // New arraylist containing all the recent files the user has. If there is
         // no recently opened files, then the array will be blank. 
         ArrayList <String> fileList = recent.getRecentFiles();
-        
+
         // Creates a new button group (for the radio buttons). 
         ButtonGroup bg = new ButtonGroup();
 
@@ -663,48 +654,47 @@ public class Background extends World
         JButton cancelButton = new JButton("Cancel");  
         cancelButton.setBounds(100,230,95,30);  
         recentFrame.add(cancelButton);
-        
+
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recentFrame.setVisible(false);
-                recentFrame.dispose();
-            }
-        });
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    recentFrame.setVisible(false);
+                    recentFrame.dispose();
+                }
+            });
 
         openRecentFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-                // https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
-                for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons.hasMoreElements();) {
-                    AbstractButton button = buttons.nextElement();
-        
-                    if (button.isSelected()) {
+                    // https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
+                    for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons.hasMoreElements();) {
+                        AbstractButton button = buttons.nextElement();
 
-                        // get Full filename
-                        for (int i = 0; i < fileList.size(); i++) {
-                            File file = new File(fileList.get(i));
-                            if (file.getName().equalsIgnoreCase(button.getText())) {
-                                recentFrame.setVisible(false);
-                                recentFrame.dispose();
+                        if (button.isSelected()) {
 
-                                if (image.openFile (file.getAbsolutePath(), file.getName()))
-                                {
-                                    openFile.update (image.getDetails ());
-                                    recent.addRecentlyOpenedFile(file.getAbsolutePath());
+                            // get Full filename
+                            for (int i = 0; i < fileList.size(); i++) {
+                                File file = new File(fileList.get(i));
+                                if (file.getName().equalsIgnoreCase(button.getText())) {
+                                    recentFrame.setVisible(false);
+                                    recentFrame.dispose();
+
+                                    if (image.openFile (file.getAbsolutePath(), file.getName()))
+                                    {
+                                        openFile.update (image.getDetails ());
+                                        recent.addRecentlyOpenedFile(file.getAbsolutePath());
+                                    }
+                                    else {
+                                        JOptionPane.showMessageDialog(null, "This file does not exist");
+                                    }
                                 }
-                                else {
-                                    JOptionPane.showMessageDialog(null, "This file does not exist");
-                                }
+
                             }
-
                         }
                     }
                 }
-            }
-        });
+            });
 
     }
-
 
     /**
      * Saves file as a PNG or JPEG. User is able to select the path of their file graphically
@@ -718,7 +708,7 @@ public class Background extends World
             // https://www.codejava.net/java-se/swing/show-save-file-dialog-using-jfilechooser
             // Parent component of the dialog.
             JFrame parentFrame = new JFrame();
-            
+
             // Create a JFileChooser, a file chooser box 
             JFileChooser fileChooser = new JFileChooser();
 
@@ -726,17 +716,17 @@ public class Background extends World
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG file", new String[] {"png"}));
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG file", new String[] {"jpg"}));
             fileChooser.setAcceptAllFileFilterUsed(false);
-            
+
             // If user does not select a file, display message.
             fileChooser.setDialogTitle("Specify a file to save");   
-            
+
             //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // TODO: Not working
             int userSelection = fileChooser.showSaveDialog(parentFrame);
-            
+
             // Saves file if user selects a valid option.
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
-                
+
                 System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 fileName = fileToSave.getAbsolutePath();
 
@@ -750,23 +740,23 @@ public class Background extends World
 
                     // Creates a new Buffered Image. 
                     BufferedImage bi = image.getBufferedImage();
-        
+
                     // https://stackoverflow.com/questions/16002167/using-imageio-write-to-create-a-jpeg-creates-a-0-byte-file
                     // Uses Buffered Image to create a JPEG file.
                     BufferedImage newBufferedImage = new BufferedImage(bi.getWidth(),
-                    bi.getHeight(), BufferedImage.TYPE_INT_RGB);
+                            bi.getHeight(), BufferedImage.TYPE_INT_RGB);
                     newBufferedImage.getGraphics().drawImage(bi, 0, 0, null);
-                    
+
                     // Creates a new file using the file name. 
                     File outputfile = new File(fileName);
-                    
+
                     // https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html
                     // Writes the Buffered Image to the file using ImageIO. 
                     ImageIO.write(newBufferedImage, "jpg", outputfile);
                 }
                 // Saves file as PNG. 
                 else if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("PNG file")) {
-                    
+
                     // Appends a .png extension to file name.
                     fileName += ".png";
 
@@ -863,10 +853,9 @@ public class Background extends World
             else {
                 stampImage = deepCopy(stampFile.getBufferedImage()); 
             }
-            
+
         }
     }
-
 
     /**
      * Takes in a BufferedImage and returns a GreenfootImage.
@@ -884,7 +873,12 @@ public class Background extends World
 
         return returnImage;
     }
-    
+
+    /**
+     * Creates a deep copy of the buffered image.
+     * 
+     * @param bi The buffered image to make the copy from.
+     */
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultip = cm.isAlphaPremultiplied();
@@ -892,6 +886,9 @@ public class Background extends World
         return new BufferedImage(cm, raster, isAlphaPremultip, null);
     }
     
+    /**
+     * Checks if edits are made
+     */
     private void checkForEdit(){
         if(editPos < edits.size()){
             edits.subList(editPos+1, edits.size()).clear();
@@ -900,6 +897,9 @@ public class Background extends World
         editPos++;
     }
     
+    /**
+     * Resets the crop
+     */
     private void resetCrop(){
         if(inCropOne){
             removeObject(firstPoint);                        
