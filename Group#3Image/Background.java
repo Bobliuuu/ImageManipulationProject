@@ -23,12 +23,13 @@ import java.util.Scanner;
 import java.lang.Math;
 
 /**
- * Background class - The class that contains the user interface of the Image Manipulation Pojrect
+ * Background class - The class that contains the user interface of the Image Manipulation Project
+ * <p>
  * This class contains the implementation to perform any methods in the other classes, and adds the UI interface objects to the World. 
  * The class implements buttons, a color palette, and an image that can be manipulated. 
  * 
  * @author Daniel Qian, Jerry Zhu, Matthew Gong
- * @version November 2013
+ * @version December 2021
  */
 
 public class Background extends World
@@ -70,6 +71,7 @@ public class Background extends World
 
     private String fileName;
 
+    // Declare Scanner to read in input
     private Scanner in;
 
     /**
