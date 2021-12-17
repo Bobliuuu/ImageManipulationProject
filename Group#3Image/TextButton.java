@@ -339,6 +339,10 @@ public class TextButton extends Control
                 return new String[]{"Decode a message", "from the image"};
             case "Luminate":
                 return new String[]{"Luminate", "the image"};
+            case "Contrast":
+                return new String[]{"Adjusts", "the contrast"};
+            case "Spherify":
+                return new String[]{"Spherifies", "the image"};
             case "Weighted Greyscale":
                 return new String[]{"Applies a weighted", "greyscale to the", "image"};
             default:
