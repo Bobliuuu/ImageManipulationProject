@@ -28,7 +28,7 @@ import java.lang.Math;
  * This class contains the implementation to perform any methods in the other classes, and adds the UI interface objects to the World. 
  * The class implements buttons, a color palette, and an image that can be manipulated. 
  * 
- * @author Daniel Qian, Jerry Zhu, Matthew Gong
+ * @author Daniel Qian, Jerry Zhu, Matthew Gong, Ibrahim Rahman
  * @version December 2021
  */
 
@@ -602,9 +602,12 @@ public class Background extends World
                 resetCrop();
                 openStampFile();
 
-                if(stampImage != null){
-                    if(!stamping) stamping = true;
-                    else stamping = false;
+                // Check if the stamp is loaded. If it is, then set stamping flag.
+                if(stampImage != null) {
+                    if (!stamping) 
+                        stamping = true;
+                    else 
+                        stamping = false;
                 }
             }
             else if (Greenfoot.mouseClicked(openButton)) // Checks if the open button is clicked.
@@ -660,7 +663,7 @@ public class Background extends World
             recentFrame.add(rb);
         }
 
-        // Sets the location to null 
+        // Set the configuration for a new frame for recent files.
         recentFrame.setLocationRelativeTo(null);
         recentFrame.setSize(300,300);
         recentFrame.setResizable(false);    
@@ -678,35 +681,51 @@ public class Background extends World
         cancelButton.setBounds(100,230,95,30);  
         recentFrame.add(cancelButton);
 
+        // create a listener function inline when the user clicks the cancel button.
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    // hide/dispose the recent file frame.
                     recentFrame.setVisible(false);
                     recentFrame.dispose();
                 }
             });
 
+        // create a listener function inline when the user clicks the open button.
         openRecentFileButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
 
                     // https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
+                    // Iterate through the radio buttons until there are no more elements.
                     for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons.hasMoreElements();) {
                         AbstractButton button = buttons.nextElement();
 
+                        // if the radio button is selected then load that file.
                         if (button.isSelected()) {
 
-                            // get Full filename
+                            // The name of the radio button indicates the short filename without the full path.
+                            // This is to make it more readable on the screen. To resolve this into the full path,
+                            // we have to go through the recent files list, and check the filename of each full path until
+                            // we get a match.
                             for (int i = 0; i < fileList.size(); i++) {
                                 File file = new File(fileList.get(i));
+
+                                // if the recent filename and the radio button label match, then open this file.
                                 if (file.getName().equalsIgnoreCase(button.getText())) {
+
+                                    // close the frame.
                                     recentFrame.setVisible(false);
                                     recentFrame.dispose();
 
+                                    // Open the recent file to the main screen.
                                     if (image.openFile (file.getAbsolutePath(), file.getName()))
                                     {
                                         openFile.update (image.getDetails ());
+
+                                        // add the opened file to the top of the recent file list.
                                         recent.addRecentlyOpenedFile(file.getAbsolutePath());
                                     }
                                     else {
+                                        // Show a popup error message if the file doesn't exist.
                                         JOptionPane.showMessageDialog(null, "This file does not exist");
                                     }
                                 }
@@ -723,7 +742,6 @@ public class Background extends World
      * Saves file as a PNG or JPEG. User is able to select the path of their file graphically
      * using JFrame. 
      * 
-     * @throws IOException throws if file us unable to save. 
      * @author Ibrahim Rahman
      */
     private void saveFile () {
@@ -743,7 +761,6 @@ public class Background extends World
             // If user does not select a file, display message.
             fileChooser.setDialogTitle("Specify a file to save");   
 
-            //fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // TODO: Not working
             int userSelection = fileChooser.showSaveDialog(parentFrame);
 
             // Saves file if user selects a valid option.
@@ -755,7 +772,7 @@ public class Background extends World
 
                 // https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
                 // https://www.tabnine.com/code/java/methods/javax.swing.JFileChooser/getFileFilter
-                // Saves file as JPEG.
+                // // Check if the user selected JPEG as the filter type. Then save the file as JPEG.
                 if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("JPEG file")) {
 
                     // Appends a .jpg extension to file name.
@@ -777,7 +794,7 @@ public class Background extends World
                     // Writes the Buffered Image to the file using ImageIO. 
                     ImageIO.write(newBufferedImage, "jpg", outputfile);
                 }
-                // Saves file as PNG. 
+                // Check if the user selected PNG as the filter type. Then save the file as PNG.   
                 else if (fileChooser.getFileFilter().getDescription().equalsIgnoreCase("PNG file")) {
 
                     // Appends a .png extension to file name.
@@ -868,7 +885,7 @@ public class Background extends World
             File selectedFile = fileChooser.getSelectedFile();
             ImageHolder stampFile = new ImageHolder(selectedFile.getAbsolutePath());
 
-            // Ensures that a stamp file is 32x32 pixels. 
+            // Ensures that a stamp file is 32x32 pixels, otherwise popup and error message.
             if (stampFile.getRealHeight() != 32 || stampFile.getRealWidth() != 32) {
                 JOptionPane.showMessageDialog(null, "Please select a image file that is 32x32");
             }

@@ -31,7 +31,7 @@ public class RecentFiles {
      */
     public ArrayList<String> getRecentFiles() {
 
-        // Checks if the list of files is emty. If it is, load the Array List
+        // Checks if the list of files is empty. If it is, load the Array List
         // of files. 
         if (filelist == null) 
             filelist = loadList();
@@ -40,23 +40,40 @@ public class RecentFiles {
         return filelist;  
     }
 
+    /**
+     * Adds a file to the top of the recently opened filelist. Then stores the file.
+     * 
+     * @param filename The name of the absolute path of the file that will be stored in the recently opened file.
+     */
     public void addRecentlyOpenedFile(String filename) {
+
+        // Load the filelist from the filesystem if the fileList is empty/null.
         if (filelist == null) 
             filelist = loadList();
 
+        // If the file is already in the fileList, remove it.
         if (filelist.contains(filename)) {
             filelist.remove(filename);
         }
-        // add to front of the list.
+
+        // add to front of the recently opened file list.
         filelist.add(0, filename);
+
+        // save the fileList array to disk.
         saveList();
     }
 
-    // https://stackoverflow.com/questions/16111496/java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
+    /**
+     * This private helper method is used to save the arrayList of recently opened files to a txt file. 
+     * Most recent will be at the top of the file.
+     * 
+     */
     private void saveList() {
         try {
+            // https://stackoverflow.com/questions/16111496/java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
             FileWriter writer = new FileWriter(RECENTFILES); 
 
+            // Iterate through the file list. Store the first 8 or MAXFILES items to the text file.
             for (int i = 0; i < Math.min(filelist.size(), MAXFILES) ; i++) {
                 writer.write(filelist.get(i) + System.lineSeparator());
             }
@@ -67,12 +84,20 @@ public class RecentFiles {
          
     }
 
+    /**
+     * This private helper method is used to load the recently opened files from a txt file into an ArrayList of Strings.
+     * 
+     * @return ArrayList<String> of recently opened absolute file paths.
+     */
     private ArrayList<String> loadList() {
 
         try {
+            // read all files from a text file and cast the List as an ArrayList
             ArrayList<String> list = (ArrayList<String>) Files.readAllLines(new File(RECENTFILES).toPath(), Charset.defaultCharset());
             return list;
-        } catch (IOException e) {            
+
+        } catch (IOException e) { 
+            // if the recent txt file is missing or empty, then return a new ArrayList.
             return new ArrayList<String>();
         }
     }
