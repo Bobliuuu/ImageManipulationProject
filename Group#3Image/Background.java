@@ -28,7 +28,7 @@ import java.lang.Math;
  * This class contains the implementation to perform any methods in the other classes, and adds the UI interface objects to the World. 
  * The class implements buttons, a color palette, and an image that can be manipulated. 
  * 
- * @author Daniel Qian, Jerry Zhu, Matthew Gong, Ibrahim Rahman
+ * @author Daniel Qian, Jerry Zhu, Matthew Gong, Ibrahim Rahman, Jordan Cohen
  * @version December 2021
  */
 
@@ -903,6 +903,8 @@ public class Background extends World
      * @param newBi The BufferedImage to convert.
      * 
      * @return GreenfootImage   A GreenfootImage built from the BufferedImage provided.
+     * 
+     * @author Jordan Cohen
      */
     public static GreenfootImage createGreenfootImageFromBI (BufferedImage newBi)
     {
@@ -918,6 +920,8 @@ public class Background extends World
      * Creates a deep copy of the buffered image.
      * 
      * @param bi The buffered image to make the copy from.
+     * 
+     * @author Jordan Cohen
      */
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
