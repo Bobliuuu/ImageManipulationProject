@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Background
-comment0.text=\r\n\ Background\ class\ -\ The\ class\ that\ contains\ the\ user\ interface\ of\ the\ Image\ Manipulation\ Pojrect\r\n\ This\ class\ contains\ the\ implementation\ to\ perform\ any\ methods\ in\ the\ other\ classes,\ and\ adds\ the\ UI\ interface\ objects\ to\ the\ World.\ \r\n\ The\ class\ implements\ buttons,\ a\ color\ palette,\ and\ an\ image\ that\ can\ be\ manipulated.\ \r\n\ \r\n\ @author\ Daniel\ Qian,\ Jerry\ Zhu,\ Matthew\ Gong\r\n\ @version\ November\ 2013\r\n
+comment0.text=\r\n\ Background\ class\ -\ The\ class\ that\ contains\ the\ user\ interface\ of\ the\ Image\ Manipulation\ Project\r\n\ <p>\r\n\ This\ class\ contains\ the\ implementation\ to\ perform\ any\ methods\ in\ the\ other\ classes,\ and\ adds\ the\ UI\ interface\ objects\ to\ the\ World.\ \r\n\ The\ class\ implements\ buttons,\ a\ color\ palette,\ and\ an\ image\ that\ can\ be\ manipulated.\ \r\n\ \r\n\ @author\ Daniel\ Qian,\ Jerry\ Zhu,\ Matthew\ Gong\r\n\ @version\ December\ 2021\r\n
 comment1.params=
 comment1.target=Background()
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Background.\r\n\ \r\n

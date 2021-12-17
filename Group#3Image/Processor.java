@@ -11,7 +11,7 @@ import java.lang.Math;
 import greenfoot.*;
 
 /**
- * Processor class - The class that processes the desigred image. 
+ * Processor class - The class that processes the desired image. 
  * <p>
  * This class manipulates Java BufferedImages, which are effectively 2d arrays
  * of pixels. Each pixel is a single integer packed with 4 values inside it. 
@@ -828,10 +828,12 @@ public class Processor
                 int sumRed = 0;
                 int total = 0;
     
-                for (int r = -1; r < 2; r++)
+                // Loop through the kernel matrix of the current pixel
+                for (int r = -1; r <= 1; r++)
                 {
-                    for (int c = -1; c < 2; c++)
+                    for (int c = -1; c <= 1; c++)
                     {
+                        // Make sure pixel coordinate is in range
                         if (x + r < 0 || x + r > xSize - 1 || y + c < 0 || y + c > ySize - 1){
                             continue;
                         }
@@ -1687,7 +1689,7 @@ public class Processor
      * 
      * @author Jerry Zhu
      */
-     public static void sharpen (BufferedImage bi)
+    public static void sharpen (BufferedImage bi)
     {
         // Get image size to use in for loops
         int xSize = bi.getWidth();
@@ -1821,18 +1823,25 @@ public class Processor
      */
     public static void encodeImage (String bit, BufferedImage bi) 
     {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
         int pointer = bit.length() - 1; 
-        // Loop through the image
-        for (int x = bi.getWidth() - 1; x >= 0; x--) {
-            for (int y = bi.getHeight() - 1; y >= 0; y--) { 
-                Color c = new Color(bi.getRGB(x,y)); 
+        
+        // Loop through the image using array size as limit
+        for (int x = xSize - 1; x >= 0; x--){
+            for (int y = ySize - 1; y >= 0; y--){ 
+                // Get the current color and the RGB values
+                Color c = new Color(bi.getRGB(x, y)); 
                 byte r = (byte) c.getRed(); 
                 byte g = (byte) c.getGreen(); 
                 byte b = (byte) c.getBlue(); 
                 byte[] RGB = {r, g, b};
                 byte[] newRGB = new byte[3];
+                // Loop through each bit
                 for (int i = 2; i >= 0; i--) { 
                     if (pointer >= 0) { 
+                        // Get the least significant bit
                         int lsb;
                         if ((RGB[i] & 1) == 1) {
                                 lsb = 1;
@@ -1840,6 +1849,7 @@ public class Processor
                         else {
                                 lsb = 0;
                         }
+                        // Calculate the new numerical value of the pixel bit by doing two's complement on the desired pixel bit
                         if (Character.getNumericValue(bit.charAt(pointer)) != lsb) {
                             if (lsb == 1) { 
                                 newRGB[i] = (byte) (RGB[i] & ~(1));
@@ -1857,8 +1867,9 @@ public class Processor
                     }
                     pointer--;
                 }
+                // Set the new RGB color to the BufferedImage
                 Color newColor = new Color(Byte.toUnsignedInt(newRGB[0]), Byte.toUnsignedInt(newRGB[1]), Byte.toUnsignedInt(newRGB[2]));
-                bi.setRGB(x,y,newColor.getRGB());
+                bi.setRGB(x, y, newColor.getRGB());
             }
         }
     }
@@ -1872,17 +1883,22 @@ public class Processor
      * @author Jerry Zhu
      */
     public static String decodeMessage (String encoded) 
-    {
-        int count = encoded.length()-1;
+    { 
+        // Get the bit string and initialize variables and byte array
+        int count = encoded.length() - 1;
         StringBuilder message = new StringBuilder();
-        int values = encoded.length()/8;
+        int values = encoded.length() / 8;
         byte[] ba = new byte[values];
-        int arrayCount = values-1;
-        while (arrayCount > 0) {
+        int arrayCount = values - 1;
+        // Loop through each bit
+        while (arrayCount > 0){
+            // Use a string builder to store the current bit
             StringBuilder bits = new StringBuilder();
+            // Convert to a character
             for (int i = 0; i < 8; i++) {
-                bits.insert(0, encoded.charAt(count-i));
+                bits.insert(0, encoded.charAt(count - i));
             }
+            // Insert the converted character into the string builder
             byte b = (byte) Integer.parseInt(bits.toString(), 2);
             int x = Byte.toUnsignedInt(b);
             ba[arrayCount] = (byte) x;
@@ -1891,8 +1907,9 @@ public class Processor
             count = count - 8;
             arrayCount--;
         }
-        String fin = new String(ba);
-        return fin;
+        // Return the final built string
+        String res = new String(ba);
+        return res;
     } 
 
     /**
@@ -1905,13 +1922,24 @@ public class Processor
      */
     public static String decodeImage(BufferedImage bi) 
     {
+        // Get image size to use in for loops
+        int xSize = bi.getWidth();
+        int ySize = bi.getHeight();
+        
+        // Initialize a string builder
         StringBuilder sb = new StringBuilder();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                Color c = new Color(bi.getRGB(x,y)); 
+        
+        // Use array size as limit
+        for (int x = 0; x < bi.getWidth(); x++) 
+        {
+            for (int y = 0; y < bi.getHeight(); y++) 
+            {
+                // Get current RGB value
+                Color c = new Color(bi.getRGB(x, y)); 
                 byte r = (byte) c.getRed(); 
                 byte g = (byte) c.getGreen(); 
                 byte b = (byte) c.getBlue(); 
+                // Get the bit stored by the RGB value and append to the string builder
                 byte[] RGB = {r, g, b};
                 for (int i = 0; i < 3; i++) {
                     if ((RGB[i] & 1) == 1) { 
@@ -1923,6 +1951,7 @@ public class Processor
                 }
             }
         }
+        // Return the final built binary string
         return sb.toString();
     }
     
@@ -2063,6 +2092,7 @@ public class Processor
         int maxColor = 0;
         int maxCount = 0;
         
+        // Use a iterative loop to get the most frequent color
         for (Map.Entry<Integer, Integer> entry : colorCount.entrySet()){
             int color = entry.getKey();
             int count = entry.getValue();
