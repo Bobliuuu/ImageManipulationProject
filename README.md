@@ -1,6 +1,10 @@
 # Image Manipulation Project
 The Github repository for the ICS4U image manipulation project for Group #3. 
 
+## Instructions
+1. Download the [gfar file](ImageManipulationProject/Group#3Image.gfar). 
+2. Run the file! 
+
 ## Description: 
 The image manipulation project is a program that can manipulate images in a plethora of ways. It includes a user interface, an implementation of various image manipulation methods, a way to save/load any files that are to be manipulated, and descriptions with supporting text for each image manipulation method. <br>
 The documentation and API of each particular class can be found by doing `Ctrl-J` in that particular class. <br>
