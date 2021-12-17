@@ -61,7 +61,7 @@ public class Background extends World
 
     private TextButton pixelateButton, blurButton, warmButton, coolButton, gaussianButton, sepiaButton, contrastButton, hueButton, swapRGBButton, sharpenButton, cropButton, firstPoint, secondPoint, greyScaleButton, solarizeButton, noiseButton, laplaceButton;
 
-    private TextButton stampButton, embossButton, edgesButton, encodeButton, decodeButton, luminanceButton, weightedGreyscaleButton, distortButton, spherifyButton;
+    private TextButton stampButton, embossButton, edgesButton, encodeButton, decodeButton, luminanceButton, weightedGreyscaleButton, distortButton, spherifyButton, rotate180Button;
 
     // Declare ColorButtons
     private ColorButton bluePicture, redPicture, greenPicture, yellowPicture, orangePicture, pinkPicture, grayPicture, blackPicture, purplePicture, brownPicture, topBar, cropBox;
@@ -128,7 +128,8 @@ public class Background extends World
         weightedGreyscaleButton = new TextButton("Weighted Greyscale", 5, 120, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         distortButton = new TextButton("Distort", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         spherifyButton = new TextButton("Spherify", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        
+        rotate180Button = new TextButton("Rotate 180", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+
         // Initializing builtin colors
         bluePicture = new ColorButton(Color.BLUE);
         redPicture = new ColorButton(Color.RED);
@@ -200,6 +201,7 @@ public class Background extends World
         addObject (weightedGreyscaleButton, 1206, 140);
         addObject (distortButton, 1206, 108);
         addObject (spherifyButton, 1098, 45);
+        addObject (rotate180Button, 1000, 45);
 
         // Place the open file text box in the top left corner
         addObject (openFile, openFile.getImage().getWidth() / 2, openFile.getImage().getHeight() / 2);
@@ -609,6 +611,12 @@ public class Background extends World
                     else 
                         stamping = false;
                 }
+            }
+            else if (Greenfoot.mouseClicked(rotate180Button)){
+                image.setFullImage(createGreenfootImageFromBI(Processor.rotate180(image.getBufferedImage())));
+                image.redraw();
+                openFile.update (image.getDetails ());
+                checkForEdit();
             }
             else if (Greenfoot.mouseClicked(openButton)) // Checks if the open button is clicked.
             {

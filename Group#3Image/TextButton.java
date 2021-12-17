@@ -349,6 +349,8 @@ public class TextButton extends Control
                 return new String[]{"Spherifies", "the image"};
             case "Weighted Greyscale":
                 return new String[]{"Applies a weighted", "greyscale to the", "image"};
+            case "Rotate 180":
+                return new String[]{"Rotates the image", "180 degrees"};
             default:
                 return new String[]{"Unfinished"};
         }

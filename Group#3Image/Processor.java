@@ -1992,6 +1992,15 @@ public class Processor
         return newBi;
     }
     
+    public static BufferedImage rotate180 (BufferedImage bi){
+        BufferedImage newBi = new BufferedImage (bi.getHeight(), bi.getWidth(), 3);
+        
+        newBi = rotate90Clockwise(bi);
+        newBi = rotate90Clockwise(newBi);
+        
+        return newBi;
+    }
+    
     /**
      * Flips an image horizontally
      * 
