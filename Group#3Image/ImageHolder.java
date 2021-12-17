@@ -179,6 +179,11 @@ public class ImageHolder extends Actor
         return displayImage;
     }
     
+    /**
+     * Allows the user to change the full image to a new image
+     * 
+     * @author Matthew Gong
+     */
     public void setFullImage(GreenfootImage gi){
         fullImage = new GreenfootImage(gi);
     }

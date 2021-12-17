@@ -137,7 +137,7 @@ public class ColorButton extends Control
      * @param isClickable     Whether the button supports UI animations or not
      * @param transparent     Whether or not the button is transparent
      * 
-     * @author Jerry Zhu
+     * @author Jerry Zhu, Matthew Gong
      */
     public ColorButton(Color color, int width, int height, int borderThickness, boolean isClickable, boolean transparent){
         this.color = color;
