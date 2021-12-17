@@ -30,7 +30,7 @@ Files Lead - Ibrahim Rahman <br>
 - [x] Colorify Grey
 - [x] Colorify Red
 - [x] Colorify Yellow
-- [x] Colorify BLue
+- [x] Colorify Blue
 - [x] Colorify Purple
 - [x] Colorify Black
 - [x] Colorify Pink
