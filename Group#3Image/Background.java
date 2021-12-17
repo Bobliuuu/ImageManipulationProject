@@ -554,9 +554,12 @@ public class Background extends World
                     BufferedImage bi = image.getBufferedImage();
                     MouseInfo click = Greenfoot.getMouseInfo();
                     int topX = click.getX()-(640-(int)(bi.getWidth()/2)), topY = click.getY()-(560-(int)(bi.getHeight()/2));
+                    
+                    // checking if the stamp fits within the limits of the image
                     if((topX + stampImage.getWidth() <= bi.getWidth()) && (topY + stampImage.getHeight() <= bi.getHeight())){
                         for(int i = topY; i < topY + stampImage.getHeight(); i++){
                             for(int j = topX; j < topX + stampImage.getWidth(); j++){
+                                // checking that the stamp pixel and image pixel aren't the same
                                 if(bi.getRGB(j, i) != stampImage.getRGB(j - topX, i - topY)){
                                     bi.setRGB(j, i, stampImage.getRGB(j - topX, i - topY));
                                 }
@@ -908,6 +911,8 @@ public class Background extends World
     
     /**
      * Checks if edits are made
+     * 
+     * @author Matthew Gong
      */
     private void checkForEdit(){
         if(editPos < edits.size()){
@@ -919,6 +924,8 @@ public class Background extends World
     
     /**
      * Resets the crop
+     * 
+     * @author Matthew Gong
      */
     private void resetCrop(){
         if(inCropOne){

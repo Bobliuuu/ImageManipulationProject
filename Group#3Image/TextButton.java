@@ -248,6 +248,7 @@ public class TextButton extends Control
     /**
      * Adds the description box for the button below it
      * 
+     * @author Matthew Gong
      */
     public void createDescription(){
         (getWorld()).addObject(description, getX(), getY() + 60);
@@ -255,6 +256,8 @@ public class TextButton extends Control
     
     /**
      * Removes the description box for the button
+     * 
+     * @author Matthew Gong
      */
     public void deleteDescription(){
         (getWorld()).removeObject(description);
@@ -264,6 +267,7 @@ public class TextButton extends Control
      * Returns the text of the description box depending on what the button text is
      * 
      * @return String[] - The lines of String of the description
+     * @author Matthew Gong, Daniel Qian
      */
     public String[] getDescriptionText(){
         switch(buttonText){
