@@ -17,7 +17,8 @@ Files Lead - Ibrahim Rahman <br>
 - [x] New default image
 - [x] Interface has been improved
 - [x] Can Save Files as PNG
-- [x] Save File JFileChooser Implemented
+- [x] Save File 
+- [x] Jfile Chooser Implemented
 - [x] Vertical Flip
 - [x] Horizontal Flip
 - [x] Rotate 90 degrees CW / CCW + 180 degrees
@@ -64,3 +65,4 @@ Files Lead - Ibrahim Rahman <br>
 - [x] Decode
 - [x] Luminate
 - [x] Weighted Grayscale
+- [x] Open recent file
