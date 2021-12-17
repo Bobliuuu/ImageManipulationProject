@@ -20,73 +20,20 @@ C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc
 UTF-8
 -charset
 UTF-8
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java
+C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Background.java
 <---- end of javadoc command ---->
-Loading source file C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java...
+Loading source file C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Background.java...
 Constructing Javadoc information...
+warning: unknown enum constant Tag.Any
+  reason: class file for threadchecker.Tag not found
+warning: unknown enum constant Tag.Any
+warning: unknown enum constant Tag.Any
+warning: unknown enum constant Tag.Any
 Standard Doclet version 11.0.10
 Building tree for all the packages and classes...
-Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\Processor.html...
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1089: warning - invalid usage of tag >
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1089: warning - invalid usage of tag >
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1089: warning - invalid usage of tag >
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:127: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:139: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:151: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:163: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:175: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:187: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:199: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:211: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:223: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:235: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:248: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:290: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:331: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:374: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:431: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:490: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:541: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:591: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:649: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:708: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:755: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:803: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:875: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:949: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:947: warning - @param argument "percentage" is not a parameter name.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:998: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1049: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1089: warning - invalid usage of tag >
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1089: warning - invalid usage of tag >
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1089: warning - invalid usage of tag >
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1093: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1133: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1196: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1256: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1302: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1356: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1420: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1476: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1580: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1690: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1798: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1822: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1883: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1921: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1963: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1982: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:1999: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2041: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2067: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2116: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2154: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2178: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2208: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2200: warning - @param argument "int" is not a parameter name.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2201: warning - @param argument "int" is not a parameter name.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2202: warning - @param argument "int" is not a parameter name.
-C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Processor.java:2203: warning - @param argument "int" is not a parameter name.
+Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\Background.html...
+C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Background.java:967: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
+C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\Background.java:984: warning - Tag @author cannot be used in method documentation.  It can only be used in the following types of documentation: overview, module, package, class/interface.
 Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\package-summary.html...
 Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\constant-values.html...
 Building index for all the packages and classes...
@@ -94,4 +41,4 @@ Building index for all classes...
 Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\allclasses.html...
 Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\allclasses.html...
 Generating C:\Users\L\Documents\GitHub\ImageManipulationProject\Group#3Image\doc\index.html...
-60 warnings
+6 warnings

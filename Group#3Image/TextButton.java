@@ -351,6 +351,8 @@ public class TextButton extends Control
                 return new String[]{"Applies a weighted", "greyscale to the", "image"};
             case "Rotate 180":
                 return new String[]{"Rotates the image", "180 degrees"};
+            case "Laplace":
+                return new String[]{"Adds a Laplace", "filter"};
             default:
                 return new String[]{"Unfinished"};
         }
