@@ -19,7 +19,8 @@ Image Lead - Matthew Gong <br>
 Interface Lead - Daniel Qian <br>
 Files Lead - Ibrahim Rahman <br>
 
-## List of FeaturesRequired Features:
+## List of Features
+### Required Features:
 - [x] Renamed Correctly
 - [x] New default image
 - [x] Interface has been improved
@@ -43,8 +44,7 @@ Files Lead - Ibrahim Rahman <br>
 - [x] Colorify Pink
 - [x] Colorify Orange
 - [x] Colorify Green
-
-## Additional Features:
+### Additional Features:
 - [x] Redo
 - [x] More Transparent
 - [x] Less Transparent
