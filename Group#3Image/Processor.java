@@ -675,7 +675,7 @@ public class Processor
                 // Makes the pixel cooler by decreasing red value and increasing blue and green values
                 if (red > 50){
                     red -= 2;
-                    if (red > 50){
+                    if (red < 50){
                         red = 50;
                     }
                 }
@@ -1831,7 +1831,7 @@ public class Processor
         // Loop through the image using array size as limit
         for (int x = xSize - 1; x >= 0; x--){
             for (int y = ySize - 1; y >= 0; y--){ 
-                // Get the current color and the RGB values
+                // Get the current color and the bytes of the RGB values
                 Color c = new Color(bi.getRGB(x, y)); 
                 byte r = (byte) c.getRed(); 
                 byte g = (byte) c.getGreen(); 
@@ -1934,13 +1934,14 @@ public class Processor
         {
             for (int y = 0; y < bi.getHeight(); y++) 
             {
-                // Get current RGB value
+                // Get pixel's color values and the current RGB byte values
                 Color c = new Color(bi.getRGB(x, y)); 
                 byte r = (byte) c.getRed(); 
                 byte g = (byte) c.getGreen(); 
                 byte b = (byte) c.getBlue(); 
                 // Get the bit stored by the RGB value and append to the string builder
                 byte[] RGB = {r, g, b};
+                // Get the bit encoded depending on the byte values
                 for (int i = 0; i < 3; i++) {
                     if ((RGB[i] & 1) == 1) { 
                         sb.append("1");
