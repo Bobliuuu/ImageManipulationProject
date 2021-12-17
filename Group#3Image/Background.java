@@ -27,6 +27,58 @@ import java.lang.Math;
  * <p>
  * This class contains the implementation to perform any methods in the other classes, and adds the UI interface objects to the World. 
  * The class implements buttons, a color palette, and an image that can be manipulated. 
+ * <p>
+ * List of features: <p>
+ * New default image <p>
+ * Interface has been improved <p>
+ * Can Save Files as PNG <p>
+ * Save File <p>
+ * Jfile Chooser Implemented <p>
+ * Vertical Flip <p>
+ * Horizontal Flip <p>
+ * Rotate 90 degrees CW / CCW + 180 degrees <p>
+ * Greyscale <p>
+ * Sepia <p>
+ * Negative <p>
+ * Undo Functionality <p>
+ * Colorify Brown <p>
+ * Colorify Grey <p>
+ * Colorify Red <p>
+ * Colorify Yellow <p>
+ * Colorify Blue <p>
+ * Colorify Purple <p>
+ * Colorify Black <p>
+ * Colorify Pink <p>
+ * Colorify Orange <p>
+ * Colorify Green <p>
+ * Redo <p>
+ * More Transparent <p>
+ * Less Transparent <p>
+ * Brighten <p>
+ * Darken <p>
+ * Reset <p>
+ * Pixelate <p>
+ * Blur <p>
+ * Warmer <p>
+ * Cooler <p>
+ * Gaussian Blur <p>
+ * Contrast <p>
+ * Change Hue <p>
+ * Swap RGB <p>
+ * Sharpen <p>
+ * Crop <p>
+ * Grayscale <p>
+ * Solarize <p>
+ * Noise <p>
+ * Distort <p>
+ * Stamp <p>
+ * Emboss <p>
+ * Refine Edges <p>
+ * Encode <p>
+ * Decode <p>
+ * Luminate <p>
+ * Weighted Grayscale <p>
+ * Open recent file <p>
  * 
  * @author Daniel Qian, Jerry Zhu, Matthew Gong, Ibrahim Rahman, Jordan Cohen
  * @version December 2021
@@ -118,7 +170,7 @@ public class Background extends World
         greyScaleButton = new TextButton("Greyscale", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         solarizeButton = new TextButton("Solarize", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         noiseButton = new TextButton("Noise", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
-        laplaceButton = new TextButton("Distort", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
+        laplaceButton = new TextButton("Laplace", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         stampButton = new TextButton("Stamp", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         embossButton = new TextButton("Emboss", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
         edgesButton = new TextButton("Refine Edges", 5, 90, true, Color.BLACK, Color.BLUE, Color.WHITE, Color.WHITE, Color.BLACK, new Font ("Verdana",false ,false ,10));
